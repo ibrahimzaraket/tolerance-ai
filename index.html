@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tolerance for Ambiguity – Ibrahim Zaraket</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-primary: #0a0a0b;
+      --bg-secondary: #111114;
+      --bg-card: rgba(255,255,255,0.05);
+      --text-primary: #ffffff;
+      --text-secondary: #a0a0a5;
+      --accent: #6366f1;
+      --accent-hover: #818cf8;
+      --border: rgba(255,255,255,0.1);
+      --glass-bg: rgba(255,255,255,0.1);
+      --shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+      --danger: #ef4444;
+      --ok: #22c55e;
+    }
+
+    [data-theme="light"] {
+      --bg-primary: #f8fafc;
+      --bg-secondary: #f1f5f9;
+      --bg-card: rgba(255,255,255,0.9);
+      --text-primary: #0f172a;
+      --text-secondary: #64748b;
+      --accent: #4f46e5;
+      --accent-hover: #3730a3;
+      --border: rgba(0,0,0,0.08);
+      --glass-bg: rgba(255,255,255,0.8);
+      --shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    header {
+      background: var(--bg-secondary);
+      backdrop-filter: blur(18px);
+      padding: 18px 0;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      user-select: none;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      text-align: right;
+    }
+
+    .byline {
+      font-size: 13px;
+      opacity: 0.85;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .theme-toggle {
+      background: var(--glass-bg);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 10px 14px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      color: var(--text-primary);
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .theme-toggle:hover {
+      transform: translateY(-1px);
+      border-color: rgba(99,102,241,0.45);
+      background: rgba(99,102,241,0.08);
+      box-shadow: 0 6px 16px rgba(99,102,241,0.15);
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 36px auto 60px;
+      padding: 0 20px;
+    }
+
+    .hero {
+      text-align: center;
+      margin: 8px 0 30px;
+    }
+
+    .hero h1 {
+      margin: 0 0 10px;
+      font-size: clamp(28px, 4vw, 44px);
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      margin: 0 auto;
+      max-width: 760px;
+      color: var(--text-secondary);
+      font-size: 16px;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 22px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(8px);
+    }
+
+    .scale-legend {
+      background: linear-gradient(135deg, rgba(99,102,241,0.08), rgba(99,102,241,0.03));
+      border: 1px solid rgba(99,102,241,0.2);
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin-bottom: 18px;
+      font-size: 14px;
+      color: var(--text-secondary);
+      backdrop-filter: blur(8px);
+    }
+
+    .scale-legend strong {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .banner {
+      display: none;
+      margin: 12px 0 18px;
+      padding: 13px 16px;
+      border-radius: 14px;
+      border: 1.5px solid rgba(239, 68, 68, 0.3);
+      background: rgba(239, 68, 68, 0.08);
+      color: var(--text-primary);
+      font-weight: 500;
+      animation: slideDown 0.25s ease-out;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .banner.show { display: block; }
+
+    .questions-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin: 16px 0 22px;
+    }
+
+    /* Responsive breakpoints */
+    @media (max-width: 1100px) {
+      .questions-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 720px) {
+      .questions-grid { grid-template-columns: 1fr; }
+      .header-right { gap: 10px; }
+      .theme-toggle { width: 100%; justify-content: center; }
+    }
+
+    .question-item {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+      min-height: 160px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .question-item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), transparent);
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    [data-theme="light"] .question-item {
+      background: rgba(0,0,0,0.02);
+    }
+
+    .question-item:hover {
+      transform: translateY(-3px);
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(99,102,241,0.3);
+      box-shadow: 0 12px 24px rgba(99,102,241,0.15);
+    }
+
+    .question-item:hover::before {
+      opacity: 1;
+    }
+
+    .q-top { display: flex; flex-direction: column; gap: 8px; }
+
+    .q-number {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .q-text {
+      font-size: 14px;
+      line-height: 1.45;
+      color: var(--text-primary);
+    }
+
+    select {
+      width: 100%;
+      padding: 11px 12px;
+      background: var(--glass-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-primary);
+      backdrop-filter: blur(10px);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+      cursor: pointer;
+      appearance: none;
+      background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="6 9 12 15 18 9"></polyline></svg>');
+      background-repeat: no-repeat;
+      background-position: right 8px center;
+      background-size: 18px;
+      padding-right: 36px;
+    }
+
+    [data-theme="dark"] select {
+      background-color: rgba(0,0,0,0.4);
+    }
+
+    select:hover {
+      border-color: rgba(99,102,241,0.5);
+      background-color: rgba(255,255,255,0.08);
+    }
+
+    [data-theme="dark"] select:hover {
+      background-color: rgba(0,0,0,0.6);
+    }
+
+    select:focus {
+      outline: none;
+      border-color: rgba(99,102,241,0.8);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+      background-color: rgba(255,255,255,0.12);
+    }
+
+    [data-theme="dark"] select:focus {
+      background-color: rgba(0,0,0,0.7);
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    button {
+      padding: 12px 18px;
+      font-size: 15px;
+      font-weight: 700;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease, background 0.15s ease;
+      user-select: none;
+      position: relative;
+      overflow: hidden;
+    }
+
+    button::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent);
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+      color: #fff;
+      box-shadow: 0 12px 28px rgba(99,102,241,0.35);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 40px rgba(99,102,241,0.45);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .btn-secondary {
+      background: var(--glass-bg);
+      color: var(--text-primary);
+      border: 1.5px solid var(--border);
+      transition: all 0.2s ease;
+    }
+
+    .btn-secondary:hover {
+      transform: translateY(-2px);
+      border-color: rgba(99,102,241,0.5);
+      background: rgba(255,255,255,0.08);
+      box-shadow: 0 8px 20px rgba(99,102,241,0.15);
+    }
+
+    .btn-secondary:active {
+      transform: translateY(0);
+    }
+
+    .results {
+      display: none;
+      margin-top: 22px;
+      animation: slideIn 0.35s ease-out;
+    }
+
+    .results.show { display: block; }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .scores-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin: 12px 0 14px;
+    }
+
+    @media (max-width: 900px) {
+      .scores-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 520px) {
+      .scores-grid { grid-template-columns: 1fr; }
+    }
+
+    .score-card {
+      background: linear-gradient(135deg, var(--glass-bg), rgba(255,255,255,0.04));
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      text-align: center;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .score-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top right, rgba(99,102,241,0.1), transparent);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .score-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(99,102,241,0.4);
+      box-shadow: 0 16px 40px rgba(99,102,241,0.2);
+    }
+
+    .score-card:hover::before {
+      opacity: 1;
+    }
+
+    .score-label {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .score-value {
+      font-size: 32px;
+      font-weight: 900;
+      color: var(--accent);
+      margin: 0;
+      letter-spacing: -0.02em;
+    }
+
+    .total-score {
+      grid-column: 1 / -1;
+      background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+      color: #fff;
+      border: none;
+      box-shadow: 0 16px 40px rgba(99,102,241,0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .total-score::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 70% 50%, rgba(255,255,255,0.1), transparent);
+      opacity: 1;
+    }
+
+    .total-score .score-label { color: rgba(255,255,255,0.85); }
+    .total-score .score-value { color: #fff; }
+
+    .interpretation {
+      background: linear-gradient(135deg, var(--glass-bg), rgba(255,255,255,0.02));
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px;
+      margin-top: 14px;
+      font-size: 15px;
+      color: var(--text-primary);
+      line-height: 1.6;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .interpretation::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background: linear-gradient(180deg, var(--accent), transparent);
+    }
+
+    .interpretation {
+      padding-left: 16px;
+    }
+
+    .note {
+      margin-top: 14px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      padding: 14px 16px;
+      background: var(--glass-bg);
+      border-radius: 14px;
+      border-left: 4px solid rgba(99,102,241,0.4);
+      transition: all 0.2s ease;
+    }
+
+    .note:hover {
+      border-left-color: var(--accent);
+      background: rgba(255,255,255,0.06);
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 999px;
+      background: rgba(99,102,241,0.14);
+      border: 1px solid rgba(99,102,241,0.25);
+      color: var(--text-primary);
+      font-weight: 800;
+      font-size: 12px;
+      vertical-align: baseline;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 4px;
+      background: var(--border);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 16px 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent-hover));
+      border-radius: 999px;
+      transition: width 0.3s ease;
+      box-shadow: 0 0 12px rgba(99,102,241,0.4);
+    }
+
+    .progress-text {
+      font-size: 12px;
+      color: var(--text-secondary);
+      font-weight: 600;
+      text-align: right;
+      margin-top: 6px;
+    }
+  </style>
+</head>
+
+<body data-theme="dark">
+  <header>
+    <div class="header-content">
+      <div class="logo">ToleranceAI</div>
+      <div class="header-right">
+        <span class="byline">Made By: Ibrahim Zaraket</span>
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">
+          <span id="themeIcon">🌙</span>
+          <span style="font-weight:800;">Theme</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="hero">
+      <h1>Tolerance for Ambiguity</h1>
+      <p>
+        Answer the 16 items, then calculate your subscale scores (Novelty, Complexity, Insolubility) and your total
+        intolerance score. <span class="pill">Even items are reverse-scored</span>.
+      </p>
+    </div>
+
+    <div class="card">
+      <div class="scale-legend">
+        <strong>Scale (1–7):</strong> 7 = Strongly Agree, 6 = Moderately Agree, 5 = Slightly Agree, 4 = Neither Agree nor Disagree,
+        3 = Slightly Disagree, 2 = Moderately Disagree, 1 = Strongly Disagree.
+      </div>
+
+      <div class="banner" id="banner"></div>
+
+      <div class="questions-grid" id="questionsGrid"></div>
+
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+      </div>
+      <div class="progress-text" id="progressText">0 / 16 questions answered</div>
+
+      <div class="btn-group">
+        <button class="btn-primary" id="calcBtn" type="button">Calculate My Score</button>
+        <button class="btn-secondary" id="resetBtn" type="button">Reset</button>
+      </div>
+
+      <div class="results" id="results">
+        <div class="scores-grid">
+          <div class="score-card">
+            <div class="score-label">Novelty (2r + 9 + 11 + 13)</div>
+            <div class="score-value" id="noveltyScore">0</div>
+          </div>
+
+          <div class="score-card">
+            <div class="score-label">Complexity (4r + 5 + 6r + 7 + 8r + 10r + 14r + 15 + 16r)</div>
+            <div class="score-value" id="complexityScore">0</div>
+          </div>
+
+          <div class="score-card">
+            <div class="score-label">Insolubility (1 + 3 + 12r)</div>
+            <div class="score-value" id="insolubilityScore">0</div>
+          </div>
+
+          <div class="score-card total-score">
+            <div class="score-label">Total intolerance score</div>
+            <div class="score-value" id="totalScore">0</div>
+          </div>
+        </div>
+
+        <div class="interpretation" id="interpretation"></div>
+
+        <div class="note">
+          Average total scores often fall around <strong>44–48</strong>. Higher totals indicate more intolerance for ambiguity and uncertainty.
+          This is a self-awareness tool (not a validated clinical test).
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // 16 items exactly as in the provided PDF.
+    const questions = [
+      "If the expert can't give a clear answer, they probably don't know much.",
+      "Living in a different country and experiencing a foreign culture is interesting.",
+      "All problems have solutions.",
+      "Having a strict routine prevents you from enjoying life's pleasures.",
+      "I prefer a job with clear and certain duties and responsibilities.",
+      "I enjoy solving difficult problems.",
+      "Simplifying complex problems rarely leads to long-term success.",
+      "Interesting and inspiring people are often unique and unafraid to be themselves.",
+      "Facing the known is better than facing the unknown.",
+      "If someone sees an issue as black and white, they don't understand the problem's complexity.",
+      "Having a predictable life puts you in a favorable position.",
+      "Many important decisions in life are made with limited information.",
+      "I prefer knowing people in social settings rather than facing unfamiliar faces.",
+      "When given vague directions, there is an opportunity to express creativity and innovation.",
+      "In an ideal world, everyone would share similar values and morals.",
+      "A sign of a good leader is when they challenge you to see the world from a different perspective."
+    ];
+
+    const evenReverse = new Set([2,4,6,8,10,12,14,16]);
+
+    function reverseScore(v) {
+      // 7->1, 6->2, 5->3, 4->4, 3->5, 2->6, 1->7
+      const n = Number(v);
+      if (!Number.isFinite(n) || n < 1 || n > 7) return null;
+      return 8 - n;
+    }
+
+    function buildQuestions() {
+      const grid = document.getElementById("questionsGrid");
+      grid.innerHTML = "";
+
+      for (let i = 1; i <= questions.length; i++) {
+        const card = document.createElement("div");
+        card.className = "question-item";
+
+        const top = document.createElement("div");
+        top.className = "q-top";
+
+        const num = document.createElement("div");
+        num.className = "q-number";
+        num.textContent = `Question ${i}${evenReverse.has(i) ? " (reverse-scored)" : ""}`;
+
+        const txt = document.createElement("div");
+        txt.className = "q-text";
+        txt.textContent = questions[i - 1];
+
+        top.appendChild(num);
+        top.appendChild(txt);
+
+        const select = document.createElement("select");
+        select.id = `q${i}`;
+        select.setAttribute("aria-label", `Answer for question ${i}`);
+
+        const placeholder = document.createElement("option");
+        placeholder.value = "";
+        placeholder.textContent = "Select 1–7";
+        placeholder.disabled = true;
+        placeholder.selected = true;
+        select.appendChild(placeholder);
+
+        for (let v = 7; v >= 1; v--) {
+          const opt = document.createElement("option");
+          opt.value = String(v);
+          opt.textContent = String(v);
+          select.appendChild(opt);
+        }
+
+        card.appendChild(top);
+        card.appendChild(select);
+        grid.appendChild(card);
+
+        select.addEventListener("change", updateProgress);
+      }
+    }
+
+    function updateProgress() {
+      const answered = getAnswersOrNull() ? getAnswered() : 0;
+      const total = 16;
+      const percentage = (answered / total) * 100;
+      document.getElementById("progressFill").style.width = percentage + "%";
+      document.getElementById("progressText").textContent = `${answered} / ${total} questions answered`;
+    }
+
+    function getAnswered() {
+      let count = 0;
+      for (let i = 1; i <= 16; i++) {
+        const val = document.getElementById(`q${i}`).value;
+        if (val) count++;
+      }
+      return count;
+    }
+
+    function getAnswersOrNull() {
+      const ans = {};
+      for (let i = 1; i <= 16; i++) {
+        const val = document.getElementById(`q${i}`).value;
+        if (!val) return null;
+        ans[i] = Number(val);
+      }
+      return ans;
+    }
+
+    function correctedScores(answers) {
+      const corrected = {};
+      for (let i = 1; i <= 16; i++) {
+        corrected[i] = evenReverse.has(i) ? reverseScore(answers[i]) : answers[i];
+      }
+      return corrected;
+    }
+
+    function showBanner(msg) {
+      const b = document.getElementById("banner");
+      b.textContent = msg;
+      b.classList.add("show");
+    }
+
+    function hideBanner() {
+      const b = document.getElementById("banner");
+      b.textContent = "";
+      b.classList.remove("show");
+    }
+
+    function calculate() {
+      hideBanner();
+      const answers = getAnswersOrNull();
+      if (!answers) {
+        showBanner("Please answer all 16 questions (choose a value 1–7 for each).");
+        document.getElementById("results").classList.remove("show");
+        return;
+      }
+
+      const c = correctedScores(answers);
+
+      // Subscales per the PDF
+      const novelty = c[2] + c[9] + c[11] + c[13];
+      const complexity = c[4] + c[5] + c[6] + c[7] + c[8] + c[10] + c[14] + c[15] + c[16];
+      const insolubility = c[1] + c[3] + c[12];
+      const total = novelty + complexity + insolubility;
+
+      document.getElementById("noveltyScore").textContent = novelty;
+      document.getElementById("complexityScore").textContent = complexity;
+      document.getElementById("insolubilityScore").textContent = insolubility;
+      document.getElementById("totalScore").textContent = total;
+
+      let text = "";
+      if (total < 44) {
+        text = `Your total score is ${total}. This is below the typical 44–48 range, suggesting relatively high comfort with ambiguity and change compared to average.`;
+      } else if (total <= 48) {
+        text = `Your total score is ${total}. This is within the typical 44–48 range, suggesting an average level of tolerance for ambiguity and uncertainty.`;
+      } else {
+        text = `Your total score is ${total}. This is above the typical 44–48 range, suggesting higher intolerance for ambiguity and a stronger preference for clarity and predictability than average.`;
+      }
+
+      document.getElementById("interpretation").textContent = text;
+      document.getElementById("results").classList.add("show");
+      document.getElementById("results").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function resetAll() {
+      hideBanner();
+      for (let i = 1; i <= 16; i++) {
+        const s = document.getElementById(`q${i}`);
+        s.value = "";
+      }
+      document.getElementById("results").classList.remove("show");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function setTheme(theme) {
+      document.body.setAttribute("data-theme", theme);
+      localStorage.setItem("tfa_theme", theme);
+      document.getElementById("themeIcon").textContent = theme === "light" ? "☀️" : "🌙";
+    }
+
+    function toggleTheme() {
+      const cur = document.body.getAttribute("data-theme") || "dark";
+      setTheme(cur === "dark" ? "light" : "dark");
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      buildQuestions();
+
+      const saved = localStorage.getItem("tfa_theme");
+      setTheme(saved === "light" ? "light" : "dark");
+
+      document.getElementById("calcBtn").addEventListener("click", calculate);
+      document.getElementById("resetBtn").addEventListener("click", resetAll);
+      document.getElementById("themeToggle").addEventListener("click", toggleTheme);
+    });
+  </script>
+</body>
+</html>
