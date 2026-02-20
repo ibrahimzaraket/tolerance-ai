@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ideation Techniques (Divergence)</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-primary: #0a0a0b;
+      --bg-secondary: #111114;
+      --bg-card: rgba(255,255,255,0.05);
+      --text-primary: #ffffff;
+      --text-secondary: #a0a0a5;
+      --accent: #6366f1;
+      --accent-hover: #818cf8;
+      --border: rgba(255,255,255,0.1);
+      --glass-bg: rgba(255,255,255,0.1);
+      --shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+      --danger: #ef4444;
+      --ok: #22c55e;
+    }
+
+    [data-theme="light"] {
+      --bg-primary: #f8fafc;
+      --bg-secondary: #f1f5f9;
+      --bg-card: rgba(255,255,255,0.9);
+      --text-primary: #0f172a;
+      --text-secondary: #64748b;
+      --accent: #4f46e5;
+      --accent-hover: #3730a3;
+      --border: rgba(0,0,0,0.08);
+      --glass-bg: rgba(255,255,255,0.8);
+      --shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    header {
+      background: var(--bg-secondary);
+      backdrop-filter: blur(18px);
+      padding: 18px 0;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      user-select: none;
+      text-decoration: none;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      text-align: right;
+    }
+
+    .byline {
+      font-size: 13px;
+      opacity: 0.85;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .nav-link {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--accent);
+      text-decoration: none;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(99,102,241,0.25);
+      background: rgba(99,102,241,0.08);
+      transition: all 0.2s ease;
+    }
+
+    .nav-link:hover {
+      background: rgba(99,102,241,0.15);
+      border-color: rgba(99,102,241,0.5);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(99,102,241,0.15);
+    }
+
+    .theme-toggle {
+      background: var(--glass-bg);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 10px 14px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      color: var(--text-primary);
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .theme-toggle:hover {
+      transform: translateY(-1px);
+      border-color: rgba(99,102,241,0.45);
+      background: rgba(99,102,241,0.08);
+      box-shadow: 0 6px 16px rgba(99,102,241,0.15);
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 36px auto 60px;
+      padding: 0 20px;
+    }
+
+    .hero {
+      text-align: center;
+      margin: 8px 0 30px;
+    }
+
+    .hero h1 {
+      margin: 0 0 10px;
+      font-size: clamp(28px, 4vw, 44px);
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      margin: 0 auto;
+      max-width: 760px;
+      color: var(--text-secondary);
+      font-size: 16px;
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 999px;
+      background: rgba(99,102,241,0.14);
+      border: 1px solid rgba(99,102,241,0.25);
+      color: var(--text-primary);
+      font-weight: 800;
+      font-size: 12px;
+      vertical-align: baseline;
+    }
+
+    .project-link-banner {
+      text-align: center;
+      padding: 16px 20px;
+      background: linear-gradient(135deg, rgba(99,102,241,0.12), rgba(129,140,248,0.08));
+      border: 1px solid rgba(99,102,241,0.2);
+      border-radius: 14px;
+      margin-bottom: 24px;
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    .project-link-banner a {
+      color: var(--accent);
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .project-link-banner a:hover { text-decoration: underline; }
+
+    .project-link-banner .banner-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    /* ── Section cards ── */
+    .sections-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    .section-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 28px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(8px);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .section-card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 4px;
+      background: linear-gradient(180deg, var(--accent), transparent);
+    }
+
+    .section-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(99,102,241,0.3);
+      box-shadow: 0 16px 40px rgba(99,102,241,0.15);
+    }
+
+    .section-number {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin: 0 0 14px;
+      letter-spacing: -0.01em;
+    }
+
+    .section-body {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    .section-body strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    /* ── Methods table ── */
+    .methods-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      margin-top: 16px;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .methods-table thead th {
+      background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      padding: 16px 20px;
+      text-align: left;
+      letter-spacing: 0.02em;
+    }
+
+    .methods-table thead th:first-child {
+      width: 65%;
+    }
+
+    .methods-table tbody td {
+      padding: 18px 20px;
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.65;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    .methods-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    .methods-table tbody tr {
+      transition: background 0.2s ease;
+    }
+
+    .methods-table tbody tr:hover {
+      background: rgba(99,102,241,0.06);
+    }
+
+    [data-theme="light"] .methods-table tbody tr:hover {
+      background: rgba(99,102,241,0.04);
+    }
+
+    .methods-table tbody tr:nth-child(even) {
+      background: rgba(255,255,255,0.02);
+    }
+
+    [data-theme="light"] .methods-table tbody tr:nth-child(even) {
+      background: rgba(0,0,0,0.015);
+    }
+
+    .method-name {
+      font-weight: 700;
+      color: var(--text-primary);
+      font-size: 15px;
+      margin-bottom: 8px;
+    }
+
+    .method-step {
+      margin: 4px 0;
+    }
+
+    .method-step strong {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .goal-text {
+      color: var(--text-primary);
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* ── Method detail cards ── */
+    .method-cards {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .method-cards { grid-template-columns: 1fr; }
+      .header-right { gap: 10px; }
+      .theme-toggle { width: 100%; justify-content: center; }
+    }
+
+    .method-detail-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 22px;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    [data-theme="light"] .method-detail-card {
+      background: rgba(0,0,0,0.02);
+    }
+
+    .method-detail-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), transparent);
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    .method-detail-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(99,102,241,0.3);
+      box-shadow: 0 12px 24px rgba(99,102,241,0.15);
+    }
+
+    .method-detail-card:hover::before { opacity: 1; }
+
+    .method-detail-card .card-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .method-detail-card .card-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 10px;
+    }
+
+    .method-detail-card .card-body {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .method-detail-card .card-body strong {
+      color: var(--text-primary);
+    }
+
+    /* ── Seed / CTA card ── */
+    .seed-card {
+      background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+      border-radius: 18px;
+      padding: 32px;
+      color: #fff;
+      margin-top: 24px;
+      box-shadow: 0 16px 40px rgba(99,102,241,0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .seed-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.12), transparent);
+    }
+
+    .seed-card .section-number { color: rgba(255,255,255,0.7); }
+    .seed-card .section-title { color: #fff; font-size: 22px; }
+    .seed-card .section-body {
+      color: rgba(255,255,255,0.9);
+      font-size: 16px;
+      line-height: 1.7;
+      position: relative;
+    }
+
+    @media print {
+      header, .theme-toggle, .nav-link { display: none !important; }
+      body { background: #fff !important; color: #000 !important; }
+    }
+  </style>
+</head>
+
+<body data-theme="dark">
+  <header>
+    <div class="header-content">
+      <a class="logo" href="index.html">ToleranceAI</a>
+      <div class="header-right">
+        <a class="nav-link" href="problem.html">Back to Problem</a>
+        <a class="nav-link" href="index.html">Take the Test</a>
+        <span class="byline">Made By: Zhara, Cecilia, Ibrahim & Hugo</span>
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">
+          <span id="themeIcon">🌙</span>
+          <span style="font-weight:800;">Theme</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="project-link-banner">
+      <span class="banner-label">View this project online</span>
+      <a href="https://tolerance-ai.vercel.app/problem2.html">https://tolerance-ai.vercel.app/problem2.html</a>
+    </div>
+
+    <div class="hero">
+      <h1>Ideation Techniques (Divergence)</h1>
+      <p>
+        Exploring multiple creative methods to generate ideas and proposals in quantities,
+        produce new combinations, and build bridges between domains.
+      </p>
+    </div>
+
+    <div class="sections-grid">
+
+      <!-- Methods Overview Table -->
+      <div class="section-card">
+        <div class="section-number">Section 01 — Methods Overview</div>
+        <div class="section-title">Divergence Techniques at a Glance</div>
+
+        <table class="methods-table">
+          <thead>
+            <tr>
+              <th>Methods</th>
+              <th>Goals</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="method-name">Brainstorming</div>
+                <div class="method-step"><strong>Step 1:</strong> Formulate the problem by starting with "how to...". Write down and number all the ideas.</div>
+                <div class="method-step"><strong>Step 2:</strong> Relaunch with the questions WWHWWW.</div>
+              </td>
+              <td rowspan="2">
+                <div class="goal-text">Produce ideas and proposals in quantities</div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="method-name">Disaster Scenario (Reverse Brainstorming)</div>
+                <div class="method-step"><strong>Step 1:</strong> Imagine possible disasters preventing the success of the idea.</div>
+                <div class="method-step"><strong>Step 2:</strong> Find solution to these disasters.</div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="method-name">Morphological Matrix</div>
+                <div class="method-step"><strong>Step 1:</strong> Draw up a table in which the columns show the major characteristics of the idea and the rows show alternative options, generating possibilities.</div>
+                <div class="method-step"><strong>Step 2:</strong> Combine the different elements at random to find new hypotheses.</div>
+              </td>
+              <td>
+                <div class="goal-text">Produce new combinations in quantities</div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="method-name">Analogy</div>
+                <div class="method-step"><strong>Step 1:</strong> Choose an analog domain.</div>
+                <div class="method-step"><strong>Step 2:</strong> Look for similarities that can lead to hypotheses.</div>
+              </td>
+              <td>
+                <div class="goal-text">Building bridges between the idea and the analog domain</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Detailed Method Cards -->
+      <div class="section-card">
+        <div class="section-number">Section 02 — Applied to Our Problem</div>
+        <div class="section-title">How We Used Each Technique</div>
+
+        <div class="method-cards">
+
+          <div class="method-detail-card">
+            <div class="card-label">Brainstorming</div>
+            <div class="card-title">"How to make commute time productive?"</div>
+            <div class="card-body">
+              We started with <strong>"How to turn dead commute time into a valuable experience?"</strong> and generated 20+ raw ideas — from AI-curated micro-lessons to commuter social challenges. Then we relaunched with WWHWWW to stress-test each idea against real commuter constraints.
+            </div>
+          </div>
+
+          <div class="method-detail-card">
+            <div class="card-label">Disaster Scenario</div>
+            <div class="card-title">What could kill this idea?</div>
+            <div class="card-body">
+              We imagined the worst: <strong>users ignore the app after Day 3</strong>, connectivity drops mid-lesson, content feels like homework, employers see no ROI. For each disaster, we designed a counter — offline mode, gamification loops, adaptive difficulty, and B2B dashboards.
+            </div>
+          </div>
+
+          <div class="method-detail-card">
+            <div class="card-label">Morphological Matrix</div>
+            <div class="card-title">Combining dimensions</div>
+            <div class="card-body">
+              Columns: <strong>content type</strong> (quiz, audio, flashcard, reflection), <strong>duration</strong> (5/10/20 min), <strong>input mode</strong> (tap, swipe, voice, listen-only), <strong>reward</strong> (streak, badge, leaderboard). Random combinations revealed unexpected formats like <strong>"5-min voice-guided reflection with streak reward"</strong>.
+            </div>
+          </div>
+
+          <div class="method-detail-card">
+            <div class="card-label">Analogy</div>
+            <div class="card-title">Bridges from other domains</div>
+            <div class="card-body">
+              We drew analogies from <strong>Duolingo</strong> (habit loops), <strong>Spotify Discover Weekly</strong> (personalized curation), <strong>airline in-flight entertainment</strong> (captive audience, time-boxed content), and <strong>gym workout apps</strong> (adaptive plans that fit available time).
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Summary Card -->
+    <div class="seed-card">
+      <div class="section-number">Key Takeaway</div>
+      <div class="section-title">Divergence Fuels Innovation</div>
+      <div class="section-body">
+        By applying these four ideation techniques, we generated a <strong>wide pool of creative possibilities</strong> —
+        from content formats to engagement mechanics — ensuring we don't converge too early on a single solution.
+        The next step is <strong>convergence</strong>: filtering, prioritizing, and selecting the strongest ideas to prototype.
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <div style="text-align:center; margin-top:32px; display:flex; justify-content:center; gap:16px; flex-wrap:wrap;">
+      <a href="problem.html" class="nav-link" style="font-size:16px; padding:14px 32px; display:inline-flex; align-items:center; gap:8px;">
+        <span style="font-size:18px;">←</span> Back: The Problem
+      </a>
+    </div>
+
+  </main>
+
+  <script>
+    function setTheme(theme) {
+      document.body.setAttribute("data-theme", theme);
+      localStorage.setItem("tfa_theme", theme);
+      document.getElementById("themeIcon").textContent = theme === "light" ? "☀️" : "🌙";
+    }
+
+    function toggleTheme() {
+      const cur = document.body.getAttribute("data-theme") || "dark";
+      setTheme(cur === "dark" ? "light" : "dark");
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const saved = localStorage.getItem("tfa_theme");
+      setTheme(saved === "light" ? "light" : "dark");
+      document.getElementById("themeToggle").addEventListener("click", toggleTheme);
+    });
+  </script>
+</body>
+</html>
