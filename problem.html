@@ -548,11 +548,120 @@
       margin-bottom: 4px;
     }
 
-    /* ── Print / PDF overrides ── */
+    /* ── PDF-mode overrides (applied via .pdf-mode class) ── */
+    body.pdf-mode {
+      background: #ffffff !important;
+      color: #1a1a2e !important;
+    }
+    body.pdf-mode header { display: none !important; }
+    body.pdf-mode main {
+      margin-top: 0 !important;
+      max-width: 100% !important;
+    }
+    body.pdf-mode .hero h1 {
+      background: none !important;
+      -webkit-background-clip: unset !important;
+      -webkit-text-fill-color: #1a1a2e !important;
+      background-clip: unset !important;
+      color: #1a1a2e !important;
+    }
+    body.pdf-mode .hero p { color: #444 !important; }
+    body.pdf-mode .pill {
+      background: #eef0ff !important;
+      border-color: #6366f1 !important;
+      color: #4f46e5 !important;
+    }
+    body.pdf-mode .stat-banner {
+      background: linear-gradient(135deg, #6366f1, #818cf8) !important;
+      box-shadow: none !important;
+      border-radius: 12px !important;
+    }
+    body.pdf-mode .section-card {
+      background: #f8f9fc !important;
+      border: 1.5px solid #d0d5e3 !important;
+      border-radius: 12px !important;
+      box-shadow: none !important;
+      backdrop-filter: none !important;
+      transform: none !important;
+    }
+    body.pdf-mode .section-card::before {
+      background: #6366f1 !important;
+    }
+    body.pdf-mode .section-number { color: #6366f1 !important; }
+    body.pdf-mode .section-title { color: #1a1a2e !important; }
+    body.pdf-mode .section-body { color: #444 !important; }
+    body.pdf-mode .section-body strong { color: #1a1a2e !important; }
+    body.pdf-mode .wwhwww-item,
+    body.pdf-mode .q6-item {
+      background: #ffffff !important;
+      border: 1.5px solid #d0d5e3 !important;
+      border-radius: 10px !important;
+      transform: none !important;
+      box-shadow: none !important;
+    }
+    body.pdf-mode .wwhwww-label,
+    body.pdf-mode .q6-number { color: #6366f1 !important; }
+    body.pdf-mode .wwhwww-text,
+    body.pdf-mode .q6-answer { color: #444 !important; }
+    body.pdf-mode .wwhwww-text strong,
+    body.pdf-mode .q6-answer strong,
+    body.pdf-mode .q6-question { color: #1a1a2e !important; }
+    body.pdf-mode .pp-column {
+      border-radius: 10px !important;
+      border-width: 1.5px !important;
+    }
+    body.pdf-mode .pp-column.pillory {
+      background: #fef2f2 !important;
+      border-color: #f87171 !important;
+    }
+    body.pdf-mode .pp-column.pinnacle {
+      background: #f0fdf4 !important;
+      border-color: #4ade80 !important;
+    }
+    body.pdf-mode .pp-title.pillory-title { color: #dc2626 !important; }
+    body.pdf-mode .pp-title.pinnacle-title { color: #16a34a !important; }
+    body.pdf-mode .pp-list li {
+      color: #444 !important;
+      border-color: #e5e7eb !important;
+    }
+    body.pdf-mode .seed-card {
+      background: linear-gradient(135deg, #6366f1, #818cf8) !important;
+      box-shadow: none !important;
+      border-radius: 12px !important;
+    }
+    body.pdf-mode .mindmap-container {
+      background: #f8f9fc !important;
+      border: 1.5px solid #d0d5e3 !important;
+      border-radius: 12px !important;
+      box-shadow: none !important;
+      backdrop-filter: none !important;
+    }
+    body.pdf-mode .mindmap-svg text {
+      fill: #1a1a2e !important;
+    }
+    body.pdf-mode .mm-pulse { display: none !important; }
+    body.pdf-mode .project-link-banner {
+      background: #eef0ff !important;
+      border: 1.5px solid #c7d2fe !important;
+    }
+    body.pdf-mode .project-link-banner .banner-label { color: #6366f1 !important; }
+    body.pdf-mode .project-link-banner a { color: #4f46e5 !important; }
+    body.pdf-mode .mindmap-header .section-number { color: #6366f1 !important; }
+    body.pdf-mode .mindmap-header .section-title { color: #1a1a2e !important; }
+    body.pdf-mode .q6-item::before { display: none !important; }
+    body.pdf-mode .wwhwww-grid,
+    body.pdf-mode .questions-grid-6,
+    body.pdf-mode .pinnacle-grid {
+      display: grid !important;
+      grid-template-columns: 1fr 1fr !important;
+    }
+    body.pdf-mode .wwhwww-grid {
+      grid-template-columns: 1fr 1fr 1fr !important;
+    }
+
     @media print {
       header, .theme-toggle, .download-btn, .nav-link { display: none !important; }
       body { background: #fff !important; color: #000 !important; }
-      .project-link-banner { break-inside: avoid; }
     }
 
     /* ── Mindmap ── */
@@ -1030,40 +1139,33 @@
         btn.textContent = "Generating...";
         btn.disabled = true;
 
-        // Force light theme for PDF readability
-        const prevTheme = document.body.getAttribute("data-theme");
-        document.body.setAttribute("data-theme", "light");
+        // Activate PDF-mode styles
+        document.body.classList.add("pdf-mode");
 
-        // Add a temporary PDF header directly into the page
+        // Inject a branded header at top of main
+        const mainEl = document.querySelector("main");
         const pdfHeader = document.createElement("div");
         pdfHeader.id = "pdf-header-tmp";
-        pdfHeader.style.cssText = "text-align:center;padding:18px 20px 14px;border-bottom:2px solid #4f46e5;margin-bottom:16px;";
-        pdfHeader.innerHTML = '<div style="font-size:28px;font-weight:800;color:#4f46e5;letter-spacing:-0.02em;margin-bottom:4px;">ToleranceAI</div><div style="font-size:12px;color:#64748b;font-weight:500;">Made By: Zhara, Cecilia, Ibrahim &amp; Hugo</div>';
-        const mainEl = document.querySelector("main");
+        pdfHeader.style.cssText = "text-align:center;padding:20px 20px 16px;border-bottom:3px solid #6366f1;margin-bottom:20px;";
+        pdfHeader.innerHTML = '<div style="font-size:30px;font-weight:800;color:#6366f1;letter-spacing:-0.02em;margin-bottom:6px;">ToleranceAI</div><div style="font-size:13px;color:#555;font-weight:500;">Made By: Zhara, Cecilia, Ibrahim &amp; Hugo</div>';
         mainEl.insertBefore(pdfHeader, mainEl.firstChild);
 
-        // Hide things that shouldn't be in the PDF
-        const header = document.querySelector("header");
-        header.style.display = "none";
-
-        // Stop animations that confuse html2canvas
-        const pulseEl = document.querySelector(".mm-pulse");
-        if (pulseEl) pulseEl.style.animation = "none";
-
-        // Small delay so the DOM settles
-        await new Promise(r => setTimeout(r, 100));
+        // Scroll to top so html2canvas captures from the start
+        window.scrollTo(0, 0);
+        await new Promise(r => setTimeout(r, 200));
 
         try {
           const opt = {
-            margin:      [8, 8, 8, 8],
+            margin:      [8, 6, 8, 6],
             filename:    "Commuter-Dead-Time-Problem-Analysis.pdf",
             image:       { type: "jpeg", quality: 0.98 },
             html2canvas: {
               scale: 2,
               useCORS: true,
-              backgroundColor: "#f8fafc",
-              scrollY: -window.scrollY,
-              windowWidth: mainEl.scrollWidth
+              backgroundColor: "#ffffff",
+              scrollY: 0,
+              scrollX: 0,
+              windowWidth: 1200
             },
             jsPDF:       { unit: "mm", format: "a4", orientation: "portrait" },
             pagebreak:   { mode: ["css", "legacy"], avoid: [".section-card", ".stat-banner", ".seed-card", ".wwhwww-item", ".q6-item", ".pp-column", ".mindmap-container", ".project-link-banner"] }
@@ -1071,11 +1173,8 @@
 
           await html2pdf().set(opt).from(mainEl).save();
         } finally {
-          // Clean up — restore everything
           mainEl.removeChild(pdfHeader);
-          header.style.display = "";
-          if (pulseEl) pulseEl.style.animation = "";
-          document.body.setAttribute("data-theme", prevTheme);
+          document.body.classList.remove("pdf-mode");
           btn.innerHTML = '<svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:#fff"><path d="M5 20h14v-2H5v2zm7-18v12.17l3.59-3.58L17 12l-5 5-5-5 1.41-1.41L12 14.17V2z"/></svg> Download PDF';
           btn.disabled = false;
         }
