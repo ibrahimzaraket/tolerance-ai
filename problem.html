@@ -497,6 +497,102 @@
       border-left-color: var(--accent);
       background: rgba(255,255,255,0.06);
     }
+
+    /* ── Mindmap ── */
+    .mindmap-section {
+      margin: 32px 0;
+    }
+
+    .mindmap-header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .mindmap-header .section-number {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .mindmap-header .section-title {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin: 0;
+    }
+
+    .mindmap-container {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(8px);
+      overflow-x: auto;
+      position: relative;
+    }
+
+    .mindmap-svg {
+      display: block;
+      margin: 0 auto;
+      width: 100%;
+      max-width: 960px;
+      height: auto;
+    }
+
+    .mindmap-svg text {
+      font-family: 'Inter', sans-serif;
+      fill: var(--text-primary);
+      pointer-events: none;
+    }
+
+    .mindmap-svg .mm-line {
+      stroke-width: 2.5;
+      fill: none;
+      stroke-linecap: round;
+    }
+
+    .mindmap-svg .mm-center-circle {
+      filter: drop-shadow(0 4px 20px rgba(99,102,241,0.45));
+    }
+
+    .mindmap-svg .mm-node {
+      cursor: pointer;
+      transition: transform 0.25s ease;
+    }
+
+    .mindmap-svg .mm-node:hover {
+      filter: brightness(1.15);
+    }
+
+    .mindmap-svg .mm-node:hover rect,
+    .mindmap-svg .mm-node:hover ellipse {
+      stroke-width: 2.5;
+    }
+
+    .mindmap-svg .mm-leaf rect {
+      rx: 10;
+      ry: 10;
+    }
+
+    /* pulse animation on the center */
+    @keyframes mmPulse {
+      0%, 100% { r: 62; opacity: 0.18; }
+      50%      { r: 72; opacity: 0; }
+    }
+    .mm-pulse {
+      animation: mmPulse 3s ease-in-out infinite;
+    }
+
+    /* fade-in for the whole map */
+    @keyframes mmFadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .mindmap-container { animation: mmFadeUp 0.7s ease-out both; }
   </style>
 </head>
 
@@ -528,6 +624,188 @@
     <div class="stat-banner">
       <div class="big-number">300–500 hrs/year</div>
       <div class="stat-desc">of untapped human potential per commuter — lost to mindless scrolling and dead stares</div>
+    </div>
+
+    <!-- ── Interactive Mind Map ── -->
+    <div class="mindmap-section">
+      <div class="mindmap-header">
+        <div class="section-number">Problem Overview</div>
+        <div class="section-title">Mind Map</div>
+      </div>
+      <div class="mindmap-container">
+        <svg class="mindmap-svg" viewBox="0 0 960 700" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="gCenter" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#6366f1"/>
+              <stop offset="100%" stop-color="#818cf8"/>
+            </linearGradient>
+            <linearGradient id="gWho" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#f97316"/>
+              <stop offset="100%" stop-color="#fb923c"/>
+            </linearGradient>
+            <linearGradient id="gWhat" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#06b6d4"/>
+              <stop offset="100%" stop-color="#22d3ee"/>
+            </linearGradient>
+            <linearGradient id="gWhy" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#a855f7"/>
+              <stop offset="100%" stop-color="#c084fc"/>
+            </linearGradient>
+            <linearGradient id="gPain" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#ef4444"/>
+              <stop offset="100%" stop-color="#f87171"/>
+            </linearGradient>
+            <linearGradient id="gOpp" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#22c55e"/>
+              <stop offset="100%" stop-color="#4ade80"/>
+            </linearGradient>
+            <linearGradient id="gSol" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#eab308"/>
+              <stop offset="100%" stop-color="#facc15"/>
+            </linearGradient>
+            <filter id="glow">
+              <feGaussianBlur stdDeviation="3" result="blur"/>
+              <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          </defs>
+
+          <!-- ── Branch lines (curved) ── -->
+          <!-- Who -->
+          <path class="mm-line" stroke="url(#gWho)" d="M480,350 C380,350 300,180 195,155"/>
+          <path class="mm-line" stroke="url(#gWho)" d="M195,155 C145,145 110,95 95,88" stroke-width="1.8" opacity="0.7"/>
+          <path class="mm-line" stroke="url(#gWho)" d="M195,155 C130,170 100,180 80,188" stroke-width="1.8" opacity="0.7"/>
+          <!-- What -->
+          <path class="mm-line" stroke="url(#gWhat)" d="M480,350 C560,250 680,170 765,135"/>
+          <path class="mm-line" stroke="url(#gWhat)" d="M765,135 C810,110 850,80 870,72" stroke-width="1.8" opacity="0.7"/>
+          <path class="mm-line" stroke="url(#gWhat)" d="M765,135 C830,145 870,155 885,162" stroke-width="1.8" opacity="0.7"/>
+          <!-- Why -->
+          <path class="mm-line" stroke="url(#gWhy)" d="M480,350 C380,400 260,420 175,440"/>
+          <path class="mm-line" stroke="url(#gWhy)" d="M175,440 C120,450 80,430 55,420" stroke-width="1.8" opacity="0.7"/>
+          <path class="mm-line" stroke="url(#gWhy)" d="M175,440 C130,465 90,480 60,492" stroke-width="1.8" opacity="0.7"/>
+          <!-- Pain Points -->
+          <path class="mm-line" stroke="url(#gPain)" d="M480,350 C520,430 580,510 620,540"/>
+          <path class="mm-line" stroke="url(#gPain)" d="M620,540 C660,555 710,545 740,540" stroke-width="1.8" opacity="0.7"/>
+          <path class="mm-line" stroke="url(#gPain)" d="M620,540 C650,570 680,590 715,598" stroke-width="1.8" opacity="0.7"/>
+          <path class="mm-line" stroke="url(#gPain)" d="M620,540 C630,575 640,615 650,640" stroke-width="1.8" opacity="0.7"/>
+          <!-- Opportunities -->
+          <path class="mm-line" stroke="url(#gOpp)" d="M480,350 C420,430 340,530 310,570"/>
+          <path class="mm-line" stroke="url(#gOpp)" d="M310,570 C280,590 240,590 205,588" stroke-width="1.8" opacity="0.7"/>
+          <path class="mm-line" stroke="url(#gOpp)" d="M310,570 C290,600 265,625 245,640" stroke-width="1.8" opacity="0.7"/>
+          <path class="mm-line" stroke="url(#gOpp)" d="M310,570 C320,610 330,640 335,665" stroke-width="1.8" opacity="0.7"/>
+          <!-- Solution -->
+          <path class="mm-line" stroke="url(#gSol)" d="M480,350 C580,350 720,360 810,370"/>
+          <path class="mm-line" stroke="url(#gSol)" d="M810,370 C860,360 890,340 905,328" stroke-width="1.8" opacity="0.7"/>
+          <path class="mm-line" stroke="url(#gSol)" d="M810,370 C860,385 895,395 910,405" stroke-width="1.8" opacity="0.7"/>
+          <path class="mm-line" stroke="url(#gSol)" d="M810,370 C855,398 880,435 895,460" stroke-width="1.8" opacity="0.7"/>
+
+          <!-- ── Center node ── -->
+          <circle class="mm-pulse" cx="480" cy="350" fill="url(#gCenter)" opacity="0.18"/>
+          <g class="mm-center-circle">
+            <circle cx="480" cy="350" r="58" fill="url(#gCenter)"/>
+            <text x="480" y="342" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">Commuter</text>
+            <text x="480" y="362" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">Dead Time</text>
+          </g>
+
+          <!-- ── WHO branch node ── -->
+          <g class="mm-node">
+            <rect x="130" y="132" width="130" height="44" rx="12" fill="url(#gWho)" opacity="0.92"/>
+            <text x="195" y="160" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">Who?</text>
+          </g>
+          <!-- leaves -->
+          <g class="mm-node mm-leaf">
+            <rect x="16" y="68" width="156" height="36" rx="10" fill="url(#gWho)" opacity="0.22" stroke="#f97316" stroke-width="1"/>
+            <text x="94" y="92" text-anchor="middle" font-size="11" font-weight="500" fill="var(--text-primary)">Students & Employees</text>
+          </g>
+          <g class="mm-node mm-leaf">
+            <rect x="8" y="168" width="146" height="36" rx="10" fill="url(#gWho)" opacity="0.22" stroke="#f97316" stroke-width="1"/>
+            <text x="81" y="192" text-anchor="middle" font-size="11" font-weight="500" fill="var(--text-primary)">Employers & Educators</text>
+          </g>
+
+          <!-- ── WHAT branch node ── -->
+          <g class="mm-node">
+            <rect x="700" y="112" width="130" height="44" rx="12" fill="url(#gWhat)" opacity="0.92"/>
+            <text x="765" y="140" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">What?</text>
+          </g>
+          <g class="mm-node mm-leaf">
+            <rect x="800" y="48" width="148" height="36" rx="10" fill="url(#gWhat)" opacity="0.22" stroke="#06b6d4" stroke-width="1"/>
+            <text x="874" y="72" text-anchor="middle" font-size="11" font-weight="500" fill="var(--text-primary)">Wasted Transition Time</text>
+          </g>
+          <g class="mm-node mm-leaf">
+            <rect x="810" y="144" width="152" height="36" rx="10" fill="url(#gWhat)" opacity="0.22" stroke="#06b6d4" stroke-width="1"/>
+            <text x="886" y="168" text-anchor="middle" font-size="11" font-weight="500" fill="var(--text-primary)">Passive Social Scrolling</text>
+          </g>
+
+          <!-- ── WHY branch node ── -->
+          <g class="mm-node">
+            <rect x="112" y="418" width="130" height="44" rx="12" fill="url(#gWhy)" opacity="0.92"/>
+            <text x="177" y="446" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">Why?</text>
+          </g>
+          <g class="mm-node mm-leaf">
+            <rect x="2" y="400" width="112" height="36" rx="10" fill="url(#gWhy)" opacity="0.22" stroke="#a855f7" stroke-width="1"/>
+            <text x="58" y="424" text-anchor="middle" font-size="11" font-weight="500" fill="var(--text-primary)">No Context Fit</text>
+          </g>
+          <g class="mm-node mm-leaf">
+            <rect x="2" y="472" width="122" height="36" rx="10" fill="url(#gWhy)" opacity="0.22" stroke="#a855f7" stroke-width="1"/>
+            <text x="63" y="496" text-anchor="middle" font-size="11" font-weight="500" fill="var(--text-primary)">Generic Solutions</text>
+          </g>
+
+          <!-- ── PAIN POINTS branch ── -->
+          <g class="mm-node">
+            <rect x="555" y="518" width="130" height="44" rx="12" fill="url(#gPain)" opacity="0.92"/>
+            <text x="620" y="546" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">Pain Points</text>
+          </g>
+          <g class="mm-node mm-leaf">
+            <rect x="674" y="520" width="132" height="36" rx="10" fill="url(#gPain)" opacity="0.22" stroke="#ef4444" stroke-width="1"/>
+            <text x="740" y="544" text-anchor="middle" font-size="11" font-weight="500" fill="var(--text-primary)">Noise & Crowds</text>
+          </g>
+          <g class="mm-node mm-leaf">
+            <rect x="654" y="578" width="126" height="36" rx="10" fill="url(#gPain)" opacity="0.22" stroke="#ef4444" stroke-width="1"/>
+            <text x="717" y="602" text-anchor="middle" font-size="11" font-weight="500" fill="var(--text-primary)">No Connectivity</text>
+          </g>
+          <g class="mm-node mm-leaf">
+            <rect x="584" y="624" width="132" height="36" rx="10" fill="url(#gPain)" opacity="0.22" stroke="#ef4444" stroke-width="1"/>
+            <text x="650" y="648" text-anchor="middle" font-size="11" font-weight="500" fill="var(--text-primary)">Mental Fatigue</text>
+          </g>
+
+          <!-- ── OPPORTUNITIES branch ── -->
+          <g class="mm-node">
+            <rect x="245" y="548" width="130" height="44" rx="12" fill="url(#gOpp)" opacity="0.92"/>
+            <text x="310" y="576" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">Opportunities</text>
+          </g>
+          <g class="mm-node mm-leaf">
+            <rect x="120" y="570" width="148" height="36" rx="10" fill="url(#gOpp)" opacity="0.22" stroke="#22c55e" stroke-width="1"/>
+            <text x="194" y="594" text-anchor="middle" font-size="11" font-weight="500" fill="var(--text-primary)">Built-in Daily Habit</text>
+          </g>
+          <g class="mm-node mm-leaf">
+            <rect x="160" y="622" width="148" height="36" rx="10" fill="url(#gOpp)" opacity="0.22" stroke="#22c55e" stroke-width="1"/>
+            <text x="234" y="646" text-anchor="middle" font-size="11" font-weight="500" fill="var(--text-primary)">Captive Audience</text>
+          </g>
+          <g class="mm-node mm-leaf">
+            <rect x="260" y="650" width="148" height="36" rx="10" fill="url(#gOpp)" opacity="0.22" stroke="#22c55e" stroke-width="1"/>
+            <text x="334" y="674" text-anchor="middle" font-size="11" font-weight="500" fill="var(--text-primary)">B2B Upskilling Revenue</text>
+          </g>
+
+          <!-- ── SOLUTION branch ── -->
+          <g class="mm-node">
+            <rect x="745" y="348" width="130" height="44" rx="12" fill="url(#gSol)" opacity="0.92"/>
+            <text x="810" y="376" text-anchor="middle" fill="#fff" font-size="14" font-weight="700">Solution</text>
+          </g>
+          <g class="mm-node mm-leaf">
+            <rect x="836" y="304" width="118" height="40" rx="10" fill="url(#gSol)" opacity="0.22" stroke="#eab308" stroke-width="1"/>
+            <text x="895" y="322" text-anchor="middle" font-size="10.5" font-weight="500" fill="var(--text-primary)">Adaptive Micro-</text>
+            <text x="895" y="336" text-anchor="middle" font-size="10.5" font-weight="500" fill="var(--text-primary)">Experiences</text>
+          </g>
+          <g class="mm-node mm-leaf">
+            <rect x="844" y="384" width="132" height="36" rx="10" fill="url(#gSol)" opacity="0.22" stroke="#eab308" stroke-width="1"/>
+            <text x="910" y="408" text-anchor="middle" font-size="11" font-weight="500" fill="var(--text-primary)">Offline-Ready</text>
+          </g>
+          <g class="mm-node mm-leaf">
+            <rect x="824" y="440" width="142" height="36" rx="10" fill="url(#gSol)" opacity="0.22" stroke="#eab308" stroke-width="1"/>
+            <text x="895" y="464" text-anchor="middle" font-size="11" font-weight="500" fill="var(--text-primary)">One-Handed Design</text>
+          </g>
+
+        </svg>
+      </div>
     </div>
 
     <div class="sections-grid">
