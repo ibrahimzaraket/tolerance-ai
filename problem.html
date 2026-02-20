@@ -482,20 +482,77 @@
       position: relative;
     }
 
-    .note {
-      margin-top: 24px;
-      font-size: 13px;
-      color: var(--text-secondary);
-      padding: 14px 16px;
-      background: var(--glass-bg);
-      border-radius: 14px;
-      border-left: 4px solid rgba(99,102,241,0.4);
+    /* ── Download button ── */
+    .download-btn {
+      font-size: 14px;
+      font-weight: 600;
+      color: #fff;
+      text-decoration: none;
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+      cursor: pointer;
       transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'Inter', sans-serif;
     }
 
-    .note:hover {
-      border-left-color: var(--accent);
-      background: rgba(255,255,255,0.06);
+    .download-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(99,102,241,0.35);
+      filter: brightness(1.1);
+    }
+
+    .download-btn:active {
+      transform: translateY(0);
+    }
+
+    .download-btn svg {
+      width: 16px;
+      height: 16px;
+      fill: #fff;
+    }
+
+    /* ── Project link banner (visible in PDF) ── */
+    .project-link-banner {
+      text-align: center;
+      padding: 16px 20px;
+      background: linear-gradient(135deg, rgba(99,102,241,0.12), rgba(129,140,248,0.08));
+      border: 1px solid rgba(99,102,241,0.2);
+      border-radius: 14px;
+      margin-bottom: 24px;
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    .project-link-banner a {
+      color: var(--accent);
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .project-link-banner a:hover {
+      text-decoration: underline;
+    }
+
+    .project-link-banner .banner-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    /* ── Print / PDF overrides ── */
+    @media print {
+      header, .theme-toggle, .download-btn, .nav-link { display: none !important; }
+      body { background: #fff !important; color: #000 !important; }
+      .project-link-banner { break-inside: avoid; }
     }
 
     /* ── Mindmap ── */
@@ -602,6 +659,10 @@
       <a class="logo" href="index.html">ToleranceAI</a>
       <div class="header-right">
         <a class="nav-link" href="index.html">Take the Test</a>
+        <button class="download-btn" id="downloadPdf" type="button">
+          <svg viewBox="0 0 24 24"><path d="M5 20h14v-2H5v2zm7-18v12.17l3.59-3.58L17 12l-5 5-5-5 1.41-1.41L12 14.17V2z"/></svg>
+          Download PDF
+        </button>
         <span class="byline">Made By: Zhara, Cecilia, Ibrahim & Hugo</span>
         <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">
           <span id="themeIcon">🌙</span>
@@ -612,6 +673,11 @@
   </header>
 
   <main>
+    <div class="project-link-banner">
+      <span class="banner-label">View this project online</span>
+      <a href="https://tolerance-ai.vercel.app/problem.html">https://tolerance-ai.vercel.app/problem.html</a>
+    </div>
+
     <div class="hero">
       <h1>The Problem: Commuter Dead Time</h1>
       <p>
@@ -939,11 +1005,9 @@
       </div>
     </div>
 
-    <div class="note">
-      This analysis is part of the <a href="index.html" style="color: var(--accent); text-decoration: underline;">Tolerance for Ambiguity</a> project by Ibrahim Zaraket.
-    </div>
   </main>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.2/html2pdf.bundle.min.js"></script>
   <script>
     function setTheme(theme) {
       document.body.setAttribute("data-theme", theme);
@@ -960,6 +1024,32 @@
       const saved = localStorage.getItem("tfa_theme");
       setTheme(saved === "light" ? "light" : "dark");
       document.getElementById("themeToggle").addEventListener("click", toggleTheme);
+
+      document.getElementById("downloadPdf").addEventListener("click", () => {
+        const btn = document.getElementById("downloadPdf");
+        btn.textContent = "Generating...";
+        btn.disabled = true;
+
+        // Force light theme for PDF readability
+        const prevTheme = document.body.getAttribute("data-theme");
+        document.body.setAttribute("data-theme", "light");
+
+        const element = document.querySelector("main");
+        const opt = {
+          margin:      [10, 10, 10, 10],
+          filename:    "Commuter-Dead-Time-Problem-Analysis.pdf",
+          image:       { type: "jpeg", quality: 0.98 },
+          html2canvas: { scale: 2, useCORS: true, backgroundColor: "#f8fafc" },
+          jsPDF:       { unit: "mm", format: "a4", orientation: "portrait" },
+          pagebreak:   { mode: ["avoid-all", "css", "legacy"] }
+        };
+
+        html2pdf().set(opt).from(element).save().then(() => {
+          document.body.setAttribute("data-theme", prevTheme);
+          btn.innerHTML = '<svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:#fff"><path d="M5 20h14v-2H5v2zm7-18v12.17l3.59-3.58L17 12l-5 5-5-5 1.41-1.41L12 14.17V2z"/></svg> Download PDF';
+          btn.disabled = false;
+        });
+      });
     });
   </script>
 </body>
