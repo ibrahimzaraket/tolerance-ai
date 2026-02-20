@@ -449,6 +449,179 @@
       position: relative;
     }
 
+    /* ── Brainstorming Section ── */
+    .bs-prompt-banner {
+      background: linear-gradient(135deg, rgba(249,115,22,0.12), rgba(251,146,60,0.08));
+      border: 1px solid rgba(249,115,22,0.25);
+      border-radius: 14px;
+      padding: 20px 24px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .bs-prompt-banner .bs-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #f97316;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .bs-prompt-banner .bs-question {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.3;
+    }
+
+    .ideas-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-top: 16px;
+      counter-reset: idea;
+    }
+
+    @media (max-width: 768px) {
+      .ideas-grid { grid-template-columns: 1fr; }
+    }
+
+    .idea-item {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px 18px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    [data-theme="light"] .idea-item {
+      background: rgba(0,0,0,0.02);
+    }
+
+    .idea-item:hover {
+      transform: translateY(-2px);
+      border-color: rgba(249,115,22,0.35);
+      box-shadow: 0 10px 20px rgba(249,115,22,0.1);
+    }
+
+    .idea-num {
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #f97316, #fb923c);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .idea-content {
+      flex: 1;
+    }
+
+    .idea-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .idea-desc {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.55;
+    }
+
+    .idea-desc strong {
+      color: var(--text-primary);
+    }
+
+    /* WWHWWW relaunch section */
+    .relaunch-banner {
+      background: linear-gradient(135deg, rgba(99,102,241,0.12), rgba(129,140,248,0.08));
+      border: 1px solid rgba(99,102,241,0.25);
+      border-radius: 14px;
+      padding: 18px 24px;
+      margin-top: 24px;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+
+    .relaunch-banner .bs-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .relaunch-banner .bs-question {
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .wwhwww-relaunch-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    @media (max-width: 900px) {
+      .wwhwww-relaunch-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 560px) {
+      .wwhwww-relaunch-grid { grid-template-columns: 1fr; }
+    }
+
+    .ww-item {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    [data-theme="light"] .ww-item {
+      background: rgba(0,0,0,0.02);
+    }
+
+    .ww-item:hover {
+      transform: translateY(-3px);
+      border-color: rgba(99,102,241,0.3);
+      box-shadow: 0 12px 24px rgba(99,102,241,0.15);
+    }
+
+    .ww-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 6px;
+    }
+
+    .ww-text {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.55;
+    }
+
+    .ww-text strong {
+      color: var(--text-primary);
+    }
+
     @media print {
       header, .theme-toggle, .nav-link { display: none !important; }
       body { background: #fff !important; color: #000 !important; }
@@ -579,6 +752,165 @@
             <div class="card-body">
               We drew analogies from <strong>Duolingo</strong> (habit loops), <strong>Spotify Discover Weekly</strong> (personalized curation), <strong>airline in-flight entertainment</strong> (captive audience, time-boxed content), and <strong>gym workout apps</strong> (adaptive plans that fit available time).
             </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Brainstorming Deep Dive -->
+      <div class="section-card">
+        <div class="section-number">Section 03 — Brainstorming Deep Dive</div>
+        <div class="section-title">Step 1: "How to..." — Raw Idea Generation</div>
+
+        <div class="bs-prompt-banner">
+          <span class="bs-label">Starting Prompt</span>
+          <div class="bs-question">"How to turn wasted commute time into a meaningful, productive experience?"</div>
+        </div>
+
+        <div class="section-body" style="margin-bottom:8px;">
+          We sat down and generated as many ideas as possible without filtering. Every idea counts — no judgment, just volume.
+        </div>
+
+        <div class="ideas-grid">
+
+          <div class="idea-item">
+            <div class="idea-num">1</div>
+            <div class="idea-content">
+              <div class="idea-title">AI Micro-Lessons</div>
+              <div class="idea-desc">An AI that generates <strong>personalized 5–15 min lessons</strong> based on the user's goals and commute length — language, coding, business, etc.</div>
+            </div>
+          </div>
+
+          <div class="idea-item">
+            <div class="idea-num">2</div>
+            <div class="idea-content">
+              <div class="idea-title">Commuter Challenges</div>
+              <div class="idea-desc">Daily <strong>creative or intellectual challenges</strong> (riddles, case studies, writing prompts) designed to be completed in one ride.</div>
+            </div>
+          </div>
+
+          <div class="idea-item">
+            <div class="idea-num">3</div>
+            <div class="idea-content">
+              <div class="idea-title">Audio-First Learning</div>
+              <div class="idea-desc"><strong>Hands-free audio modules</strong> with voice-response quizzes — perfect for standing, crowded conditions.</div>
+            </div>
+          </div>
+
+          <div class="idea-item">
+            <div class="idea-num">4</div>
+            <div class="idea-content">
+              <div class="idea-title">Skill Streaks & XP</div>
+              <div class="idea-desc">Gamification with <strong>daily streaks, XP points, and levels</strong> — turning the commute into a game you don't want to break.</div>
+            </div>
+          </div>
+
+          <div class="idea-item">
+            <div class="idea-num">5</div>
+            <div class="idea-content">
+              <div class="idea-title">Offline Content Packs</div>
+              <div class="idea-desc"><strong>Pre-downloaded sessions</strong> that sync when connected and work seamlessly in tunnels and dead zones.</div>
+            </div>
+          </div>
+
+          <div class="idea-item">
+            <div class="idea-num">6</div>
+            <div class="idea-content">
+              <div class="idea-title">Guided Reflections</div>
+              <div class="idea-desc">Morning <strong>intention-setting</strong> and evening <strong>decompression prompts</strong> adapted to the time of day and ride direction.</div>
+            </div>
+          </div>
+
+          <div class="idea-item">
+            <div class="idea-num">7</div>
+            <div class="idea-content">
+              <div class="idea-title">Employer Upskilling Portal</div>
+              <div class="idea-desc">A <strong>B2B dashboard</strong> where companies assign training modules to employees and track completion during commutes.</div>
+            </div>
+          </div>
+
+          <div class="idea-item">
+            <div class="idea-num">8</div>
+            <div class="idea-content">
+              <div class="idea-title">Swipe-Based Flashcards</div>
+              <div class="idea-desc"><strong>One-handed swipe interface</strong> for vocabulary, concepts, or exam prep — Tinder-style for knowledge.</div>
+            </div>
+          </div>
+
+          <div class="idea-item">
+            <div class="idea-num">9</div>
+            <div class="idea-content">
+              <div class="idea-title">Commuter Social Learning</div>
+              <div class="idea-desc"><strong>Anonymous leaderboards</strong> per metro line — compete with other commuters on the same route.</div>
+            </div>
+          </div>
+
+          <div class="idea-item">
+            <div class="idea-num">10</div>
+            <div class="idea-content">
+              <div class="idea-title">Adaptive Duration Engine</div>
+              <div class="idea-desc">GPS-based system that <strong>detects your commute length</strong> and auto-selects content that fits perfectly.</div>
+            </div>
+          </div>
+
+          <div class="idea-item">
+            <div class="idea-num">11</div>
+            <div class="idea-content">
+              <div class="idea-title">Podcast Summaries + Quiz</div>
+              <div class="idea-desc"><strong>AI-condensed podcast episodes</strong> (10 min) followed by a quick quiz to reinforce retention.</div>
+            </div>
+          </div>
+
+          <div class="idea-item">
+            <div class="idea-num">12</div>
+            <div class="idea-content">
+              <div class="idea-title">Certification Paths</div>
+              <div class="idea-desc">Structured <strong>micro-certification programs</strong> you can complete entirely through daily commute sessions over weeks.</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Step 2: WWHWWW Relaunch -->
+        <div class="relaunch-banner">
+          <span class="bs-label">Step 2 — Relaunch</span>
+          <div class="bs-question">Stress-testing ideas with WWHWWW questions</div>
+        </div>
+
+        <div class="section-body" style="margin-bottom:8px;">
+          We took our strongest ideas and challenged each one through the Who, What, How, Where, When, Why lens to uncover blind spots and refine them.
+        </div>
+
+        <div class="wwhwww-relaunch-grid">
+
+          <div class="ww-item">
+            <div class="ww-label">Who benefits most?</div>
+            <div class="ww-text"><strong>Young professionals (22–35)</strong> in metro areas who feel guilty about wasted time and are motivated by career growth. Secondary: students preparing for exams, employers investing in team skills.</div>
+          </div>
+
+          <div class="ww-item">
+            <div class="ww-label">What format works?</div>
+            <div class="ww-text">Must be <strong>modular and interruptible</strong> — a lesson should pause and resume without losing progress. Mix of visual (flashcards), audio (guided), and interactive (quizzes) depending on context.</div>
+          </div>
+
+          <div class="ww-item">
+            <div class="ww-label">How do we keep them coming back?</div>
+            <div class="ww-text"><strong>Habit loops:</strong> trigger (commute start), routine (open app), reward (XP + streak). Push notifications at departure time. Social proof via leaderboards. <strong>Loss aversion</strong> through streak protection.</div>
+          </div>
+
+          <div class="ww-item">
+            <div class="ww-label">Where does it fail?</div>
+            <div class="ww-text">Short commutes (<strong>under 10 min</strong>) — content must have a "quick mode." Rural areas with no transit. Users who drive. Solution: <strong>audio-only mode</strong> for drivers, ultra-short 3-min sessions.</div>
+          </div>
+
+          <div class="ww-item">
+            <div class="ww-label">When is engagement highest?</div>
+            <div class="ww-text"><strong>Morning commutes</strong> see higher learning engagement (fresh mind). Evening commutes favor lighter content — reflections, summaries, casual quizzes. Weekends drop off — need <strong>streak-freeze</strong> mechanics.</div>
+          </div>
+
+          <div class="ww-item">
+            <div class="ww-label">Why would they choose us over scrolling?</div>
+            <div class="ww-text">Because we make progress <strong>visible and rewarding</strong>. After 30 days, you've completed a module. After 90, a certification. Social media gives dopamine but <strong>no lasting value</strong> — we give both.</div>
           </div>
 
         </div>
