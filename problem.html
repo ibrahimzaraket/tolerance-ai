@@ -1034,77 +1034,47 @@
         const prevTheme = document.body.getAttribute("data-theme");
         document.body.setAttribute("data-theme", "light");
 
-        // Clone entire page into a wrapper so we capture everything
-        const wrapper = document.createElement("div");
+        // Add a temporary PDF header directly into the page
+        const pdfHeader = document.createElement("div");
+        pdfHeader.id = "pdf-header-tmp";
+        pdfHeader.style.cssText = "text-align:center;padding:18px 20px 14px;border-bottom:2px solid #4f46e5;margin-bottom:16px;";
+        pdfHeader.innerHTML = '<div style="font-size:28px;font-weight:800;color:#4f46e5;letter-spacing:-0.02em;margin-bottom:4px;">ToleranceAI</div><div style="font-size:12px;color:#64748b;font-weight:500;">Made By: Zhara, Cecilia, Ibrahim &amp; Hugo</div>';
+        const mainEl = document.querySelector("main");
+        mainEl.insertBefore(pdfHeader, mainEl.firstChild);
 
-        // Add header info
-        const headerClone = document.createElement("div");
-        headerClone.style.cssText = "text-align:center;padding:18px 20px 10px;border-bottom:2px solid #4f46e5;margin-bottom:16px;";
-        headerClone.innerHTML = `
-          <div style="font-size:28px;font-weight:800;color:#4f46e5;letter-spacing:-0.02em;margin-bottom:4px;">ToleranceAI</div>
-          <div style="font-size:12px;color:#64748b;font-weight:500;">Made By: Zhara, Cecilia, Ibrahim & Hugo</div>
-        `;
-        wrapper.appendChild(headerClone);
+        // Hide things that shouldn't be in the PDF
+        const header = document.querySelector("header");
+        header.style.display = "none";
 
-        // Clone the main content
-        const mainClone = document.querySelector("main").cloneNode(true);
+        // Stop animations that confuse html2canvas
+        const pulseEl = document.querySelector(".mm-pulse");
+        if (pulseEl) pulseEl.style.animation = "none";
 
-        // Flatten all grids for PDF — force single-column so nothing gets cut off
-        const pdfStyle = document.createElement("style");
-        pdfStyle.textContent = `
-          .wwhwww-grid, .questions-grid-6, .pinnacle-grid {
-            display: block !important;
-          }
-          .wwhwww-grid > *, .questions-grid-6 > *, .pinnacle-grid > * {
-            margin-bottom: 12px !important;
-          }
-          .section-card, .stat-banner, .seed-card, .mindmap-container,
-          .wwhwww-item, .q6-item, .pp-column, .project-link-banner {
-            break-inside: avoid !important;
-            page-break-inside: avoid !important;
-          }
-          .section-card { transform: none !important; }
-          .section-card::before { background: #4f46e5 !important; }
-          .mindmap-svg { max-width: 100% !important; }
-          .mm-pulse { animation: none !important; }
-        `;
-        mainClone.appendChild(pdfStyle);
-        wrapper.appendChild(mainClone);
-
-        // Temporarily add wrapper to DOM (offscreen) so html2canvas can measure it
-        wrapper.style.cssText = "position:absolute;left:-9999px;top:0;width:1100px;background:#f8fafc;color:#0f172a;font-family:Inter,sans-serif;";
-        document.body.appendChild(wrapper);
-
-        // Measure actual content height
-        const contentWidth = wrapper.scrollWidth;
-        const contentHeight = wrapper.scrollHeight;
-
-        // Calculate scale: fit 1100px content width into A4 width (210mm ≈ 794px at 96dpi)
-        // We use a4 and let html2pdf paginate, but use high-res capture
-        const a4WidthPx = 794;
-        const scaleFactor = a4WidthPx / contentWidth;
+        // Small delay so the DOM settles
+        await new Promise(r => setTimeout(r, 100));
 
         try {
           const opt = {
-            margin:      [8, 6, 8, 6],
+            margin:      [8, 8, 8, 8],
             filename:    "Commuter-Dead-Time-Problem-Analysis.pdf",
-            image:       { type: "jpeg", quality: 0.95 },
+            image:       { type: "jpeg", quality: 0.98 },
             html2canvas: {
               scale: 2,
               useCORS: true,
               backgroundColor: "#f8fafc",
-              width: contentWidth,
-              windowWidth: contentWidth,
-              scrollY: 0,
-              scrollX: 0
+              scrollY: -window.scrollY,
+              windowWidth: mainEl.scrollWidth
             },
             jsPDF:       { unit: "mm", format: "a4", orientation: "portrait" },
             pagebreak:   { mode: ["css", "legacy"], avoid: [".section-card", ".stat-banner", ".seed-card", ".wwhwww-item", ".q6-item", ".pp-column", ".mindmap-container", ".project-link-banner"] }
           };
 
-          await html2pdf().set(opt).from(wrapper).save();
+          await html2pdf().set(opt).from(mainEl).save();
         } finally {
-          document.body.removeChild(wrapper);
+          // Clean up — restore everything
+          mainEl.removeChild(pdfHeader);
+          header.style.display = "";
+          if (pulseEl) pulseEl.style.animation = "";
           document.body.setAttribute("data-theme", prevTheme);
           btn.innerHTML = '<svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:#fff"><path d="M5 20h14v-2H5v2zm7-18v12.17l3.59-3.58L17 12l-5 5-5-5 1.41-1.41L12 14.17V2z"/></svg> Download PDF';
           btn.disabled = false;
