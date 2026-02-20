@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Residence Time – Graphical Method</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+
+  <style>
+    :root {
+      --bg-primary: #0a0a0b;
+      --bg-secondary: #111114;
+      --bg-card: rgba(255,255,255,0.05);
+      --text-primary: #ffffff;
+      --text-secondary: #a0a0a5;
+      --accent: #6366f1;
+      --accent-hover: #818cf8;
+      --border: rgba(255,255,255,0.1);
+      --glass-bg: rgba(255,255,255,0.1);
+      --shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+      --danger: #ef4444;
+      --ok: #22c55e;
+    }
+
+    [data-theme="light"] {
+      --bg-primary: #f8fafc;
+      --bg-secondary: #f1f5f9;
+      --bg-card: rgba(255,255,255,0.9);
+      --text-primary: #0f172a;
+      --text-secondary: #64748b;
+      --accent: #4f46e5;
+      --accent-hover: #3730a3;
+      --border: rgba(0,0,0,0.08);
+      --glass-bg: rgba(255,255,255,0.8);
+      --shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    header {
+      background: var(--bg-secondary);
+      backdrop-filter: blur(18px);
+      padding: 18px 0;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      user-select: none;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      text-align: right;
+    }
+
+    .byline {
+      font-size: 13px;
+      opacity: 0.85;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .theme-toggle {
+      background: var(--glass-bg);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 10px 14px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      color: var(--text-primary);
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .theme-toggle:hover {
+      transform: translateY(-1px);
+      border-color: rgba(99,102,241,0.45);
+      background: rgba(99,102,241,0.08);
+      box-shadow: 0 6px 16px rgba(99,102,241,0.15);
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 36px auto 60px;
+      padding: 0 20px;
+    }
+
+    .hero {
+      text-align: center;
+      margin: 8px 0 30px;
+    }
+
+    .hero h1 {
+      margin: 0 0 10px;
+      font-size: clamp(28px, 4vw, 44px);
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      margin: 0 auto;
+      max-width: 760px;
+      color: var(--text-secondary);
+      font-size: 16px;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 22px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(8px);
+      margin-bottom: 24px;
+    }
+
+    .card h2 {
+      margin: 0 0 16px;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 999px;
+      background: rgba(99,102,241,0.14);
+      border: 1px solid rgba(99,102,241,0.25);
+      color: var(--text-primary);
+      font-weight: 800;
+      font-size: 12px;
+      vertical-align: baseline;
+    }
+
+    .scale-legend {
+      background: linear-gradient(135deg, rgba(99,102,241,0.08), rgba(99,102,241,0.03));
+      border: 1px solid rgba(99,102,241,0.2);
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin-bottom: 18px;
+      font-size: 14px;
+      color: var(--text-secondary);
+      backdrop-filter: blur(8px);
+    }
+
+    .scale-legend strong {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .banner {
+      display: none;
+      margin: 12px 0 18px;
+      padding: 13px 16px;
+      border-radius: 14px;
+      border: 1.5px solid rgba(239, 68, 68, 0.3);
+      background: rgba(239, 68, 68, 0.08);
+      color: var(--text-primary);
+      font-weight: 500;
+      animation: slideDown 0.25s ease-out;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .banner.show { display: block; }
+
+    .input-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    @media (max-width: 600px) {
+      .input-group { grid-template-columns: 1fr; }
+    }
+
+    .input-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .input-field label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .input-field input, .input-field textarea {
+      padding: 11px 12px;
+      background: var(--glass-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text-primary);
+      font-family: 'Inter', sans-serif;
+      backdrop-filter: blur(10px);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    [data-theme="dark"] .input-field input,
+    [data-theme="dark"] .input-field textarea {
+      background-color: rgba(0,0,0,0.4);
+    }
+
+    .input-field input:hover, .input-field textarea:hover {
+      border-color: rgba(99,102,241,0.5);
+      background-color: rgba(255,255,255,0.08);
+    }
+
+    [data-theme="dark"] .input-field input:hover,
+    [data-theme="dark"] .input-field textarea:hover {
+      background-color: rgba(0,0,0,0.6);
+    }
+
+    .input-field input:focus, .input-field textarea:focus {
+      outline: none;
+      border-color: rgba(99,102,241,0.8);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+      background-color: rgba(255,255,255,0.12);
+    }
+
+    [data-theme="dark"] .input-field input:focus,
+    [data-theme="dark"] .input-field textarea:focus {
+      background-color: rgba(0,0,0,0.7);
+    }
+
+    .input-field textarea {
+      resize: vertical;
+      min-height: 60px;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    button {
+      padding: 12px 18px;
+      font-size: 15px;
+      font-weight: 700;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease, background 0.15s ease;
+      user-select: none;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+      color: #fff;
+      box-shadow: 0 12px 28px rgba(99,102,241,0.35);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 40px rgba(99,102,241,0.45);
+    }
+
+    .btn-primary:active { transform: translateY(0); }
+
+    .btn-secondary {
+      background: var(--glass-bg);
+      color: var(--text-primary);
+      border: 1.5px solid var(--border);
+      transition: all 0.2s ease;
+    }
+
+    .btn-secondary:hover {
+      transform: translateY(-2px);
+      border-color: rgba(99,102,241,0.5);
+      background: rgba(255,255,255,0.08);
+      box-shadow: 0 8px 20px rgba(99,102,241,0.15);
+    }
+
+    .btn-secondary:active { transform: translateY(0); }
+
+    .results {
+      display: none;
+      margin-top: 22px;
+      animation: slideIn 0.35s ease-out;
+    }
+
+    .results.show { display: block; }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .scores-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin: 12px 0 14px;
+    }
+
+    @media (max-width: 900px) {
+      .scores-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 520px) {
+      .scores-grid { grid-template-columns: 1fr; }
+    }
+
+    .score-card {
+      background: linear-gradient(135deg, var(--glass-bg), rgba(255,255,255,0.04));
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      text-align: center;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .score-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(99,102,241,0.4);
+      box-shadow: 0 16px 40px rgba(99,102,241,0.2);
+    }
+
+    .score-label {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .score-value {
+      font-size: 28px;
+      font-weight: 900;
+      color: var(--accent);
+      margin: 0;
+      letter-spacing: -0.02em;
+    }
+
+    .score-value.small {
+      font-size: 20px;
+    }
+
+    .total-score {
+      grid-column: 1 / -1;
+      background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+      color: #fff;
+      border: none;
+      box-shadow: 0 16px 40px rgba(99,102,241,0.3);
+    }
+
+    .total-score .score-label { color: rgba(255,255,255,0.85); }
+    .total-score .score-value { color: #fff; }
+
+    .chart-container {
+      background: linear-gradient(135deg, var(--glass-bg), rgba(255,255,255,0.02));
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      margin-top: 18px;
+      position: relative;
+    }
+
+    .chart-container h3 {
+      margin: 0 0 14px;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .chart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 4px;
+    }
+
+    .chart-header h2 {
+      margin: 0;
+    }
+
+    .btn-download {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-primary);
+      background: var(--glass-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .btn-download:hover {
+      transform: translateY(-1px);
+      border-color: rgba(99,102,241,0.5);
+      background: rgba(99,102,241,0.08);
+      box-shadow: 0 6px 16px rgba(99,102,241,0.15);
+    }
+
+    .btn-download:active {
+      transform: translateY(0);
+    }
+
+    .chart-box {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16/9;
+    }
+
+    .chart-box canvas {
+      width: 100% !important;
+      height: 100% !important;
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 14px;
+      font-size: 14px;
+    }
+
+    .data-table th, .data-table td {
+      padding: 10px 12px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .data-table th {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      background: rgba(99,102,241,0.06);
+    }
+
+    .data-table td {
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    .data-table tr:hover td {
+      background: rgba(99,102,241,0.04);
+    }
+
+    .note {
+      margin-top: 14px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      padding: 14px 16px;
+      background: var(--glass-bg);
+      border-radius: 14px;
+      border-left: 4px solid rgba(99,102,241,0.4);
+      transition: all 0.2s ease;
+    }
+
+    .note:hover {
+      border-left-color: var(--accent);
+      background: rgba(255,255,255,0.06);
+    }
+
+    .formula-block {
+      background: rgba(99,102,241,0.06);
+      border: 1px solid rgba(99,102,241,0.15);
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin: 12px 0;
+      font-size: 14px;
+      color: var(--text-primary);
+      line-height: 1.8;
+    }
+
+    .formula-block .formula {
+      font-weight: 700;
+      color: var(--accent);
+      font-size: 15px;
+    }
+  </style>
+</head>
+
+<body data-theme="dark">
+  <header>
+    <div class="header-content">
+      <div class="logo">ResidenceTime</div>
+      <div class="header-right">
+        <span class="byline">Made By: Ibrahim Zaraket</span>
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">
+          <span id="themeIcon">&#127769;</span>
+          <span style="font-weight:800;">Theme</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="hero">
+      <h1>Residence Time Distribution</h1>
+      <p>
+        Graphical method for determining experimental residence time using tracer injection.
+        Enter your time &amp; conductivity data, flow rate, and reactor volume to compute
+        <span class="pill">&tau;<sub>exp</sub> = Surface2 / Surface1</span>
+        and compare with
+        <span class="pill">&tau;<sub>th</sub> = V / Q</span>.
+      </p>
+    </div>
+
+    <!-- Theory Card -->
+    <div class="card">
+      <h2>Method</h2>
+      <div class="scale-legend">
+        <strong>Principle:</strong> Inject a tracer at t=0 and follow the evolution of its concentration C(t) (in mS) at the exit over time t (in seconds).
+      </div>
+      <div class="formula-block">
+        <div><span class="formula">Surface 1</span> = &sum;((t<sub>n+1</sub> &minus; t<sub>n</sub>) &times; C(t<sub>n</sub>)) &mdash; area under C(t) curve (rectangle method)</div>
+        <div><span class="formula">Surface 2</span> = &sum;((t<sub>n+1</sub> &minus; t<sub>n</sub>) &times; C(t<sub>n</sub>) &times; t<sub>n</sub>) &mdash; area under t&times;C(t) curve (rectangle method)</div>
+        <div style="margin-top:8px"><span class="formula">&tau;<sub>experimental</sub></span> = Surface 2 / Surface 1</div>
+        <div><span class="formula">&tau;<sub>theoretical</sub></span> = V / Q</div>
+      </div>
+    </div>
+
+    <!-- Input Card -->
+    <div class="card">
+      <h2>Input Data</h2>
+
+      <div class="banner" id="banner"></div>
+
+      <div class="input-group">
+        <div class="input-field">
+          <label for="flowRate">Flow Rate Q (L/s)</label>
+          <input type="number" id="flowRate" step="any" min="0" placeholder="e.g. 0.5">
+        </div>
+        <div class="input-field">
+          <label for="volume">Reactor Volume V (L)</label>
+          <input type="number" id="volume" step="any" min="0" placeholder="e.g. 10">
+        </div>
+      </div>
+
+      <div class="input-group" style="grid-template-columns:1fr 1fr">
+        <div class="input-field">
+          <label for="timeValues">Time values t (seconds) &mdash; comma or space separated</label>
+          <textarea id="timeValues" rows="4" placeholder="e.g. 0, 10, 20, 30, 40, 50, 60, 70, 80"></textarea>
+        </div>
+        <div class="input-field">
+          <label for="condValues">Conductivity C (mS) &mdash; comma or space separated</label>
+          <textarea id="condValues" rows="4" placeholder="e.g. 0, 0.5, 2.1, 3.8, 2.5, 1.2, 0.4, 0.1, 0"></textarea>
+        </div>
+      </div>
+
+      <div class="note">
+        Enter matching pairs: the first time value corresponds to the first conductivity value, etc. Both lists must have the same number of values.
+      </div>
+
+      <div class="btn-group">
+        <button class="btn-primary" id="calcBtn" type="button">Calculate &amp; Plot</button>
+        <button class="btn-secondary" id="resetBtn" type="button">Reset</button>
+      </div>
+    </div>
+
+    <!-- Results -->
+    <div class="results" id="results">
+      <!-- Scores -->
+      <div class="card">
+        <h2>Results</h2>
+        <div class="scores-grid">
+          <div class="score-card">
+            <div class="score-label">Surface 1</div>
+            <div class="score-value small" id="surface1">—</div>
+          </div>
+          <div class="score-card">
+            <div class="score-label">Surface 2</div>
+            <div class="score-value small" id="surface2">—</div>
+          </div>
+          <div class="score-card">
+            <div class="score-label">&tau;<sub>experimental</sub> (s)</div>
+            <div class="score-value" id="tauExp">—</div>
+          </div>
+          <div class="score-card">
+            <div class="score-label">&tau;<sub>theoretical</sub> (s)</div>
+            <div class="score-value" id="tauTh">—</div>
+          </div>
+          <div class="score-card total-score">
+            <div class="score-label">Comparison</div>
+            <div class="score-value small" id="comparison">—</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Data Table -->
+      <div class="card">
+        <h2>Data Table</h2>
+        <div style="overflow-x:auto">
+          <table class="data-table" id="dataTable">
+            <thead>
+              <tr>
+                <th>n</th>
+                <th>t<sub>n</sub> (s)</th>
+                <th>C(t<sub>n</sub>) (mS)</th>
+                <th>t<sub>n</sub> &times; C(t<sub>n</sub>)</th>
+                <th>&Delta;t = t<sub>n+1</sub>&minus;t<sub>n</sub></th>
+                <th>&Delta;t &times; C(t<sub>n</sub>)</th>
+                <th>&Delta;t &times; C(t<sub>n</sub>) &times; t<sub>n</sub></th>
+              </tr>
+            </thead>
+            <tbody id="dataBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Chart: C(t) -->
+      <div class="card">
+        <div class="chart-header">
+          <h2>C(t) vs t &mdash; with Rectangle Method</h2>
+          <button class="btn-download" onclick="downloadChart('chartCt', 'C(t)_vs_t')" type="button" title="Download chart as PNG">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v8m0 0l-3-3m3 3l3-3"/><path d="M2 12v1.5a.5.5 0 00.5.5h11a.5.5 0 00.5-.5V12"/></svg>
+            Download PNG
+          </button>
+        </div>
+        <div class="chart-box">
+          <canvas id="chartCt"></canvas>
+        </div>
+      </div>
+
+      <!-- Chart: t*C(t) -->
+      <div class="card">
+        <div class="chart-header">
+          <h2>t &times; C(t) vs t &mdash; with Rectangle Method</h2>
+          <button class="btn-download" onclick="downloadChart('chartTCt', 't_x_C(t)_vs_t')" type="button" title="Download chart as PNG">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v8m0 0l-3-3m3 3l3-3"/><path d="M2 12v1.5a.5.5 0 00.5.5h11a.5.5 0 00.5-.5V12"/></svg>
+            Download PNG
+          </button>
+        </div>
+        <div class="chart-box">
+          <canvas id="chartTCt"></canvas>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    let chartCt = null;
+    let chartTCt = null;
+
+    function downloadChart(canvasId, filename) {
+      const canvas = document.getElementById(canvasId);
+      // Create a temp canvas with white background so the PNG isn't transparent
+      const tmp = document.createElement("canvas");
+      tmp.width = canvas.width;
+      tmp.height = canvas.height;
+      const ctx = tmp.getContext("2d");
+      const isDark = document.body.getAttribute("data-theme") !== "light";
+      ctx.fillStyle = isDark ? "#1a1a2e" : "#ffffff";
+      ctx.fillRect(0, 0, tmp.width, tmp.height);
+      ctx.drawImage(canvas, 0, 0);
+      const link = document.createElement("a");
+      link.download = filename + ".png";
+      link.href = tmp.toDataURL("image/png");
+      link.click();
+    }
+
+    function parseList(str) {
+      return str.trim().split(/[\s,;]+/).filter(s => s.length > 0).map(Number);
+    }
+
+    function showBanner(msg) {
+      const b = document.getElementById("banner");
+      b.textContent = msg;
+      b.classList.add("show");
+    }
+
+    function hideBanner() {
+      const b = document.getElementById("banner");
+      b.textContent = "";
+      b.classList.remove("show");
+    }
+
+    function fmt(val, decimals = 4) {
+      if (!Number.isFinite(val)) return "—";
+      return val.toFixed(decimals);
+    }
+
+    function calculate() {
+      hideBanner();
+
+      const Q = parseFloat(document.getElementById("flowRate").value);
+      const V = parseFloat(document.getElementById("volume").value);
+      const tVals = parseList(document.getElementById("timeValues").value);
+      const cVals = parseList(document.getElementById("condValues").value);
+
+      if (!Number.isFinite(Q) || Q <= 0) {
+        showBanner("Please enter a valid positive flow rate Q.");
+        return;
+      }
+      if (!Number.isFinite(V) || V <= 0) {
+        showBanner("Please enter a valid positive reactor volume V.");
+        return;
+      }
+      if (tVals.length < 2) {
+        showBanner("Please enter at least 2 time values.");
+        return;
+      }
+      if (tVals.some(v => !Number.isFinite(v))) {
+        showBanner("Some time values are not valid numbers.");
+        return;
+      }
+      if (cVals.some(v => !Number.isFinite(v))) {
+        showBanner("Some conductivity values are not valid numbers.");
+        return;
+      }
+      if (tVals.length !== cVals.length) {
+        showBanner(`Mismatch: ${tVals.length} time values but ${cVals.length} conductivity values. They must be equal.`);
+        return;
+      }
+
+      const n = tVals.length;
+
+      // Calculate surfaces using rectangle method
+      let surface1 = 0;
+      let surface2 = 0;
+
+      const tableRows = [];
+      for (let i = 0; i < n; i++) {
+        const t = tVals[i];
+        const c = cVals[i];
+        const tc = t * c;
+        const dt = (i < n - 1) ? (tVals[i + 1] - tVals[i]) : null;
+        const dtC = dt !== null ? dt * c : null;
+        const dtCt = dt !== null ? dt * c * t : null;
+
+        if (dt !== null) {
+          surface1 += dt * c;
+          surface2 += dt * c * t;
+        }
+
+        tableRows.push({ i, t, c, tc, dt, dtC, dtCt });
+      }
+
+      const tauExp = surface1 !== 0 ? surface2 / surface1 : NaN;
+      const tauTh = V / Q;
+
+      // Update results
+      document.getElementById("surface1").textContent = fmt(surface1, 4);
+      document.getElementById("surface2").textContent = fmt(surface2, 4);
+      document.getElementById("tauExp").textContent = fmt(tauExp, 2) + " s";
+      document.getElementById("tauTh").textContent = fmt(tauTh, 2) + " s";
+
+      const diff = tauTh !== 0 ? Math.abs(tauExp - tauTh) / tauTh * 100 : NaN;
+      document.getElementById("comparison").textContent =
+        Number.isFinite(diff)
+          ? `Difference: ${fmt(diff, 2)}% — ${diff < 10 ? "Good agreement" : "Significant deviation"}`
+          : "—";
+
+      // Build table
+      const tbody = document.getElementById("dataBody");
+      tbody.innerHTML = "";
+      for (const row of tableRows) {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${row.i}</td>
+          <td>${fmt(row.t, 2)}</td>
+          <td>${fmt(row.c, 4)}</td>
+          <td>${fmt(row.tc, 4)}</td>
+          <td>${row.dt !== null ? fmt(row.dt, 2) : "—"}</td>
+          <td>${row.dtC !== null ? fmt(row.dtC, 4) : "—"}</td>
+          <td>${row.dtCt !== null ? fmt(row.dtCt, 4) : "—"}</td>
+        `;
+        tbody.appendChild(tr);
+      }
+
+      // Build charts with rectangles + curve
+      const tcProducts = tVals.map((t, i) => t * cVals[i]);
+
+      const isDark = document.body.getAttribute("data-theme") !== "light";
+      const gridColor = isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.08)";
+      const tickColor = isDark ? "#a0a0a5" : "#64748b";
+
+      // Plugin that draws rectangles on the chart
+      const rectPlugin = {
+        id: "rectangleOverlay",
+        beforeDatasetsDraw(chart) {
+          const opts = chart.options.plugins.rectangleOverlay;
+          if (!opts || !opts.data) return;
+
+          const { ctx } = chart;
+          const xScale = chart.scales.x;
+          const yScale = chart.scales.y;
+          const rectData = opts.data;
+          const fillColor = opts.fillColor || "rgba(99,102,241,0.18)";
+          const strokeColor = opts.strokeColor || "rgba(99,102,241,0.5)";
+
+          ctx.save();
+          for (let i = 0; i < rectData.length - 1; i++) {
+            const x0 = xScale.getPixelForValue(rectData[i].t);
+            const x1 = xScale.getPixelForValue(rectData[i + 1].t);
+            const yTop = yScale.getPixelForValue(rectData[i].v);
+            const yBot = yScale.getPixelForValue(0);
+
+            // Filled rectangle
+            ctx.fillStyle = fillColor;
+            ctx.fillRect(x0, yTop, x1 - x0, yBot - yTop);
+
+            // Rectangle border
+            ctx.strokeStyle = strokeColor;
+            ctx.lineWidth = 1.5;
+            ctx.strokeRect(x0, yTop, x1 - x0, yBot - yTop);
+          }
+          ctx.restore();
+        }
+      };
+
+      // Prepare point data for scatter-line
+      const ctPoints = tVals.map((t, i) => ({ x: t, y: cVals[i] }));
+      const tctPoints = tVals.map((t, i) => ({ x: t, y: tcProducts[i] }));
+
+      const rectDataCt = tVals.map((t, i) => ({ t, v: cVals[i] }));
+      const rectDataTCt = tVals.map((t, i) => ({ t, v: tcProducts[i] }));
+
+      function makeOptions(yLabel, rectData, fillColor, strokeColor) {
+        return {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: true,
+              labels: { color: tickColor, font: { weight: 600 }, usePointStyle: true, pointStyle: "rectRounded" }
+            },
+            rectangleOverlay: {
+              data: rectData,
+              fillColor: fillColor,
+              strokeColor: strokeColor
+            }
+          },
+          scales: {
+            x: {
+              type: "linear",
+              title: { display: true, text: "Time (s)", color: tickColor, font: { weight: 700 } },
+              grid: { color: gridColor },
+              ticks: { color: tickColor },
+              beginAtZero: true
+            },
+            y: {
+              title: { display: true, text: yLabel, color: tickColor, font: { weight: 700 } },
+              grid: { color: gridColor },
+              ticks: { color: tickColor },
+              beginAtZero: true
+            }
+          },
+          elements: {
+            point: { radius: 5, hoverRadius: 8, borderWidth: 2 },
+            line: { tension: 0.35, borderWidth: 3 }
+          }
+        };
+      }
+
+      if (chartCt) chartCt.destroy();
+      if (chartTCt) chartTCt.destroy();
+
+      const ctConfig = {
+        type: "line",
+        data: {
+          datasets: [{
+            label: "C(t) curve",
+            data: ctPoints,
+            borderColor: "#6366f1",
+            backgroundColor: "#6366f1",
+            pointBackgroundColor: "#6366f1",
+            pointBorderColor: "#fff",
+            fill: false
+          }]
+        },
+        options: makeOptions("C (mS)", rectDataCt, "rgba(99,102,241,0.18)", "rgba(99,102,241,0.55)"),
+        plugins: [rectPlugin]
+      };
+
+      const tctConfig = {
+        type: "line",
+        data: {
+          datasets: [{
+            label: "t × C(t) curve",
+            data: tctPoints,
+            borderColor: "#818cf8",
+            backgroundColor: "#818cf8",
+            pointBackgroundColor: "#818cf8",
+            pointBorderColor: "#fff",
+            fill: false
+          }]
+        },
+        options: makeOptions("t × C(t) (s·mS)", rectDataTCt, "rgba(129,140,248,0.18)", "rgba(129,140,248,0.55)"),
+        plugins: [rectPlugin]
+      };
+
+      chartCt = new Chart(document.getElementById("chartCt"), ctConfig);
+      chartTCt = new Chart(document.getElementById("chartTCt"), tctConfig);
+
+      document.getElementById("results").classList.add("show");
+      document.getElementById("results").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function resetAll() {
+      hideBanner();
+      document.getElementById("flowRate").value = "";
+      document.getElementById("volume").value = "";
+      document.getElementById("timeValues").value = "";
+      document.getElementById("condValues").value = "";
+      document.getElementById("results").classList.remove("show");
+      if (chartCt) { chartCt.destroy(); chartCt = null; }
+      if (chartTCt) { chartTCt.destroy(); chartTCt = null; }
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function setTheme(theme) {
+      document.body.setAttribute("data-theme", theme);
+      localStorage.setItem("meline_theme", theme);
+      document.getElementById("themeIcon").innerHTML = theme === "light" ? "&#9728;&#65039;" : "&#127769;";
+    }
+
+    function toggleTheme() {
+      const cur = document.body.getAttribute("data-theme") || "dark";
+      setTheme(cur === "dark" ? "light" : "dark");
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const saved = localStorage.getItem("meline_theme");
+      setTheme(saved === "light" ? "light" : "dark");
+
+      document.getElementById("calcBtn").addEventListener("click", calculate);
+      document.getElementById("resetBtn").addEventListener("click", resetAll);
+      document.getElementById("themeToggle").addEventListener("click", toggleTheme);
+    });
+  </script>
+</body>
+</html>
