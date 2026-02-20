@@ -589,7 +589,7 @@
 
       <div class="input-group">
         <div class="input-field">
-          <label for="flowRate">Flow Rate Q (L/s)</label>
+          <label for="flowRate">Flow Rate Q (L/h)</label>
           <input type="number" id="flowRate" step="any" min="0" placeholder="e.g. 0.5">
         </div>
         <div class="input-field">
@@ -798,7 +798,8 @@
       }
 
       const tauExp = surface1 !== 0 ? surface2 / surface1 : NaN;
-      const tauTh = V / Q;
+      const Qs = Q / 3600; // convert L/h to L/s
+      const tauTh = V / Qs; // result in seconds
 
       // Update results
       document.getElementById("surface1").textContent = fmt(surface1, 4);
