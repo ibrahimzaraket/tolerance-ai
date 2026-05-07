@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Business Model Canvas — ToleranceAI</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-primary: #0a0a0b;
+      --bg-secondary: #111114;
+      --bg-card: rgba(255,255,255,0.05);
+      --text-primary: #ffffff;
+      --text-secondary: #a0a0a5;
+      --accent: #6366f1;
+      --accent-hover: #818cf8;
+      --border: rgba(255,255,255,0.1);
+      --glass-bg: rgba(255,255,255,0.1);
+      --shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+    }
+
+    [data-theme="light"] {
+      --bg-primary: #f8fafc;
+      --bg-secondary: #f1f5f9;
+      --bg-card: rgba(255,255,255,0.9);
+      --text-primary: #0f172a;
+      --text-secondary: #64748b;
+      --accent: #4f46e5;
+      --accent-hover: #3730a3;
+      --border: rgba(0,0,0,0.08);
+      --glass-bg: rgba(255,255,255,0.8);
+      --shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    header {
+      background: var(--bg-secondary);
+      backdrop-filter: blur(18px);
+      padding: 18px 0;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      user-select: none;
+      text-decoration: none;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .byline {
+      font-size: 13px;
+      opacity: 0.85;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .nav-link {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--accent);
+      text-decoration: none;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(99,102,241,0.25);
+      background: rgba(99,102,241,0.08);
+      transition: all 0.2s ease;
+    }
+
+    .nav-link:hover {
+      background: rgba(99,102,241,0.15);
+      border-color: rgba(99,102,241,0.5);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(99,102,241,0.15);
+    }
+
+    .theme-toggle {
+      background: var(--glass-bg);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 10px 14px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      color: var(--text-primary);
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .theme-toggle:hover {
+      transform: translateY(-1px);
+      border-color: rgba(99,102,241,0.45);
+      background: rgba(99,102,241,0.08);
+      box-shadow: 0 6px 16px rgba(99,102,241,0.15);
+    }
+
+    main {
+      max-width: 1400px;
+      margin: 36px auto 60px;
+      padding: 0 20px;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      text-align: center;
+      margin: 8px 0 32px;
+    }
+
+    .hero h1 {
+      margin: 0 0 10px;
+      font-size: clamp(28px, 4vw, 44px);
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      margin: 0 auto;
+      max-width: 760px;
+      color: var(--text-secondary);
+      font-size: 16px;
+    }
+
+    .project-link-banner {
+      text-align: center;
+      padding: 16px 20px;
+      background: linear-gradient(135deg, rgba(99,102,241,0.12), rgba(129,140,248,0.08));
+      border: 1px solid rgba(99,102,241,0.2);
+      border-radius: 14px;
+      margin-bottom: 24px;
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    .project-link-banner a {
+      color: var(--accent);
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .project-link-banner a:hover { text-decoration: underline; }
+
+    .banner-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    /* ── BMC Grid ── */
+    .bmc-grid {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      grid-template-rows: auto auto auto;
+      gap: 10px;
+      margin-bottom: 32px;
+    }
+
+    /* Column spans */
+    .bmc-kp   { grid-column: 1 / 3;  grid-row: 1 / 3; }
+    .bmc-ka   { grid-column: 3 / 5;  grid-row: 1 / 2; }
+    .bmc-vp   { grid-column: 5 / 7;  grid-row: 1 / 3; }
+    .bmc-cr   { grid-column: 7 / 9;  grid-row: 1 / 2; }
+    .bmc-cs   { grid-column: 9 / 11; grid-row: 1 / 3; }
+    .bmc-kr   { grid-column: 3 / 5;  grid-row: 2 / 3; }
+    .bmc-ch   { grid-column: 7 / 9;  grid-row: 2 / 3; }
+    .bmc-cost { grid-column: 1 / 6;  grid-row: 3 / 4; }
+    .bmc-rev  { grid-column: 6 / 11; grid-row: 3 / 4; }
+
+    .bmc-cell {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px 22px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(8px);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .bmc-cell:hover {
+      transform: translateY(-3px);
+      border-color: rgba(99,102,241,0.3);
+      box-shadow: 0 16px 40px rgba(99,102,241,0.15);
+    }
+
+    /* Accent stripe per cell */
+    .bmc-cell::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 4px;
+      border-radius: 16px 0 0 16px;
+      background: var(--cell-accent, linear-gradient(180deg, var(--accent), transparent));
+    }
+
+    /* Value Proposition gets a special gradient bg */
+    .bmc-vp {
+      background: linear-gradient(160deg, rgba(99,102,241,0.18), rgba(129,140,248,0.08));
+      border-color: rgba(99,102,241,0.35);
+    }
+
+    .bmc-vp::before { background: linear-gradient(180deg, var(--accent), var(--accent-hover)); }
+
+    /* Key colour tokens */
+    .bmc-kp  { --cell-accent: linear-gradient(180deg,#f97316,transparent); }
+    .bmc-ka  { --cell-accent: linear-gradient(180deg,#06b6d4,transparent); }
+    .bmc-kr  { --cell-accent: linear-gradient(180deg,#a855f7,transparent); }
+    .bmc-cr  { --cell-accent: linear-gradient(180deg,#22c55e,transparent); }
+    .bmc-ch  { --cell-accent: linear-gradient(180deg,#eab308,transparent); }
+    .bmc-cs  { --cell-accent: linear-gradient(180deg,#ec4899,transparent); }
+    .bmc-cost{ --cell-accent: linear-gradient(180deg,#ef4444,transparent); }
+    .bmc-rev { --cell-accent: linear-gradient(180deg,#22c55e,transparent); }
+
+    /* Cell header */
+    .cell-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      margin-bottom: 2px;
+    }
+
+    .cell-title {
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      margin: 0;
+    }
+
+    .cell-emoji {
+      font-size: 22px;
+      line-height: 1;
+    }
+
+    .cell-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .cell-header-text { flex: 1; }
+
+    /* Items inside a cell */
+    .bmc-items {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+    }
+
+    .bmc-item {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.55;
+      padding-left: 14px;
+      position: relative;
+    }
+
+    .bmc-item::before {
+      content: '▸';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-size: 10px;
+      top: 2px;
+    }
+
+    .bmc-item strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    /* Justification tooltip-style box */
+    .justification {
+      margin-top: 6px;
+      padding: 10px 12px;
+      background: rgba(99,102,241,0.07);
+      border: 1px solid rgba(99,102,241,0.18);
+      border-radius: 10px;
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .justification strong {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    /* Divider label */
+    .just-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      margin-bottom: 4px;
+      display: block;
+    }
+
+    /* Revenue split bar */
+    .rev-split {
+      margin-top: 6px;
+    }
+
+    .rev-bar-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .rev-bar-label {
+      font-size: 12px;
+      color: var(--text-secondary);
+      white-space: nowrap;
+      width: 130px;
+      flex-shrink: 0;
+    }
+
+    .rev-bar-track {
+      flex: 1;
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.07);
+      overflow: hidden;
+    }
+
+    .rev-bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      transition: width 1s ease;
+    }
+
+    .rev-bar-pct {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-primary);
+      width: 34px;
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    /* Cost table */
+    .cost-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      margin-top: 6px;
+    }
+
+    .cost-table th {
+      text-align: left;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-secondary);
+      padding: 0 8px 8px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .cost-table td {
+      padding: 7px 8px 7px 0;
+      color: var(--text-secondary);
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      vertical-align: top;
+      line-height: 1.5;
+    }
+
+    .cost-table td:first-child { color: var(--text-primary); font-weight: 600; white-space: nowrap; }
+    .cost-table td strong { color: var(--text-primary); }
+
+    /* Section intro */
+    .section-intro {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px 32px;
+      margin-bottom: 28px;
+      backdrop-filter: blur(8px);
+    }
+
+    .section-intro h2 {
+      font-size: 18px;
+      font-weight: 700;
+      margin: 0 0 8px;
+      letter-spacing: -0.01em;
+    }
+
+    .section-intro p {
+      margin: 0;
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    /* Deep justification cards below the canvas */
+    .deep-section {
+      margin-top: 40px;
+    }
+
+    .deep-section-title {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin: 0 0 6px;
+    }
+
+    .deep-section-sub {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin: 0 0 20px;
+    }
+
+    .deep-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    @media (max-width: 1100px) {
+      .deep-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .deep-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 22px;
+      backdrop-filter: blur(8px);
+      box-shadow: var(--shadow);
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .deep-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(99,102,241,0.3);
+      box-shadow: 0 16px 40px rgba(99,102,241,0.15);
+    }
+
+    .deep-card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .deep-card-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .deep-card-title {
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .deep-card-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-secondary);
+    }
+
+    .deep-card-body {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.65;
+    }
+
+    .deep-card-body strong { color: var(--text-primary); font-weight: 600; }
+
+    /* Nav footer */
+    .nav-footer {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 40px;
+      flex-wrap: wrap;
+    }
+
+    /* Mobile fallback: stack the canvas */
+    @media (max-width: 900px) {
+      .bmc-grid {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .bmc-cell { min-height: 0; }
+    }
+
+    @media (max-width: 560px) {
+      .header-right { gap: 10px; }
+      .theme-toggle { width: 100%; justify-content: center; }
+      .deep-grid { grid-template-columns: 1fr; }
+    }
+
+    @media print {
+      header, .theme-toggle, .nav-link, .nav-footer { display: none !important; }
+      body { background: #fff !important; color: #000 !important; }
+      .bmc-cell { break-inside: avoid; }
+    }
+
+    /* Animate cells in */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .bmc-cell { animation: fadeUp 0.5s ease both; }
+    .bmc-kp  { animation-delay: 0.05s; }
+    .bmc-ka  { animation-delay: 0.10s; }
+    .bmc-vp  { animation-delay: 0.15s; }
+    .bmc-cr  { animation-delay: 0.20s; }
+    .bmc-cs  { animation-delay: 0.25s; }
+    .bmc-kr  { animation-delay: 0.30s; }
+    .bmc-ch  { animation-delay: 0.35s; }
+    .bmc-cost{ animation-delay: 0.40s; }
+    .bmc-rev { animation-delay: 0.45s; }
+  </style>
+</head>
+
+<body data-theme="dark">
+  <header>
+    <div class="header-content">
+      <a class="logo" href="index.html">ToleranceAI</a>
+      <div class="header-right">
+        <a class="nav-link" href="problem.html">Problem</a>
+        <a class="nav-link" href="problem2.html">Ideation</a>
+        <span class="byline">Made By: Zhara, Cecilia, Ibrahim &amp; Hugo Andrade</span>
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">
+          <span id="themeIcon">🌙</span>
+          <span style="font-weight:800;">Theme</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="project-link-banner">
+      <span class="banner-label">View this project online</span>
+      <a href="https://tolerance-ai.vercel.app/canvas.html">https://tolerance-ai.vercel.app/canvas.html</a>
+    </div>
+
+    <div class="hero">
+      <h1>Business Model Canvas</h1>
+      <p>
+        Every block is argued from first principles — no generic filler. Each choice flows directly
+        from the <strong>commuter dead-time problem</strong> we identified and the constraints we uncovered.
+      </p>
+    </div>
+
+    <!-- Context intro -->
+    <div class="section-intro">
+      <h2>How to read this canvas</h2>
+      <p>
+        ToleranceAI is a <strong>mobile app turning the 400 hrs/year commute into structured micro-growth time</strong>
+        — adaptive learning modules, skill builders, and guided reflections designed specifically for the noise,
+        one-handed grip, variable duration, and offline tunnels of public transport.
+        The canvas below is organised in the standard Osterwalder order. Each cell contains the items
+        plus an inline justification box explaining <em>why</em> that choice is the right one for this specific venture —
+        not a generic statement.
+      </p>
+    </div>
+
+    <!-- ════════════════ BUSINESS MODEL CANVAS ════════════════ -->
+    <div class="bmc-grid">
+
+      <!-- 1. KEY PARTNERS -->
+      <div class="bmc-cell bmc-kp">
+        <div class="cell-header">
+          <span class="cell-emoji">🤝</span>
+          <div class="cell-header-text">
+            <div class="cell-label">Block 1</div>
+            <div class="cell-title">Key Partners</div>
+          </div>
+        </div>
+        <ul class="bmc-items">
+          <li class="bmc-item"><strong>Content creators & educators</strong> (e-learning studios, universities, Coursera-style instructors) who supply high-quality micro-modules</li>
+          <li class="bmc-item"><strong>Public transport operators</strong> (SNCF, RATP, TfL, STIB) for distribution partnerships and co-branded "smarter commute" campaigns</li>
+          <li class="bmc-item"><strong>Employers & HR platforms</strong> (e.g. Workday, Cornerstone) as B2B buyers bundling the app into employee benefits</li>
+          <li class="bmc-item"><strong>Cloud & AI providers</strong> (e.g. AWS/GCP, OpenAI API) for infrastructure and adaptive recommendation logic</li>
+          <li class="bmc-item"><strong>App store platforms</strong> (Apple, Google) — unavoidable gatekeepers for distribution</li>
+        </ul>
+        <div class="justification">
+          <span class="just-label">Justification</span>
+          We cannot build all content ourselves — curating third-party educators solves the cold-start problem faster than hiring writers. Transport operators give us access to 1M+ daily riders with a single partnership deal, far cheaper than paid acquisition. The B2B HR channel matters because <strong>employers already have upskilling budgets</strong>; we tap existing spend rather than creating new demand.
+        </div>
+      </div>
+
+      <!-- 2. KEY ACTIVITIES -->
+      <div class="bmc-cell bmc-ka">
+        <div class="cell-header">
+          <span class="cell-emoji">⚙️</span>
+          <div class="cell-header-text">
+            <div class="cell-label">Block 2</div>
+            <div class="cell-title">Key Activities</div>
+          </div>
+        </div>
+        <ul class="bmc-items">
+          <li class="bmc-item"><strong>Adaptive engine development</strong> — the algorithm that fits module length to ride duration and user state</li>
+          <li class="bmc-item"><strong>Content curation & QA</strong> — evaluating and packaging educator content into commute-sized chunks</li>
+          <li class="bmc-item"><strong>Offline sync logic</strong> — pre-loading content before tunnels/dead zones</li>
+          <li class="bmc-item"><strong>B2B sales & partnerships</strong> — signing employers and transport operators</li>
+          <li class="bmc-item"><strong>User habit design</strong> — streak mechanics, progress tracking, push-notification timing</li>
+        </ul>
+        <div class="justification">
+          <span class="just-label">Justification</span>
+          The adaptive engine is our <strong>core technical moat</strong> — any competitor can copy content, but calibrating to ride duration + user energy level requires proprietary data. Offline sync is non-negotiable: Paris Métro line 4 loses signal for 12 min straight. Habit design is key because without it the app opens once and dies — commuters need the same loop-reward cycle as Duolingo.
+        </div>
+      </div>
+
+      <!-- 3. VALUE PROPOSITION (centre) -->
+      <div class="bmc-cell bmc-vp">
+        <div class="cell-header">
+          <span class="cell-emoji">💡</span>
+          <div class="cell-header-text">
+            <div class="cell-label">Block 3 — Centre of the Canvas</div>
+            <div class="cell-title">Value Propositions</div>
+          </div>
+        </div>
+        <ul class="bmc-items">
+          <li class="bmc-item"><strong>For commuters:</strong> Turn 300–500 hours of dead time per year into measurable personal growth — no extra time commitment required</li>
+          <li class="bmc-item"><strong>Commute-native design:</strong> One-handed, offline-ready, noise-tolerant — built for the metro, not repurposed from a laptop LMS</li>
+          <li class="bmc-item"><strong>Adaptive ride fit:</strong> 7-minute ride → 6-min sprint. 40-minute ride → structured module. The app meets your commute, not vice versa</li>
+          <li class="bmc-item"><strong>For employers:</strong> Upskilling that happens inside the employee's already-existing routine — no training day, no calendar block, no attrition to Zoom fatigue</li>
+          <li class="bmc-item"><strong>Measurable progress:</strong> Certificates, skill badges, and progress reports employers can act on</li>
+        </ul>
+        <div class="justification">
+          <span class="just-label">Justification</span>
+          Every existing solution forces a <em>behaviour change</em> ("open this app specifically to learn"). Our VP eliminates that friction — the trigger already exists (being on the train). The employer angle is critical: it reframes the product from a consumer cost to a <strong>business expense with measurable ROI</strong>, unlocking a much higher willingness to pay. Offline-readiness is not a feature — it is table stakes for a commute product, and no direct competitor has solved it well.
+        </div>
+      </div>
+
+      <!-- 4. CUSTOMER RELATIONSHIPS -->
+      <div class="bmc-cell bmc-cr">
+        <div class="cell-header">
+          <span class="cell-emoji">💬</span>
+          <div class="cell-header-text">
+            <div class="cell-label">Block 4</div>
+            <div class="cell-title">Customer Relationships</div>
+          </div>
+        </div>
+        <ul class="bmc-items">
+          <li class="bmc-item"><strong>Personalised AI companion</strong> — weekly summaries, nudges timed to the user's typical commute window</li>
+          <li class="bmc-item"><strong>Streak & milestone system</strong> — gamified retention without forcing daily logins</li>
+          <li class="bmc-item"><strong>B2B account management</strong> — dedicated CSM for companies with 50+ seats</li>
+          <li class="bmc-item"><strong>Community forum</strong> — cohort-based learning threads for peer accountability</li>
+        </ul>
+        <div class="justification">
+          <span class="just-label">Justification</span>
+          The <strong>biggest churn risk</strong> is "I'll use it tomorrow." Streak mechanics (Duolingo proven them to 2× retention) directly counter this. Personalised push notifications at 7:58am — when the user is already on the platform — achieve open rates 3× above average because the context perfectly matches the content. B2B clients need human support because their procurement requires dashboards and compliance reports, not just an app store subscription.
+        </div>
+      </div>
+
+      <!-- 5. CUSTOMER SEGMENTS -->
+      <div class="bmc-cell bmc-cs">
+        <div class="cell-header">
+          <span class="cell-emoji">👥</span>
+          <div class="cell-header-text">
+            <div class="cell-label">Block 5</div>
+            <div class="cell-title">Customer Segments</div>
+          </div>
+        </div>
+        <ul class="bmc-items">
+          <li class="bmc-item"><strong>Primary B2C:</strong> Urban employees & students aged 22–40, commuting 45+ min/day in Paris, London, Brussels, Lille — aspirational learners who feel they "never have time"</li>
+          <li class="bmc-item"><strong>Primary B2B:</strong> Mid-to-large employers (200+ employees) with HR/L&D departments seeking scalable, low-friction upskilling with no calendar disruption</li>
+          <li class="bmc-item"><strong>Secondary:</strong> Freelancers seeking certifications to justify rate increases; non-native speakers wanting language improvement on a daily schedule</li>
+          <li class="bmc-item"><strong>Excluded (by design):</strong> Car commuters, remote workers — the commute trigger is the product's foundation; without it the value dissolves</li>
+        </ul>
+        <div class="justification">
+          <span class="just-label">Justification</span>
+          We deliberately exclude car commuters — not laziness, but because <strong>a driver cannot safely engage with a screen</strong>, which is the core interaction mode. The 22–40 bracket is argued by smartphone penetration (98%+), high commute rates in European metros, and being in the phase of life where professional development has real career impact. Choosing <em>two</em> segments (B2C + B2B) enables a freemium-to-enterprise funnel: a company employee discovers the free tier, advocates internally, and triggers a volume purchase.
+        </div>
+      </div>
+
+      <!-- 6. KEY RESOURCES -->
+      <div class="bmc-cell bmc-kr">
+        <div class="cell-header">
+          <span class="cell-emoji">🔑</span>
+          <div class="cell-header-text">
+            <div class="cell-label">Block 6</div>
+            <div class="cell-title">Key Resources</div>
+          </div>
+        </div>
+        <ul class="bmc-items">
+          <li class="bmc-item"><strong>Adaptive recommendation engine</strong> (proprietary ML model + ride-context data)</li>
+          <li class="bmc-item"><strong>Content library</strong> — curated micro-modules across skills, languages, wellness, productivity</li>
+          <li class="bmc-item"><strong>User behavioural data</strong> — the dataset of what content formats work in which commute conditions</li>
+          <li class="bmc-item"><strong>Brand & community</strong> — the "commute productively" identity and early-adopter cohort</li>
+          <li class="bmc-item"><strong>Mobile engineering team</strong> — specialists in offline-first architecture and React Native</li>
+        </ul>
+        <div class="justification">
+          <span class="just-label">Justification</span>
+          The <strong>behavioural dataset is the compounding moat</strong>: the more rides we observe, the better the adaptation engine gets, widening the gap versus any new entrant. Content is a resource, not just an activity — the library depth determines whether users stay past week 3 when they've exhausted obvious modules. The "offline-first mobile team" is listed explicitly because most engineering talent defaults to always-connected patterns; this specialisation is genuinely scarce.
+        </div>
+      </div>
+
+      <!-- 7. CHANNELS -->
+      <div class="bmc-cell bmc-ch">
+        <div class="cell-header">
+          <span class="cell-emoji">📡</span>
+          <div class="cell-header-text">
+            <div class="cell-label">Block 7</div>
+            <div class="cell-title">Channels</div>
+          </div>
+        </div>
+        <ul class="bmc-items">
+          <li class="bmc-item"><strong>App Store / Play Store</strong> — primary self-serve discovery for B2C</li>
+          <li class="bmc-item"><strong>Transport operator co-marketing</strong> — QR codes on metro platforms, free trials embedded in travel apps (e.g. SNCF Connect)</li>
+          <li class="bmc-item"><strong>Employer HR portals</strong> — distributed via benefits platforms (Alan, Gymlib, Swile) directly to employee dashboards</li>
+          <li class="bmc-item"><strong>Referral loop</strong> — "invite a colleague" mechanic that turns every power user into a B2B lead</li>
+          <li class="bmc-item"><strong>Content marketing</strong> — "commute productivity" vertical on LinkedIn/TikTok feeding awareness and SEO</li>
+        </ul>
+        <div class="justification">
+          <span class="just-label">Justification</span>
+          App stores alone yield mediocre B2C CAC in a crowded market. <strong>Transport operator placement is a unique moat</strong> — a QR code inside a RATP carriage reaches the exact customer in the exact moment of need, at near-zero marginal cost vs. paid social. The referral loop is critical for B2B: getting one enthusiast employee to share to HR converts 1 user into 500 seats, transforming the unit economics dramatically.
+        </div>
+      </div>
+
+      <!-- 8. COST STRUCTURE -->
+      <div class="bmc-cell bmc-cost">
+        <div class="cell-header">
+          <span class="cell-emoji">💸</span>
+          <div class="cell-header-text">
+            <div class="cell-label">Block 8</div>
+            <div class="cell-title">Cost Structure</div>
+          </div>
+        </div>
+        <table class="cost-table">
+          <thead>
+            <tr>
+              <th>Cost Driver</th>
+              <th>Nature</th>
+              <th>Justification</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Engineering (mobile + ML)</td>
+              <td>Fixed — largest line</td>
+              <td>Offline-first + adaptive engine requires senior React Native & ML engineers; cannot be outsourced cheaply without losing quality</td>
+            </tr>
+            <tr>
+              <td>Content licensing / creator rev-share</td>
+              <td>Variable with scale</td>
+              <td>Pay-per-completion or revenue share with educators; aligns their incentive with engagement depth, not just upload volume</td>
+            </tr>
+            <tr>
+              <td>Cloud infra (storage, CDN, sync)</td>
+              <td>Variable, low per-user</td>
+              <td>Pre-fetching content to devices before tunnel entry requires CDN edge nodes; cost grows linearly but is sub-€0.10/user/month at scale</td>
+            </tr>
+            <tr>
+              <td>B2B sales & account management</td>
+              <td>Semi-fixed</td>
+              <td>Necessary for enterprise deals; one CSM manages up to 40 accounts — cost amortised quickly at €5k+/yr per client</td>
+            </tr>
+            <tr>
+              <td>Marketing & acquisition</td>
+              <td>Variable, front-loaded</td>
+              <td>Paid UA + partnership activation in launch city; drops sharply once referral and transport partnerships take over</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="justification" style="margin-top:12px;">
+          <span class="just-label">Cost Philosophy</span>
+          The model is <strong>value-driven, not cost-driven</strong> — we accept higher engineering spend to protect the core offline/adaptive differentiator. We do <em>not</em> cut corners on content quality because low-quality modules destroy retention faster than any other variable. Fixed costs dominate early; the variable cost base per user is modest, giving healthy gross margins at scale (~70%+ on B2B SaaS).
+        </div>
+      </div>
+
+      <!-- 9. REVENUE STREAMS -->
+      <div class="bmc-cell bmc-rev">
+        <div class="cell-header">
+          <span class="cell-emoji">💰</span>
+          <div class="cell-header-text">
+            <div class="cell-label">Block 9</div>
+            <div class="cell-title">Revenue Streams</div>
+          </div>
+        </div>
+        <div class="rev-split">
+          <div class="rev-bar-row">
+            <span class="rev-bar-label">B2B Seat Licences</span>
+            <div class="rev-bar-track"><div class="rev-bar-fill" style="width:55%;background:linear-gradient(90deg,#22c55e,#4ade80)"></div></div>
+            <span class="rev-bar-pct">55%</span>
+          </div>
+          <div class="rev-bar-row">
+            <span class="rev-bar-label">B2C Premium Sub</span>
+            <div class="rev-bar-track"><div class="rev-bar-fill" style="width:30%;background:linear-gradient(90deg,#6366f1,#818cf8)"></div></div>
+            <span class="rev-bar-pct">30%</span>
+          </div>
+          <div class="rev-bar-row">
+            <span class="rev-bar-label">Transport Partnerships</span>
+            <div class="rev-bar-track"><div class="rev-bar-fill" style="width:10%;background:linear-gradient(90deg,#f97316,#fb923c)"></div></div>
+            <span class="rev-bar-pct">10%</span>
+          </div>
+          <div class="rev-bar-row">
+            <span class="rev-bar-label">Cert. / Course Sales</span>
+            <div class="rev-bar-track"><div class="rev-bar-fill" style="width:5%;background:linear-gradient(90deg,#eab308,#facc15)"></div></div>
+            <span class="rev-bar-pct">5%</span>
+          </div>
+        </div>
+        <ul class="bmc-items" style="margin-top:12px;">
+          <li class="bmc-item"><strong>B2B annual seat licences</strong> — €8–15/employee/month billed to HR budget; predictable ARR and high LTV</li>
+          <li class="bmc-item"><strong>B2C freemium → €7.99/month premium</strong> — unlimited modules, offline cache, skill-tracking, certificates</li>
+          <li class="bmc-item"><strong>Transport operator white-label / sponsorship</strong> — operator pays for branded "productive commute" initiative to differentiate their network</li>
+          <li class="bmc-item"><strong>One-off course/certificate purchases</strong> — e.g. €29 for an accredited language certificate earned entirely over commutes</li>
+        </ul>
+        <div class="justification" style="margin-top:10px;">
+          <span class="just-label">Justification</span>
+          We lead with B2B because the <strong>ACV is 10–20× higher</strong> per "user" than B2C subscriptions, and churn is far lower (annual contracts, HR approval process creates switching cost). B2C freemium is the acquisition engine — it fills the top of the B2B funnel for free. Transport partnerships de-risk CAC entirely in that channel. Avoiding ads as a revenue stream is deliberate: in a productivity app, serving ads is a contradictory value proposition and would undermine user trust immediately.
+        </div>
+      </div>
+
+    </div>
+    <!-- ════════════════ END CANVAS ════════════════ -->
+
+    <!-- ── Deep Justification Cards ── -->
+    <div class="deep-section">
+      <div class="deep-section-title">Why Each Decision is Non-Obvious</div>
+      <div class="deep-section-sub">The following cards argue the choices that could have gone differently — and why we didn't take the easier path.</div>
+
+      <div class="deep-grid">
+
+        <div class="deep-card">
+          <div class="deep-card-header">
+            <div class="deep-card-icon" style="background:rgba(99,102,241,0.15);">🎯</div>
+            <div>
+              <div class="deep-card-label">Value Proposition</div>
+              <div class="deep-card-title">Why not just build a podcast app?</div>
+            </div>
+          </div>
+          <div class="deep-card-body">
+            Podcasts exist. Spotify exists. The gap isn't <em>more audio content</em> — it's the absence of <strong>structured progression designed for commute constraints</strong>. A podcast doesn't know you have 8 minutes today; it doesn't save your place intelligently; it doesn't track whether you've absorbed anything. Our VP is precisely this adaptiveness — without it we're a worse Spotify.
+          </div>
+        </div>
+
+        <div class="deep-card">
+          <div class="deep-card-header">
+            <div class="deep-card-icon" style="background:rgba(34,197,94,0.15);">💼</div>
+            <div>
+              <div class="deep-card-label">Revenue Streams</div>
+              <div class="deep-card-title">Why lead with B2B instead of scaling B2C first?</div>
+            </div>
+          </div>
+          <div class="deep-card-body">
+            Consumer EdTech has brutal unit economics: high CAC, 40%+ annual churn, price sensitivity at €8/month. B2B contracts at €12/seat/month × 500 employees = €72k ARR from a single deal. <strong>One enterprise close equals ~750 B2C subscribers</strong> paying for a full year. We use B2C as a discovery funnel that generates warm B2B leads — not as the primary revenue engine.
+          </div>
+        </div>
+
+        <div class="deep-card">
+          <div class="deep-card-header">
+            <div class="deep-card-icon" style="background:rgba(239,68,68,0.15);">🚫</div>
+            <div>
+              <div class="deep-card-label">Customer Segments</div>
+              <div class="deep-card-title">Why deliberately exclude car commuters?</div>
+            </div>
+          </div>
+          <div class="deep-card-body">
+            A larger TAM is not always better. Car commuters cannot use a screen safely, and an audio-only offshoot dilutes our core differentiator (visual micro-modules, interactive exercises). <strong>Serving them poorly to grow the addressable market would destroy the product integrity</strong> and send mixed signals to investors, partners, and content creators. Better to own one context perfectly than two contexts adequately.
+          </div>
+        </div>
+
+        <div class="deep-card">
+          <div class="deep-card-header">
+            <div class="deep-card-icon" style="background:rgba(234,179,8,0.15);">🏗️</div>
+            <div>
+              <div class="deep-card-label">Key Resources</div>
+              <div class="deep-card-title">Why is the behavioural dataset listed as a key resource?</div>
+            </div>
+          </div>
+          <div class="deep-card-body">
+            Unlike content (replicable) or a brand (buildable), <strong>proprietary commute-context data is non-copyable</strong>. What module formats survive 10-minute fragmented attention spans on a shaking train at 8am? Which topics convert passive listeners into active learners before 9am? This data only exists if you've run the product at scale. It becomes a self-reinforcing moat: more rides → better adaptation → better retention → more data.
+          </div>
+        </div>
+
+        <div class="deep-card">
+          <div class="deep-card-header">
+            <div class="deep-card-icon" style="background:rgba(249,115,22,0.15);">🤝</div>
+            <div>
+              <div class="deep-card-label">Key Partners</div>
+              <div class="deep-card-title">Why partner with transport operators at all?</div>
+            </div>
+          </div>
+          <div class="deep-card-body">
+            RATP carries 3.8M passengers/day. A single co-marketing agreement — QR codes at platforms, integration into their app — gives us <strong>zero-marginal-cost access to our exact target segment in the exact purchase moment</strong>. The alternative is Facebook/Instagram ads at €4–8 per install with <20% retention. Transport operators also benefit: "smarter commute" is a differentiator for their brand as remote work erodes ridership.
+          </div>
+        </div>
+
+        <div class="deep-card">
+          <div class="deep-card-header">
+            <div class="deep-card-icon" style="background:rgba(168,85,247,0.15);">💸</div>
+            <div>
+              <div class="deep-card-label">Cost Structure</div>
+              <div class="deep-card-title">Why not outsource the engineering to cut burn?</div>
+            </div>
+          </div>
+          <div class="deep-card-body">
+            Offline-first sync, adaptive ML, and sub-2-second UI on a shaking metro are <strong>genuinely hard engineering problems</strong> that junior agencies get wrong. One bad offline sync bug (user opens app, no content, no signal) creates an immediate uninstall. The adaptive engine is our core IP. These are the two areas where we spend on quality — everything else (design systems, content CMS, analytics) can be commoditised or delayed.
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Nav footer -->
+    <div class="nav-footer">
+      <a href="problem.html" class="nav-link">← The Problem</a>
+      <a href="problem2.html" class="nav-link">Ideation Techniques</a>
+      <a href="index.html" class="nav-link">Take the Test →</a>
+    </div>
+
+  </main>
+
+  <script>
+    function setTheme(t) {
+      document.body.setAttribute("data-theme", t);
+      localStorage.setItem("tfa_theme", t);
+      document.getElementById("themeIcon").textContent = t === "light" ? "☀️" : "🌙";
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const saved = localStorage.getItem("tfa_theme");
+      setTheme(saved === "light" ? "light" : "dark");
+      document.getElementById("themeToggle").addEventListener("click", () => {
+        setTheme(document.body.getAttribute("data-theme") === "dark" ? "light" : "dark");
+      });
+    });
+  </script>
+</body>
+</html>
