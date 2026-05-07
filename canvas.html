@@ -195,12 +195,18 @@
     }
 
     /* ── BMC Grid ── */
+    .bmc-wrap {
+      overflow-x: auto;
+      margin-bottom: 32px;
+      padding-bottom: 4px;
+    }
+
     .bmc-grid {
       display: grid;
-      grid-template-columns: repeat(10, 1fr);
+      grid-template-columns: repeat(10, minmax(120px, 1fr));
       grid-template-rows: auto auto auto;
       gap: 10px;
-      margin-bottom: 32px;
+      min-width: 900px;
     }
 
     /* Column spans */
@@ -218,15 +224,15 @@
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: 16px;
-      padding: 20px 22px;
+      padding: 16px 18px 18px 22px;
       box-shadow: var(--shadow);
       backdrop-filter: blur(8px);
       position: relative;
-      overflow: hidden;
+      overflow: visible;
       transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 8px;
     }
 
     .bmc-cell:hover {
@@ -239,9 +245,9 @@
     .bmc-cell::before {
       content: '';
       position: absolute;
-      left: 0; top: 0; bottom: 0;
+      left: 0; top: 8px; bottom: 8px;
       width: 4px;
-      border-radius: 16px 0 0 16px;
+      border-radius: 4px;
       background: var(--cell-accent, linear-gradient(180deg, var(--accent), transparent));
     }
 
@@ -308,9 +314,9 @@
     }
 
     .bmc-item {
-      font-size: 13px;
+      font-size: 12.5px;
       color: var(--text-secondary);
-      line-height: 1.55;
+      line-height: 1.5;
       padding-left: 14px;
       position: relative;
     }
@@ -331,12 +337,12 @@
 
     /* Justification tooltip-style box */
     .justification {
-      margin-top: 6px;
-      padding: 10px 12px;
+      margin-top: 4px;
+      padding: 9px 11px;
       background: rgba(99,102,241,0.07);
       border: 1px solid rgba(99,102,241,0.18);
       border-radius: 10px;
-      font-size: 12px;
+      font-size: 11.5px;
       color: var(--text-secondary);
       line-height: 1.6;
     }
@@ -401,34 +407,50 @@
     }
 
     /* Cost table */
+    .cost-table-wrap {
+      overflow-x: auto;
+      margin-top: 6px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+
     .cost-table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 13px;
-      margin-top: 6px;
+      font-size: 12.5px;
     }
 
     .cost-table th {
       text-align: left;
-      font-size: 11px;
+      font-size: 10.5px;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.06em;
       color: var(--text-secondary);
-      padding: 0 8px 8px 0;
+      padding: 9px 12px;
       border-bottom: 1px solid var(--border);
+      background: rgba(255,255,255,0.03);
+      white-space: nowrap;
     }
+
+    [data-theme="light"] .cost-table th { background: rgba(0,0,0,0.03); }
 
     .cost-table td {
-      padding: 7px 8px 7px 0;
+      padding: 8px 12px;
       color: var(--text-secondary);
-      border-bottom: 1px solid rgba(255,255,255,0.04);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
       vertical-align: top;
-      line-height: 1.5;
+      line-height: 1.55;
     }
 
-    .cost-table td:first-child { color: var(--text-primary); font-weight: 600; white-space: nowrap; }
+    [data-theme="light"] .cost-table td { border-bottom-color: rgba(0,0,0,0.05); }
+
+    .cost-table tr:last-child td { border-bottom: none; }
+    .cost-table td:first-child { color: var(--text-primary); font-weight: 600; white-space: nowrap; width: 180px; }
+    .cost-table td:nth-child(2) { color: var(--accent); font-weight: 600; white-space: nowrap; width: 110px; }
     .cost-table td strong { color: var(--text-primary); }
+
+    .cost-table tr:hover td { background: rgba(99,102,241,0.04); }
 
     /* Section intro */
     .section-intro {
@@ -549,14 +571,9 @@
       flex-wrap: wrap;
     }
 
-    /* Mobile fallback: stack the canvas */
+    /* Mobile fallback: allow horizontal scroll, cells stay in grid */
     @media (max-width: 900px) {
-      .bmc-grid {
-        display: flex;
-        flex-direction: column;
-      }
-
-      .bmc-cell { min-height: 0; }
+      .bmc-wrap { border-radius: 12px; }
     }
 
     @media (max-width: 560px) {
@@ -634,6 +651,7 @@
     </div>
 
     <!-- ════════════════ BUSINESS MODEL CANVAS ════════════════ -->
+    <div class="bmc-wrap">
     <div class="bmc-grid">
 
       <!-- 1. KEY PARTNERS -->
@@ -797,42 +815,44 @@
             <div class="cell-title">Cost Structure</div>
           </div>
         </div>
-        <table class="cost-table">
-          <thead>
-            <tr>
-              <th>Cost Driver</th>
-              <th>Nature</th>
-              <th>Justification</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Engineering (mobile + ML)</td>
-              <td>Fixed — largest line</td>
-              <td>Offline-first + adaptive engine requires senior React Native & ML engineers; cannot be outsourced cheaply without losing quality</td>
-            </tr>
-            <tr>
-              <td>Content licensing / creator rev-share</td>
-              <td>Variable with scale</td>
-              <td>Pay-per-completion or revenue share with educators; aligns their incentive with engagement depth, not just upload volume</td>
-            </tr>
-            <tr>
-              <td>Cloud infra (storage, CDN, sync)</td>
-              <td>Variable, low per-user</td>
-              <td>Pre-fetching content to devices before tunnel entry requires CDN edge nodes; cost grows linearly but is sub-€0.10/user/month at scale</td>
-            </tr>
-            <tr>
-              <td>B2B sales & account management</td>
-              <td>Semi-fixed</td>
-              <td>Necessary for enterprise deals; one CSM manages up to 40 accounts — cost amortised quickly at €5k+/yr per client</td>
-            </tr>
-            <tr>
-              <td>Marketing & acquisition</td>
-              <td>Variable, front-loaded</td>
-              <td>Paid UA + partnership activation in launch city; drops sharply once referral and transport partnerships take over</td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="cost-table-wrap">
+          <table class="cost-table">
+            <thead>
+              <tr>
+                <th>Cost Driver</th>
+                <th>Nature</th>
+                <th>Why we accept this cost</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Engineering (mobile + ML)</td>
+                <td>Fixed — largest</td>
+                <td>Offline-first + adaptive engine requires senior React Native &amp; ML engineers; cannot be outsourced without losing the core differentiator</td>
+              </tr>
+              <tr>
+                <td>Content licensing / rev-share</td>
+                <td>Variable with scale</td>
+                <td>Pay-per-completion aligns educator incentives with engagement depth, not just upload volume</td>
+              </tr>
+              <tr>
+                <td>Cloud infra (CDN, sync)</td>
+                <td>Variable, low/user</td>
+                <td>Pre-fetching before tunnels requires edge CDN; sub-€0.10/user/month at scale — acceptable for the offline guarantee</td>
+              </tr>
+              <tr>
+                <td>B2B sales &amp; CSM</td>
+                <td>Semi-fixed</td>
+                <td>One CSM covers 40 accounts; cost amortised quickly at €5k+/yr per enterprise client</td>
+              </tr>
+              <tr>
+                <td>Marketing &amp; acquisition</td>
+                <td>Variable, front-loaded</td>
+                <td>Paid UA only for launch; drops sharply once transport partnerships + referral loop take over</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
         <div class="justification" style="margin-top:12px;">
           <span class="just-label">Cost Philosophy</span>
           The model is <strong>value-driven, not cost-driven</strong> — we accept higher engineering spend to protect the core offline/adaptive differentiator. We do <em>not</em> cut corners on content quality because low-quality modules destroy retention faster than any other variable. Fixed costs dominate early; the variable cost base per user is modest, giving healthy gross margins at scale (~70%+ on B2B SaaS).
@@ -884,6 +904,7 @@
 
     </div>
     <!-- ════════════════ END CANVAS ════════════════ -->
+    </div><!-- /.bmc-wrap -->
 
     <!-- ── Deep Justification Cards ── -->
     <div class="deep-section">
