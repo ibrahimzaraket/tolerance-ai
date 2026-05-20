@@ -36,7 +36,12 @@
       --shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
     }
 
-    * { box-sizing: border-box; }
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html, body {
+      max-width: 100%;
+      overflow-x: hidden;
+    }
 
     body {
       font-family: 'Inter', sans-serif;
@@ -60,11 +65,12 @@
     .header-content {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 0 20px;
+      padding: 0 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 14px;
+      gap: 10px;
+      flex-wrap: wrap;
     }
 
     .logo {
@@ -119,7 +125,7 @@
     main {
       max-width: 1200px;
       margin: 36px auto 60px;
-      padding: 0 20px;
+      padding: 0 16px;
     }
 
     .hero {
@@ -208,7 +214,7 @@
       margin-bottom: 10px;
     }
 
-    @media (max-width: 800px) {
+    @media (max-width: 700px) {
       .methods-grid { grid-template-columns: 1fr; }
     }
 
@@ -265,13 +271,14 @@
 
     .meta-pill {
       display: inline-flex;
-      align-items: center;
+      align-items: flex-start;
       gap: 5px;
       padding: 4px 10px;
-      border-radius: 999px;
+      border-radius: 10px;
       font-size: 12px;
       font-weight: 600;
-      white-space: nowrap;
+      white-space: normal;
+      word-break: break-word;
     }
 
     .pill-source {
@@ -360,9 +367,21 @@
     }
 
     @media (max-width: 720px) {
-      .header-right { gap: 10px; }
-      .theme-toggle { width: 100%; justify-content: center; }
-      .card { padding: 18px; }
+      .header-right { gap: 8px; }
+      .theme-toggle { justify-content: center; }
+      .card { padding: 16px; }
+      .hero h1 { font-size: clamp(20px, 6vw, 32px); }
+      .hero p { font-size: 14px; }
+      .card-title { font-size: 15px; }
+      .method-desc { font-size: 13px; }
+      .modality-item { font-size: 13px; }
+      .synthesis-card ul { font-size: 14px; }
+    }
+
+    @media (max-width: 420px) {
+      .logo { font-size: 18px; }
+      .byline { font-size: 11px; }
+      .card { padding: 14px; }
     }
   </style>
 </head>
