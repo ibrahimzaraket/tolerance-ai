@@ -7,55 +7,60 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 
   <style>
     :root {
       --bg-primary: #0a0a0b;
       --bg-secondary: #111114;
-      --bg-card: rgba(255,255,255,0.05);
-      --text-primary: #ffffff;
-      --text-secondary: #a0a0a5;
+      --bg-card: rgba(255,255,255,0.04);
+      --text-primary: #f0f0f2;
+      --text-secondary: #8a8a92;
+      --text-body: #c8c8d0;
       --accent: #6366f1;
       --accent-hover: #818cf8;
-      --border: rgba(255,255,255,0.1);
-      --glass-bg: rgba(255,255,255,0.1);
-      --shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+      --accent-muted: rgba(99,102,241,0.12);
+      --border: rgba(255,255,255,0.08);
+      --border-strong: rgba(255,255,255,0.14);
+      --glass-bg: rgba(255,255,255,0.06);
+      --shadow: 0 4px 24px rgba(0,0,0,0.4);
+      --rule: rgba(255,255,255,0.08);
     }
 
     [data-theme="light"] {
-      --bg-primary: #f8fafc;
-      --bg-secondary: #f1f5f9;
-      --bg-card: rgba(255,255,255,0.9);
-      --text-primary: #0f172a;
-      --text-secondary: #64748b;
+      --bg-primary: #fafaf9;
+      --bg-secondary: #f4f4f0;
+      --bg-card: #ffffff;
+      --text-primary: #111110;
+      --text-secondary: #6b6b6f;
+      --text-body: #3a3a3e;
       --accent: #4f46e5;
       --accent-hover: #3730a3;
-      --border: rgba(0,0,0,0.08);
-      --glass-bg: rgba(255,255,255,0.8);
-      --shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+      --accent-muted: rgba(79,70,229,0.08);
+      --border: rgba(0,0,0,0.07);
+      --border-strong: rgba(0,0,0,0.12);
+      --glass-bg: rgba(0,0,0,0.03);
+      --shadow: 0 2px 12px rgba(0,0,0,0.07);
+      --rule: rgba(0,0,0,0.08);
     }
 
     *, *::before, *::after { box-sizing: border-box; }
-
-    html, body {
-      max-width: 100%;
-      overflow-x: hidden;
-    }
+    html, body { max-width: 100%; overflow-x: hidden; }
 
     body {
       font-family: 'Inter', sans-serif;
       margin: 0;
       background: var(--bg-primary);
       color: var(--text-primary);
-      line-height: 1.6;
+      line-height: 1.65;
       transition: background 0.3s ease, color 0.3s ease;
     }
 
+    /* ── HEADER ── */
     header {
       background: var(--bg-secondary);
       backdrop-filter: blur(18px);
-      padding: 18px 0;
+      padding: 14px 0;
       position: sticky;
       top: 0;
       z-index: 50;
@@ -63,9 +68,9 @@
     }
 
     .header-content {
-      max-width: 1200px;
+      max-width: 860px;
       margin: 0 auto;
-      padding: 0 16px;
+      padding: 0 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -74,314 +79,443 @@
     }
 
     .logo {
-      font-size: 24px;
+      font-size: 15px;
       font-weight: 800;
-      letter-spacing: -0.02em;
+      letter-spacing: 0.01em;
       background: linear-gradient(135deg, var(--accent), var(--accent-hover));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
       user-select: none;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
     }
 
     .header-right {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
       flex-wrap: wrap;
       justify-content: flex-end;
-      text-align: right;
-    }
-
-    .byline {
-      font-size: 13px;
-      opacity: 0.85;
-      font-weight: 500;
-      white-space: nowrap;
     }
 
     .theme-toggle {
-      background: var(--glass-bg);
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      padding: 10px 14px;
+      background: transparent;
+      border: 1px solid var(--border-strong);
+      border-radius: 8px;
+      padding: 6px 12px;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       transition: all 0.2s ease;
-      color: var(--text-primary);
-      font-weight: 700;
-      font-size: 14px;
+      color: var(--text-secondary);
+      font-weight: 600;
+      font-size: 12px;
+      font-family: 'Inter', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
     }
 
     .theme-toggle:hover {
-      transform: translateY(-1px);
-      border-color: rgba(99,102,241,0.45);
-      background: rgba(99,102,241,0.08);
-      box-shadow: 0 6px 16px rgba(99,102,241,0.15);
+      border-color: var(--accent);
+      color: var(--accent);
     }
 
-    main {
-      max-width: 1200px;
-      margin: 36px auto 60px;
-      padding: 0 16px;
+    /* ── DOCUMENT WRAPPER ── */
+    .document {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 20px 80px;
     }
 
-    .hero {
-      text-align: center;
-      margin: 8px 0 30px;
+    /* ── COVER BLOCK ── */
+    .cover {
+      border-bottom: 2px solid var(--accent);
+      padding: 52px 0 36px;
+      margin-bottom: 48px;
     }
 
-    .hero h1 {
-      margin: 0 0 10px;
-      font-size: clamp(24px, 4vw, 40px);
-      line-height: 1.1;
-      letter-spacing: -0.03em;
-      background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+    .cover-meta {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--accent);
+      margin-bottom: 18px;
     }
 
-    .hero .subtitle {
+    .cover h1 {
+      font-family: 'Crimson Pro', Georgia, serif;
+      font-size: clamp(28px, 5vw, 46px);
+      font-weight: 600;
+      line-height: 1.12;
+      letter-spacing: -0.01em;
+      color: var(--text-primary);
+      margin: 0 0 12px;
+    }
+
+    .cover-lead {
+      font-size: 15px;
+      color: var(--text-body);
+      max-width: 640px;
+      line-height: 1.7;
+      margin-bottom: 32px;
+    }
+
+    .cover-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .authors-block {}
+
+    .authors-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 700;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+
+    .authors-list {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .author-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
+    }
+
+    .cover-details {
+      text-align: right;
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.8;
+    }
+
+    .cover-details strong {
+      color: var(--text-body);
+      font-weight: 600;
+    }
+
+    /* ── TOC ── */
+    .toc {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 10px;
+      padding: 20px 24px;
+      margin-bottom: 48px;
+    }
+
+    .toc-title {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 700;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+    }
+
+    .toc-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .toc-list li {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
       font-size: 13px;
+    }
+
+    .toc-num {
       font-weight: 700;
       color: var(--accent);
-      letter-spacing: 0.08em;
+      min-width: 20px;
+    }
+
+    .toc-dots {
+      flex: 1;
+      border-bottom: 1px dotted var(--border-strong);
+      margin: 0 4px 3px;
+    }
+
+    .toc-list a {
+      color: var(--text-body);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.15s;
+    }
+
+    .toc-list a:hover { color: var(--accent); }
+
+    /* ── SECTION ── */
+    .section {
+      margin-bottom: 52px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      margin-bottom: 6px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .section-num {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--accent);
       text-transform: uppercase;
+      letter-spacing: 0.1em;
+      white-space: nowrap;
+    }
+
+    .section-title {
+      font-family: 'Crimson Pro', Georgia, serif;
+      font-size: clamp(18px, 3vw, 24px);
+      font-weight: 600;
+      color: var(--text-primary);
+      margin: 0;
+      letter-spacing: -0.01em;
+    }
+
+    .section-intro {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin: 10px 0 24px;
+      line-height: 1.65;
+    }
+
+    /* ── METHOD ENTRY ── */
+    .method-entry {
+      margin-bottom: 28px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .method-entry:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .method-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
       margin-bottom: 10px;
     }
 
-    .hero p {
-      margin: 0 auto;
-      max-width: 800px;
-      color: var(--text-secondary);
-      font-size: 16px;
-    }
-
-    .card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 28px;
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(8px);
-      margin-bottom: 24px;
-    }
-
-    .card-title {
-      font-size: 18px;
-      font-weight: 700;
-      margin: 0 0 18px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      color: var(--text-primary);
-    }
-
-    .card-title .icon {
-      width: 32px;
-      height: 32px;
-      border-radius: 10px;
-      background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+    .method-index {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      background: var(--accent-muted);
+      border: 1px solid rgba(99,102,241,0.2);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 16px;
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--accent);
       flex-shrink: 0;
+      margin-top: 2px;
     }
 
-    /* Approach section headers */
-    .approach-header {
-      background: linear-gradient(135deg, rgba(99,102,241,0.10), rgba(99,102,241,0.04));
-      border: 1px solid rgba(99,102,241,0.22);
-      border-radius: 14px;
-      padding: 12px 18px;
-      margin: 24px 0 14px;
+    .method-title {
       font-size: 15px;
       font-weight: 700;
-      color: var(--accent);
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
+      color: var(--text-primary);
+      line-height: 1.3;
     }
 
-    /* Methods grid */
-    .methods-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 16px;
-      margin-bottom: 10px;
-    }
-
-    @media (max-width: 700px) {
-      .methods-grid { grid-template-columns: 1fr; }
-    }
-
-    .method-card {
-      background: rgba(255,255,255,0.03);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 20px;
-      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-      position: relative;
-      overflow: hidden;
-    }
-
-    [data-theme="light"] .method-card { background: rgba(0,0,0,0.02); }
-
-    .method-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, var(--accent), transparent);
-      opacity: 0;
-      transition: opacity 0.2s ease;
-    }
-
-    .method-card:hover {
-      transform: translateY(-3px);
-      border-color: rgba(99,102,241,0.3);
-      box-shadow: 0 12px 24px rgba(99,102,241,0.15);
-    }
-
-    .method-card:hover::before { opacity: 1; }
-
-    .method-name {
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--accent);
-      letter-spacing: 0.04em;
-      margin-bottom: 8px;
+    .method-body {
+      padding-left: 42px;
     }
 
     .method-desc {
       font-size: 14px;
-      color: var(--text-primary);
+      color: var(--text-body);
+      line-height: 1.7;
       margin-bottom: 12px;
-      line-height: 1.55;
     }
 
-    .meta-row {
+    .method-tags {
       display: flex;
-      gap: 8px;
       flex-wrap: wrap;
+      gap: 8px;
     }
 
-    .meta-pill {
+    .tag {
       display: inline-flex;
       align-items: flex-start;
       gap: 5px;
       padding: 4px 10px;
-      border-radius: 10px;
+      border-radius: 6px;
       font-size: 12px;
-      font-weight: 600;
-      white-space: normal;
+      font-weight: 500;
+      line-height: 1.5;
       word-break: break-word;
     }
 
-    .pill-source {
-      background: rgba(34,197,94,0.12);
-      border: 1px solid rgba(34,197,94,0.25);
+    .tag-source {
+      background: rgba(34,197,94,0.08);
+      border: 1px solid rgba(34,197,94,0.2);
       color: #4ade80;
     }
 
-    [data-theme="light"] .pill-source { color: #16a34a; }
+    [data-theme="light"] .tag-source { color: #15803d; background: rgba(34,197,94,0.06); }
 
-    .pill-limit {
-      background: rgba(239,68,68,0.10);
-      border: 1px solid rgba(239,68,68,0.22);
+    .tag-limit {
+      background: rgba(239,68,68,0.07);
+      border: 1px solid rgba(239,68,68,0.18);
       color: #f87171;
     }
 
-    [data-theme="light"] .pill-limit { color: #dc2626; }
+    [data-theme="light"] .tag-limit { color: #b91c1c; background: rgba(239,68,68,0.05); }
 
-    /* Synthesis card */
-    .synthesis-card {
-      background: linear-gradient(135deg, rgba(99,102,241,0.10), rgba(99,102,241,0.04));
-      border: 1px solid rgba(99,102,241,0.22);
-      border-radius: 16px;
-      padding: 22px;
+    /* ── APPROACH GROUP DIVIDER ── */
+    .approach-label {
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-secondary);
+      margin-bottom: 20px;
+      padding: 8px 12px;
+      background: var(--glass-bg);
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      display: inline-block;
     }
 
-    .synthesis-card ul {
+    /* ── CALLOUT (synthesis / note) ── */
+    .callout {
+      background: var(--accent-muted);
+      border: 1px solid rgba(99,102,241,0.2);
+      border-left: 3px solid var(--accent);
+      border-radius: 8px;
+      padding: 18px 20px;
+      font-size: 14px;
+      color: var(--text-body);
+      line-height: 1.7;
+    }
+
+    .callout + .callout { margin-top: 12px; }
+
+    .callout ul {
       margin: 0;
-      padding-left: 20px;
-      color: var(--text-primary);
-      font-size: 15px;
-      line-height: 1.8;
+      padding-left: 18px;
     }
 
-    .synthesis-card ul li { margin-bottom: 4px; }
+    .callout ul li { margin-bottom: 6px; }
+    .callout ul li:last-child { margin-bottom: 0; }
 
-    /* Modalities section */
-    .modalities-list {
+    .callout strong { color: var(--text-primary); font-weight: 700; }
+
+    /* ── MODALITIES ── */
+    .modality-list {
+      counter-reset: mod;
+      list-style: none;
+      margin: 0;
+      padding: 0;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 0;
     }
 
-    .modality-item {
-      background: var(--glass-bg);
-      border: 1px solid var(--border);
-      border-left: 4px solid var(--accent);
-      border-radius: 12px;
-      padding: 14px 16px;
+    .modality-list li {
+      counter-increment: mod;
+      display: flex;
+      gap: 16px;
+      padding: 18px 0;
+      border-bottom: 1px solid var(--rule);
       font-size: 14px;
-      color: var(--text-primary);
-      line-height: 1.55;
-      transition: background 0.2s ease, border-left-color 0.2s ease;
+      color: var(--text-body);
+      line-height: 1.7;
     }
 
-    .modality-item:hover {
-      background: rgba(99,102,241,0.06);
-      border-left-color: var(--accent-hover);
-    }
+    .modality-list li:last-child { border-bottom: none; }
 
-    .modality-item strong {
+    .modality-list li::before {
+      content: counter(mod, decimal-leading-zero);
+      font-size: 11px;
+      font-weight: 800;
       color: var(--accent);
-      font-weight: 700;
+      min-width: 24px;
+      padding-top: 3px;
+      flex-shrink: 0;
     }
 
-    .note {
-      margin-top: 20px;
+    .modality-list li strong {
+      color: var(--text-primary);
+      font-weight: 700;
+      display: block;
+      margin-bottom: 4px;
+      font-size: 14px;
+    }
+
+    .modality-text { flex: 1; }
+
+    /* ── KEY PRINCIPLE ── */
+    .key-principle {
+      margin-top: 24px;
+      padding: 16px 20px;
+      border: 1px solid var(--border-strong);
+      border-radius: 8px;
+      background: var(--bg-card);
       font-size: 13px;
       color: var(--text-secondary);
-      padding: 14px 16px;
-      background: var(--glass-bg);
-      border-radius: 14px;
-      border-left: 4px solid rgba(99,102,241,0.4);
+      line-height: 1.65;
     }
 
-    .pill {
-      display: inline-block;
-      padding: 2px 10px;
-      border-radius: 999px;
-      background: rgba(99,102,241,0.14);
-      border: 1px solid rgba(99,102,241,0.25);
-      color: var(--text-primary);
-      font-weight: 800;
-      font-size: 12px;
-      vertical-align: baseline;
+    .key-principle strong { color: var(--text-body); }
+
+    /* ── FOOTER ── */
+    .doc-footer {
+      margin-top: 60px;
+      padding-top: 20px;
+      border-top: 1px solid var(--rule);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 11px;
+      color: var(--text-secondary);
     }
 
-    @media (max-width: 720px) {
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .cover { padding: 36px 0 28px; }
+      .cover h1 { font-size: 26px; }
+      .cover-footer { flex-direction: column; align-items: flex-start; }
+      .cover-details { text-align: left; }
+      .method-body { padding-left: 0; }
+      .method-header { flex-direction: row; }
       .header-right { gap: 8px; }
-      .theme-toggle { justify-content: center; }
-      .card { padding: 16px; }
-      .hero h1 { font-size: clamp(20px, 6vw, 32px); }
-      .hero p { font-size: 14px; }
-      .card-title { font-size: 15px; }
-      .method-desc { font-size: 13px; }
-      .modality-item { font-size: 13px; }
-      .synthesis-card ul { font-size: 14px; }
+      .theme-toggle { font-size: 11px; padding: 5px 10px; }
     }
 
     @media (max-width: 420px) {
-      .logo { font-size: 18px; }
-      .byline { font-size: 11px; }
-      .card { padding: 14px; }
+      .logo { font-size: 13px; }
+      .document { padding: 0 14px 60px; }
     }
   </style>
 </head>
@@ -391,197 +525,303 @@
     <div class="header-content">
       <div class="logo">ToleranceAI</div>
       <div class="header-right">
-        <span class="byline">Made By: Ibrahim Zaraket</span>
         <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">
-          <span id="themeIcon">🌙</span>
-          <span style="font-weight:800;">Theme</span>
+          <span id="themeIcon">🌙</span> Theme
         </button>
       </div>
     </div>
   </header>
 
-  <main>
-    <div class="hero">
-      <div class="subtitle">Exercise 1</div>
-      <h1>Estimating Forecast Turnover</h1>
-      <p>
-        Identify and evaluate the different adapted methods to estimate the forecast turnover of your project,
-        and specify the modalities and reasoning behind your choices.
-        <span class="pill">Source: Workshop 4 – Building the Business Plan</span>
+  <div class="document">
+
+    <!-- COVER -->
+    <div class="cover">
+      <div class="cover-meta">M2 IE MBA / IAE Lille &nbsp;·&nbsp; Compagny Creation &amp; Take-Over &nbsp;·&nbsp; Workshop 4</div>
+      <h1>Methods for Estimating<br>Forecast Turnover</h1>
+      <p class="cover-lead">
+        Exercise 1 — Identify and evaluate the different adapted methods to estimate the forecast
+        turnover of a project, and precise the modalities of the choices made.
       </p>
+      <div class="cover-footer">
+        <div class="authors-block">
+          <div class="authors-label">Authors</div>
+          <div class="authors-list">
+            <span class="author-name">Ibrahim Zaraket</span>
+            <span class="author-name">Zhara Diane Rios Gutierrez</span>
+            <span class="author-name">Cecilia Nardini</span>
+            <span class="author-name">Hugo Andrade</span>
+          </div>
+        </div>
+        <div class="cover-details">
+          <strong>Course</strong> Building the Business Plan<br>
+          <strong>Source</strong> Workshop 4 – BP English<br>
+          <strong>Date</strong> May 2026
+        </div>
+      </div>
     </div>
 
-    <!-- Offer Approach -->
-    <div class="card">
-      <div class="card-title">
-        <div class="icon">📦</div>
-        Offer Approach
+    <!-- TOC -->
+    <nav class="toc" aria-label="Table of contents">
+      <div class="toc-title">Contents</div>
+      <ul class="toc-list">
+        <li>
+          <span class="toc-num">1</span>
+          <a href="#offer">Offer Approach</a>
+          <span class="toc-dots"></span>
+        </li>
+        <li>
+          <span class="toc-num">2</span>
+          <a href="#demand">Demand-Driven Approach</a>
+          <span class="toc-dots"></span>
+        </li>
+        <li>
+          <span class="toc-num">3</span>
+          <a href="#alternative">Alternative Approaches</a>
+          <span class="toc-dots"></span>
+        </li>
+        <li>
+          <span class="toc-num">4</span>
+          <a href="#synthesis">Synthesis</a>
+          <span class="toc-dots"></span>
+        </li>
+        <li>
+          <span class="toc-num">5</span>
+          <a href="#modalities">Modalities of Choice</a>
+          <span class="toc-dots"></span>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- 1. OFFER APPROACH -->
+    <section class="section" id="offer">
+      <div class="section-header">
+        <span class="section-num">Section 1</span>
+        <h2 class="section-title">Offer Approach</h2>
       </div>
+      <p class="section-intro">
+        Supply-side methods estimate turnover by benchmarking against existing competitor data and sector statistics,
+        anchoring projections in observable market reality.
+      </p>
 
-      <div class="methods-grid">
-
-        <div class="method-card">
-          <div class="method-name">Competitive / "Analog" Method</div>
-          <div class="method-desc">
+      <div class="method-entry">
+        <div class="method-header">
+          <div class="method-index">1a</div>
+          <div class="method-title">Competitive / "Analog" Method</div>
+        </div>
+        <div class="method-body">
+          <p class="method-desc">
             Estimation of the potential commercial turnover from competitor figures published by competitors
-            or obtained through direct questioning of companies.
-          </div>
-          <div class="meta-row">
-            <span class="meta-pill pill-source">📂 Commercial Court Registry (CR &amp; balance sheet), société.com, direct inquiry</span>
-          </div>
-          <div class="meta-row" style="margin-top:6px;">
-            <span class="meta-pill pill-limit">⚠ For a new activity: no reference figure available</span>
+            or obtained through direct questioning of companies. Relies on analogy with established players
+            operating in the same segment.
+          </p>
+          <div class="method-tags">
+            <span class="tag tag-source">Source — Commercial Court Registry (CR &amp; balance sheet), société.com, direct company inquiry</span>
+            <span class="tag tag-limit">Limit — For a brand-new activity, no reliable reference figure may exist</span>
           </div>
         </div>
+      </div>
 
-        <div class="method-card">
-          <div class="method-name">"Reference" / Accounting Sector Statistics Method</div>
-          <div class="method-desc">
-            Estimation of the potential turnover based on accounting sector statistics, taking into account the
-            economic environment of the future company, the range of products sold, the target clientele,
+      <div class="method-entry">
+        <div class="method-header">
+          <div class="method-index">1b</div>
+          <div class="method-title">"Reference" / Accounting Sector Statistics Method</div>
+        </div>
+        <div class="method-body">
+          <p class="method-desc">
+            Estimation of the potential turnover based on accounting sector statistics, taking into account
+            the economic environment of the future company, the range of products sold, the target clientele,
             limits to the activity, and the resources implemented (hours or days billed).
-          </div>
-          <div class="meta-row">
-            <span class="meta-pill pill-source">📂 Approved management centers, professional organisations</span>
+          </p>
+          <div class="method-tags">
+            <span class="tag tag-source">Source — Approved management centers, professional organisations, sector ratio databases</span>
           </div>
         </div>
-
       </div>
-    </div>
+    </section>
 
-    <!-- Demand-Driven Approach -->
-    <div class="card">
-      <div class="card-title">
-        <div class="icon">🎯</div>
-        Demand-Driven Approach
+    <!-- 2. DEMAND-DRIVEN APPROACH -->
+    <section class="section" id="demand">
+      <div class="section-header">
+        <span class="section-num">Section 2</span>
+        <h2 class="section-title">Demand-Driven Approach</h2>
       </div>
+      <p class="section-intro">
+        Demand-side methods estimate turnover from the customer perspective — through field surveys and
+        market-share modelling. They tend to produce higher (optimistic) figures and must be treated with caution.
+      </p>
 
-      <div class="methods-grid">
-
-        <div class="method-card">
-          <div class="method-name">"Purchase Intentions" Method</div>
-          <div class="method-desc">
+      <div class="method-entry">
+        <div class="method-header">
+          <div class="method-index">2a</div>
+          <div class="method-title">"Purchase Intentions" Method</div>
+        </div>
+        <div class="method-body">
+          <p class="method-desc">
             Estimation of the potential turnover based on data collected in the field survey: quantities usually
-            purchased, frequency of purchase, psychological price, average basket, etc.
-          </div>
-          <div class="meta-row">
-            <span class="meta-pill pill-source">📂 Field survey</span>
-          </div>
-          <div class="meta-row" style="margin-top:6px;">
-            <span class="meta-pill pill-limit">⚠ Discrepancy between expressed purchase intentions and actual purchases — generally a very high WTP assumption; treat with great caution</span>
-          </div>
-        </div>
-
-        <div class="method-card">
-          <div class="method-name">"Targets and Market Share" Method</div>
-          <div class="method-desc">
-            Estimation of potential turnover by applying the company's desired or anticipated market share,
-            which depends on: unconquered potential customers ("relative non-consumers") and competitive intensity.
-          </div>
-          <div class="meta-row">
-            <span class="meta-pill pill-source">📂 Market study, quantitative inquiry</span>
-          </div>
-          <div class="meta-row" style="margin-top:6px;">
-            <span class="meta-pill pill-limit">⚠ Based on demand, take-up and penetration rates — consider with great caution</span>
+            purchased, frequency of purchase, psychological price, average basket, etc. Aggregates stated
+            willingness to pay across the identified target population.
+          </p>
+          <div class="method-tags">
+            <span class="tag tag-source">Source — Field survey / primary quantitative research</span>
+            <span class="tag tag-limit">Limit — Significant discrepancy between expressed intentions and actual purchases; generally a very high WTP assumption — apply a conservative correction (–30 to –50 %)</span>
           </div>
         </div>
-
-      </div>
-    </div>
-
-    <!-- Alternative Approaches -->
-    <div class="card">
-      <div class="card-title">
-        <div class="icon">🔀</div>
-        Alternative Approaches
       </div>
 
-      <div class="methods-grid">
-
-        <div class="method-card">
-          <div class="method-name">"Break-Even Point" Method</div>
-          <div class="method-desc">
-            Estimate of the potential turnover for which one would make neither profit nor losses — the one which
-            just covers fixed and variable costs.
-          </div>
-          <div class="meta-row">
-            <span class="meta-pill pill-source">📂 Approved management centers, professional organisations, BM &amp; resources to be implemented</span>
-          </div>
-          <div class="meta-row" style="margin-top:6px;">
-            <span class="meta-pill pill-limit">⚠ Sets a target point but does not predict the turnover that will actually be achieved</span>
+      <div class="method-entry">
+        <div class="method-header">
+          <div class="method-index">2b</div>
+          <div class="method-title">"Targets and Market Share" Method</div>
+        </div>
+        <div class="method-body">
+          <p class="method-desc">
+            Estimation of potential turnover by applying the company's desired or anticipated market share to
+            the total addressable market. Depends on the volume of unconquered potential customers ("relative
+            non-consumers") and the level of competitive intensity.
+          </p>
+          <div class="method-tags">
+            <span class="tag tag-source">Source — Market study, quantitative inquiry, industry market-size reports</span>
+            <span class="tag tag-limit">Limit — Based on assumed demand, take-up and penetration rates; consider with great caution</span>
           </div>
         </div>
+      </div>
+    </section>
 
-        <div class="method-card">
-          <div class="method-name">Testing &amp; Experimentation Method</div>
-          <div class="method-desc">
-            Estimate of the potential turnover based on real-life situations: on a test market, online, or within
-            a supporting structure (salary portage, business project support contract) or even as a micro-entrepreneur.
-          </div>
-          <div class="meta-row">
-            <span class="meta-pill pill-source">📂 Market (test or online), supporting structure</span>
-          </div>
-          <div class="meta-row" style="margin-top:6px;">
-            <span class="meta-pill pill-limit">⚠ Difficult to transpose or extrapolate the turnover obtained under these particular conditions to full activity</span>
+    <!-- 3. ALTERNATIVE APPROACHES -->
+    <section class="section" id="alternative">
+      <div class="section-header">
+        <span class="section-num">Section 3</span>
+        <h2 class="section-title">Alternative Approaches</h2>
+      </div>
+      <p class="section-intro">
+        These methods do not rely primarily on competitor benchmarks or customer surveys, but instead
+        set viability thresholds or derive projections from real operational experience.
+      </p>
+
+      <div class="method-entry">
+        <div class="method-header">
+          <div class="method-index">3a</div>
+          <div class="method-title">"Break-Even Point" Method</div>
+        </div>
+        <div class="method-body">
+          <p class="method-desc">
+            Estimate of the potential turnover at which the business would make neither profit nor loss —
+            the level that just covers all fixed and variable costs. Serves as the minimum viability threshold
+            rather than a market forecast.
+          </p>
+          <div class="method-tags">
+            <span class="tag tag-source">Source — Approved management centers, professional organisations, BM &amp; projected resource plan</span>
+            <span class="tag tag-limit">Limit — Sets a target floor, but does not predict the turnover that will actually be achieved in the market</span>
           </div>
         </div>
-
-      </div>
-    </div>
-
-    <!-- Synthesis -->
-    <div class="card">
-      <div class="card-title">
-        <div class="icon">📊</div>
-        Synthesis
       </div>
 
-      <div class="synthesis-card">
+      <div class="method-entry">
+        <div class="method-header">
+          <div class="method-index">3b</div>
+          <div class="method-title">Testing &amp; Experimentation Method</div>
+        </div>
+        <div class="method-body">
+          <p class="method-desc">
+            Estimate of the potential turnover based on real-life operational situations: on a test market,
+            online, within a supporting structure (salary portage, business project support contract) or even
+            as a micro-entrepreneur. Provides observed rather than projected data.
+          </p>
+          <div class="method-tags">
+            <span class="tag tag-source">Source — Test market, online channel, supporting structure / business incubator</span>
+            <span class="tag tag-limit">Limit — Difficult to extrapolate results obtained under test conditions to full-scale autonomous activity</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. SYNTHESIS -->
+    <section class="section" id="synthesis">
+      <div class="section-header">
+        <span class="section-num">Section 4</span>
+        <h2 class="section-title">Synthesis</h2>
+      </div>
+
+      <div class="callout">
         <ul>
           <li>These approaches are <strong>complementary</strong> — no single method is sufficient on its own.</li>
-          <li>They allow for the establishment of the <strong>greatest possible number of scenarios</strong>.</li>
-          <li><strong>Supply-based estimation &lt; Demand-based estimation</strong> (maximum high hypothesis): demand-driven methods tend to overestimate.</li>
-          <li>Combining multiple methods cross-validates projections and reduces the risk of systematic bias.</li>
+          <li>Used together, they allow for the construction of the <strong>greatest possible number of scenarios</strong>, covering pessimistic, realistic, and optimistic outlooks.</li>
+          <li><strong>Supply-based estimation &lt; Demand-based estimation</strong>: offer-approach methods generally produce lower figures than demand-driven ones (maximum high hypothesis). The gap between the two should be examined critically.</li>
+          <li>Combining multiple methods <strong>cross-validates</strong> projections and reduces the risk of systematic overestimation or underestimation.</li>
         </ul>
       </div>
-    </div>
+    </section>
 
-    <!-- Modalities of Choice -->
-    <div class="card">
-      <div class="card-title">
-        <div class="icon">✅</div>
-        Modalities of Choice
+    <!-- 5. MODALITIES -->
+    <section class="section" id="modalities">
+      <div class="section-header">
+        <span class="section-num">Section 5</span>
+        <h2 class="section-title">Modalities of Choice</h2>
       </div>
+      <p class="section-intro">
+        The following reasoning justifies which methods were prioritised and how they were combined
+        to produce a credible range of turnover scenarios for the project.
+      </p>
 
-      <div class="modalities-list">
+      <ol class="modality-list">
+        <li>
+          <div class="modality-text">
+            <strong>Anchor with the Offer Approach</strong>
+            Start with competitor and sector-statistics data (société.com, Commercial Court Registry,
+            approved management centres) to establish a grounded, verifiable baseline. Supply-side
+            figures are directly comparable to existing market reality and impose a realistic ceiling
+            before demand data is introduced.
+          </div>
+        </li>
+        <li>
+          <div class="modality-text">
+            <strong>Cross-validate with the Demand Approach</strong>
+            Conduct a field survey to gather purchase intentions and model a target market-share
+            scenario. A correction factor of 30–50 % must be applied to stated WTP data, as the
+            literature consistently shows that declared purchase intentions overstate actual spend.
+          </div>
+        </li>
+        <li>
+          <div class="modality-text">
+            <strong>Define the viability floor with the Break-Even Method</strong>
+            Calculate the minimum turnover required to cover all fixed and variable costs. This figure
+            defines the survival threshold and ensures that even the pessimistic scenario sits above
+            the point of insolvency.
+          </div>
+        </li>
+        <li>
+          <div class="modality-text">
+            <strong>Validate operationally through testing where possible</strong>
+            A pilot run — online channel, test market, or micro-entrepreneur status — provides real
+            revenue observations before full commitment. Results are extrapolated with caution given
+            the difference between test-market and full-activity conditions.
+          </div>
+        </li>
+        <li>
+          <div class="modality-text">
+            <strong>Construct three scenarios from the combined outputs</strong>
+            Pessimistic (offer-based floor, break-even verification), Realistic (offer + discounted demand
+            average), and Optimistic (target market-share ceiling). This range communicates financial risk
+            and resilience to investors, partners, and lending institutions.
+          </div>
+        </li>
+      </ol>
 
-        <div class="modality-item">
-          <strong>Use the Offer Approach first</strong> — Start with competitor and sector statistics data (société.com, Commercial Court Registry, professional organisations) to anchor a realistic baseline. This is grounded, verifiable, and directly comparable to the market.
-        </div>
-
-        <div class="modality-item">
-          <strong>Cross-validate with the Demand Approach</strong> — Conduct a field survey to gather purchase intentions and estimate a market share scenario. Apply a conservative discount (typically 30–50%) to purchase intention data, as stated WTP systematically exceeds actual spend.
-        </div>
-
-        <div class="modality-item">
-          <strong>Set a floor with the Break-Even Method</strong> — Calculate the minimum turnover needed to cover all fixed and variable costs. This defines the viability threshold and ensures projections are realistic relative to cost structure.
-        </div>
-
-        <div class="modality-item">
-          <strong>Validate with real-life testing if possible</strong> — A pilot run (online channel, test market, or micro-entrepreneur status) provides actual revenue data before committing to full operations. Results must be extrapolated with caution.
-        </div>
-
-        <div class="modality-item">
-          <strong>Build at least three scenarios</strong> — Pessimistic (offer-based floor), Realistic (adjusted demand estimate), and Optimistic (target market share). This range communicates financial risk and resilience to investors and stakeholders.
-        </div>
-
+      <div class="key-principle">
+        <strong>Key principle —</strong> No single method yields the definitive forecast turnover.
+        The credibility of a business plan rests on the convergence of several complementary methods:
+        the closer the independent estimates align, the more defensible the projected figure becomes
+        in the eyes of evaluators and financers.
       </div>
+    </section>
 
-      <div class="note">
-        <strong>Key principle:</strong> No single method provides the definitive forecast. The strength of the business plan lies in the convergence of several complementary methods — the closer they align, the more credible the projected turnover.
-      </div>
-    </div>
-  </main>
+    <!-- DOCUMENT FOOTER -->
+    <footer class="doc-footer">
+      <span>M2 IE MBA / IAE Lille — Workshop 4: Building the Business Plan</span>
+      <span>Ibrahim Zaraket · Zhara Diane Rios Gutierrez · Cecilia Nardini · Hugo Andrade</span>
+    </footer>
+
+  </div><!-- /.document -->
 
   <script>
     function setTheme(theme) {
@@ -589,15 +829,11 @@
       localStorage.setItem('tfa_theme', theme);
       document.getElementById('themeIcon').textContent = theme === 'light' ? '☀️' : '🌙';
     }
-
     function toggleTheme() {
-      const cur = document.body.getAttribute('data-theme') || 'dark';
-      setTheme(cur === 'dark' ? 'light' : 'dark');
+      setTheme((document.body.getAttribute('data-theme') || 'dark') === 'dark' ? 'light' : 'dark');
     }
-
     document.addEventListener('DOMContentLoaded', () => {
-      const saved = localStorage.getItem('tfa_theme');
-      setTheme(saved === 'light' ? 'light' : 'dark');
+      setTheme(localStorage.getItem('tfa_theme') === 'light' ? 'light' : 'dark');
       document.getElementById('themeToggle').addEventListener('click', toggleTheme);
     });
   </script>
