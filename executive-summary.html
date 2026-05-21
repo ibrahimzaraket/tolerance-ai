@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Executive Summary — ToleranceAI</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-primary: #0a0a0b;
+      --bg-secondary: #111114;
+      --bg-card: rgba(255,255,255,0.05);
+      --text-primary: #ffffff;
+      --text-secondary: #a0a0a5;
+      --accent: #6366f1;
+      --accent-hover: #818cf8;
+      --border: rgba(255,255,255,0.1);
+      --glass-bg: rgba(255,255,255,0.1);
+      --shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+      --danger: #ef4444;
+      --ok: #22c55e;
+      --warn: #f59e0b;
+      --info: #3b82f6;
+    }
+
+    [data-theme="light"] {
+      --bg-primary: #f8fafc;
+      --bg-secondary: #f1f5f9;
+      --bg-card: rgba(255,255,255,0.95);
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --accent: #4f46e5;
+      --accent-hover: #3730a3;
+      --border: rgba(0,0,0,0.08);
+      --glass-bg: rgba(255,255,255,0.8);
+      --shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.65;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    header {
+      background: var(--bg-secondary);
+      backdrop-filter: blur(18px);
+      padding: 18px 0;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-content {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-decoration: none;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .nav-link {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--accent);
+      text-decoration: none;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(99,102,241,0.25);
+      background: rgba(99,102,241,0.08);
+      transition: all 0.2s ease;
+    }
+
+    .nav-link:hover {
+      background: rgba(99,102,241,0.15);
+      border-color: rgba(99,102,241,0.5);
+      transform: translateY(-1px);
+    }
+
+    .theme-toggle {
+      background: var(--glass-bg);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 10px 14px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-primary);
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .document {
+      max-width: 920px;
+      margin: 40px auto 60px;
+      padding: 0 24px;
+    }
+
+    /* ───── Cover ───── */
+    .cover {
+      background: linear-gradient(135deg, var(--bg-card), rgba(99,102,241,0.04));
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 48px 44px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(8px);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 28px;
+    }
+
+    .cover::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      right: 0;
+      height: 6px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-hover), var(--accent));
+    }
+
+    .cover-meta {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+
+    .cover h1 {
+      font-size: clamp(30px, 4.5vw, 48px);
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin: 0 0 8px;
+      background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .cover-sub {
+      font-size: 19px;
+      color: var(--accent);
+      font-weight: 600;
+      margin: 0 0 14px;
+    }
+
+    .cover-lead {
+      font-size: 16px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      max-width: 700px;
+      margin: 0 0 24px;
+    }
+
+    .cover-footer {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 24px;
+      padding-top: 22px;
+      border-top: 1px solid var(--border);
+      align-items: end;
+    }
+
+    @media (max-width: 640px) {
+      .cover-footer { grid-template-columns: 1fr; }
+      .cover { padding: 32px 24px; }
+    }
+
+    .authors-label, .cover-details strong {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .authors-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .author-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      background: var(--glass-bg);
+      border: 1px solid var(--border);
+      padding: 6px 12px;
+      border-radius: 999px;
+    }
+
+    .cover-details {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      text-align: right;
+    }
+
+    /* ───── TOC ───── */
+    .toc {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 22px 26px;
+      margin-bottom: 28px;
+      box-shadow: var(--shadow);
+    }
+
+    .toc-title {
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 14px;
+    }
+
+    .toc-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px 28px;
+    }
+
+    @media (max-width: 640px) { .toc-list { grid-template-columns: 1fr; } }
+
+    .toc-list li {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 14px;
+    }
+
+    .toc-num {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--accent);
+      background: rgba(99,102,241,0.12);
+      border: 1px solid rgba(99,102,241,0.25);
+      width: 26px;
+      height: 26px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .toc-list a {
+      color: var(--text-primary);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.2s ease;
+    }
+
+    .toc-list a:hover { color: var(--accent); }
+
+    /* ───── Sections ───── */
+    .section {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 28px 30px;
+      margin-bottom: 22px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(8px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .section::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 4px;
+      background: linear-gradient(180deg, var(--accent), transparent);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+
+    .section-num {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: rgba(99,102,241,0.12);
+      border: 1px solid rgba(99,102,241,0.25);
+      padding: 4px 10px;
+      border-radius: 999px;
+    }
+
+    .section-title {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin: 0;
+    }
+
+    .section p {
+      font-size: 14.5px;
+      line-height: 1.75;
+      color: var(--text-secondary);
+      margin: 0 0 10px;
+    }
+
+    .section p strong, .section li strong {
+      color: var(--text-primary);
+      font-weight: 700;
+    }
+
+    .section ul {
+      margin: 8px 0;
+      padding-left: 20px;
+      color: var(--text-secondary);
+      font-size: 14.5px;
+      line-height: 1.75;
+    }
+
+    .section ul li { margin-bottom: 6px; }
+
+    /* Quick-stats row */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin: 18px 0 6px;
+    }
+
+    @media (max-width: 700px) { .stats-row { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 420px) { .stats-row { grid-template-columns: 1fr; } }
+
+    .stat-tile {
+      background: rgba(99,102,241,0.08);
+      border: 1px solid rgba(99,102,241,0.2);
+      border-radius: 12px;
+      padding: 14px;
+      text-align: center;
+    }
+
+    .stat-num {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--accent);
+      letter-spacing: -0.02em;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+    }
+
+    /* Two-col layout for team / model */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 14px;
+    }
+
+    @media (max-width: 700px) { .two-col { grid-template-columns: 1fr; } }
+
+    .col-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px 18px;
+    }
+
+    [data-theme="light"] .col-card { background: rgba(0,0,0,0.02); }
+
+    .col-card h4 {
+      font-size: 13px;
+      margin: 0 0 8px;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-weight: 800;
+    }
+
+    /* Team cards */
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    @media (max-width: 700px) { .team-grid { grid-template-columns: repeat(2, 1fr); } }
+
+    .member {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px;
+      text-align: center;
+    }
+
+    [data-theme="light"] .member { background: rgba(0,0,0,0.02); }
+
+    .member-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      margin: 0 auto 10px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+      color: #fff;
+      font-weight: 800;
+      font-size: 17px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .member-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+      line-height: 1.3;
+    }
+
+    .member-role {
+      font-size: 11px;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    /* Highlighted callout */
+    .callout {
+      background: linear-gradient(135deg, rgba(99,102,241,0.10), rgba(129,140,248,0.04));
+      border: 1px solid rgba(99,102,241,0.25);
+      border-radius: 14px;
+      padding: 16px 20px;
+      margin: 14px 0;
+      font-size: 14.5px;
+      color: var(--text-primary);
+      line-height: 1.7;
+    }
+
+    .callout strong { color: var(--accent); }
+
+    /* Financial breakdown */
+    .fin-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      margin-top: 12px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      font-size: 14px;
+    }
+
+    .fin-table th {
+      background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+      color: #fff;
+      font-weight: 700;
+      padding: 12px 14px;
+      text-align: left;
+    }
+
+    .fin-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-secondary);
+    }
+
+    .fin-table tr:last-child td { border-bottom: none; }
+    .fin-table tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+    [data-theme="light"] .fin-table tr:nth-child(even) td { background: rgba(0,0,0,0.015); }
+
+    .fin-table td strong { color: var(--text-primary); }
+
+    /* Revenue bars */
+    .rev-bars { margin-top: 12px; }
+
+    .rev-bar-row {
+      display: grid;
+      grid-template-columns: 170px 1fr 50px;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+
+    @media (max-width: 540px) {
+      .rev-bar-row { grid-template-columns: 1fr; gap: 4px; }
+    }
+
+    .rev-bar-label { color: var(--text-primary); font-weight: 600; }
+    .rev-bar-track { height: 10px; background: rgba(255,255,255,0.06); border-radius: 999px; overflow: hidden; }
+    [data-theme="light"] .rev-bar-track { background: rgba(0,0,0,0.06); }
+    .rev-bar-fill { height: 100%; border-radius: 999px; }
+    .rev-bar-pct { color: var(--accent); font-weight: 800; text-align: right; }
+
+    /* ─── Empathy Map ─── */
+    .em-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: auto auto auto;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    @media (max-width: 800px) {
+      .em-wrap { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+      .em-who { grid-column: 1 / -1; }
+    }
+
+    @media (max-width: 500px) {
+      .em-wrap { grid-template-columns: 1fr; }
+    }
+
+    .em-cell {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px 16px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    [data-theme="light"] .em-cell { background: rgba(0,0,0,0.02); }
+
+    .em-cell .em-label {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .em-cell .em-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+    }
+
+    .em-cell ul {
+      margin: 4px 0 0;
+      padding-left: 18px;
+    }
+
+    .em-cell ul li { margin-bottom: 4px; }
+
+    .em-who {
+      background: linear-gradient(135deg, rgba(99,102,241,0.12), rgba(129,140,248,0.06));
+      border-color: rgba(99,102,241,0.3);
+      text-align: center;
+    }
+
+    .em-who .em-title { color: var(--accent); }
+
+    .em-pg-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    @media (max-width: 500px) { .em-pg-grid { grid-template-columns: 1fr; } }
+
+    .em-pain {
+      background: rgba(239,68,68,0.06);
+      border-color: rgba(239,68,68,0.25);
+    }
+
+    .em-gain {
+      background: rgba(34,197,94,0.06);
+      border-color: rgba(34,197,94,0.25);
+    }
+
+    .em-pain .em-label { color: var(--danger); }
+    .em-gain .em-label { color: var(--ok); }
+
+    .footer-nav {
+      text-align: center;
+      margin-top: 32px;
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    @media print {
+      header, .theme-toggle, .nav-link, .footer-nav { display: none !important; }
+      body { background: #fff !important; color: #000 !important; }
+      .section, .cover, .toc { break-inside: avoid; box-shadow: none; }
+    }
+  </style>
+</head>
+
+<body data-theme="dark">
+  <header>
+    <div class="header-content">
+      <a class="logo" href="index.html">ToleranceAI</a>
+      <div class="header-right">
+        <a class="nav-link" href="problem.html">Problem</a>
+        <a class="nav-link" href="problem2.html">Ideation</a>
+        <a class="nav-link" href="swot.html">SWOT</a>
+        <a class="nav-link" href="canvas.html">Canvas</a>
+        <a class="nav-link" href="exercise1.html">Turnover</a>
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">
+          <span id="themeIcon">🌙</span>
+          <span style="font-weight:800;">Theme</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="document">
+
+    <!-- ───── COVER ───── -->
+    <div class="cover">
+      <div class="cover-meta">M2 IE MBA · IAE Lille · Building the Business Plan</div>
+      <h1>Executive Summary</h1>
+      <p class="cover-sub">ToleranceAI — Turning Commuter Dead Time into Productive Micro-Growth</p>
+      <p class="cover-lead">
+        A one-page hook synthesizing the concept, team, business model and market positioning, key results,
+        development roadmap, financing needs and investor profitability — followed by the
+        Empathy Map underpinning our user research.
+      </p>
+      <div class="cover-footer">
+        <div>
+          <div class="authors-label">Authors</div>
+          <div class="authors-list">
+            <span class="author-name">Ibrahim Zaraket</span>
+            <span class="author-name">Zhara Diane Rios</span>
+            <span class="author-name">Cecilia Nardini</span>
+            <span class="author-name">Hugo Andrade</span>
+          </div>
+        </div>
+        <div class="cover-details">
+          <strong>Document</strong>Executive Summary v1.0<br>
+          <strong>Date</strong>May 2026<br>
+          <strong>Stage</strong>Pre-seed / MVP launch
+        </div>
+      </div>
+    </div>
+
+    <!-- ───── TOC ───── -->
+    <nav class="toc" aria-label="Table of contents">
+      <div class="toc-title">Contents</div>
+      <ul class="toc-list">
+        <li><span class="toc-num">1</span><a href="#concept">Concept &amp; Products</a></li>
+        <li><span class="toc-num">2</span><a href="#team">Team Formation</a></li>
+        <li><span class="toc-num">3</span><a href="#bm">Business Model &amp; Positioning</a></li>
+        <li><span class="toc-num">4</span><a href="#results">Main Results</a></li>
+        <li><span class="toc-num">5</span><a href="#prospects">Development Prospects</a></li>
+        <li><span class="toc-num">6</span><a href="#financing">Financing &amp; Profitability</a></li>
+        <li><span class="toc-num">7</span><a href="#empathy">Empathy Map</a></li>
+      </ul>
+    </nav>
+
+    <!-- ───── 1. Concept ───── -->
+    <section class="section" id="concept">
+      <div class="section-header">
+        <span class="section-num">Section 1</span>
+        <h2 class="section-title">Presentation of the Concept &amp; Products</h2>
+      </div>
+      <p>
+        <strong>ToleranceAI</strong> is a mobile app that converts the <strong>~400 hours per year</strong> a European commuter
+        spends in transit into structured, measurable personal growth — without asking for a single additional minute of
+        the user's day. Where Spotify, Duolingo and Blinkist were designed for laptops or desks and then squeezed into
+        a phone, ToleranceAI is built natively for the constraints of public transport: <strong>one-handed use,
+        offline-by-default, variable ride duration, noise tolerance</strong>.
+      </p>
+      <div class="callout">
+        <strong>Core value proposition.</strong> A 7-minute ride becomes a 6-minute sprint. A 40-minute ride becomes
+        a structured module. The app meets your commute — not the other way around.
+      </div>
+      <p>The product is a single mobile application built on three differentiating pillars:</p>
+      <ul>
+        <li><strong>Adaptive Duration Engine</strong> — GPS- and behaviour-driven algorithm that auto-sizes content to ride length and user energy.</li>
+        <li><strong>Offline-First Content Library</strong> — pre-fetched packs that survive tunnel dead zones (e.g. Paris Métro line 4).</li>
+        <li><strong>Habit-Loop Gamification</strong> — streaks, XP, certificates and departure-time push notifications driving 2× retention vs. category average.</li>
+      </ul>
+    </section>
+
+    <!-- ───── 2. Team ───── -->
+    <section class="section" id="team">
+      <div class="section-header">
+        <span class="section-num">Section 2</span>
+        <h2 class="section-title">Team Formation</h2>
+      </div>
+      <p>
+        Four co-founders, M2 IE MBA candidates at IAE Lille, combining product, growth, finance and operations expertise —
+        complementary skill set across the business plan's full surface area.
+      </p>
+      <div class="team-grid">
+        <div class="member">
+          <div class="member-avatar">IZ</div>
+          <div class="member-name">Ibrahim Zaraket</div>
+          <div class="member-role">Product &amp; Tech Lead — adaptive engine, mobile architecture, data</div>
+        </div>
+        <div class="member">
+          <div class="member-avatar">ZR</div>
+          <div class="member-name">Zhara Diane Rios</div>
+          <div class="member-role">UX Research &amp; Brand — user research, empathy, positioning</div>
+        </div>
+        <div class="member">
+          <div class="member-avatar">CN</div>
+          <div class="member-name">Cecilia Nardini</div>
+          <div class="member-role">Finance &amp; Strategy — modelling, fundraising, B2B economics</div>
+        </div>
+        <div class="member">
+          <div class="member-avatar">HA</div>
+          <div class="member-name">Hugo Andrade</div>
+          <div class="member-role">Operations &amp; Partnerships — transport operators, content licensing</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───── 3. Business Model ───── -->
+    <section class="section" id="bm">
+      <div class="section-header">
+        <span class="section-num">Section 3</span>
+        <h2 class="section-title">Business Model &amp; Market Positioning</h2>
+      </div>
+      <p>
+        <strong>Hybrid B2B-led freemium model.</strong> A free B2C tier acts as the discovery funnel; the premium engine
+        is a B2B seat-licence sold to employers via HR / benefits platforms. The B2C subscription is the safety net,
+        transport operator partnerships are the unique distribution moat.
+      </p>
+      <div class="two-col">
+        <div class="col-card">
+          <h4>Customer Segments</h4>
+          <p style="margin:0; font-size:14px;">
+            <strong>B2C primary:</strong> Urban employees &amp; students 22–40, commuting 45+ min/day in Paris, London, Lille, Brussels.<br>
+            <strong>B2B primary:</strong> Mid-to-large employers (200+) with active L&amp;D budgets.<br>
+            <strong>Excluded by design:</strong> car commuters and full-remote workers — the commute trigger is the product.
+          </p>
+        </div>
+        <div class="col-card">
+          <h4>Positioning vs Competition</h4>
+          <p style="margin:0; font-size:14px;">
+            Not a podcast, not Duolingo, not a generic LMS. <strong>The only product designed around the
+            specific physical and cognitive constraints of public-transport commuting.</strong> Offline-first +
+            adaptive ride-fit is the moat: any feature can be copied, but the behavioural dataset compounds.
+          </p>
+        </div>
+      </div>
+      <p style="margin-top:14px;">
+        Revenue is split across four streams, B2B-led for ACV and stickiness:
+      </p>
+      <div class="rev-bars">
+        <div class="rev-bar-row">
+          <span class="rev-bar-label">B2B Seat Licences</span>
+          <div class="rev-bar-track"><div class="rev-bar-fill" style="width:55%;background:linear-gradient(90deg,#22c55e,#4ade80)"></div></div>
+          <span class="rev-bar-pct">55%</span>
+        </div>
+        <div class="rev-bar-row">
+          <span class="rev-bar-label">B2C Premium Sub</span>
+          <div class="rev-bar-track"><div class="rev-bar-fill" style="width:30%;background:linear-gradient(90deg,#6366f1,#818cf8)"></div></div>
+          <span class="rev-bar-pct">30%</span>
+        </div>
+        <div class="rev-bar-row">
+          <span class="rev-bar-label">Transport Partnerships</span>
+          <div class="rev-bar-track"><div class="rev-bar-fill" style="width:10%;background:linear-gradient(90deg,#f97316,#fb923c)"></div></div>
+          <span class="rev-bar-pct">10%</span>
+        </div>
+        <div class="rev-bar-row">
+          <span class="rev-bar-label">Cert. / Course Sales</span>
+          <div class="rev-bar-track"><div class="rev-bar-fill" style="width:5%;background:linear-gradient(90deg,#eab308,#facc15)"></div></div>
+          <span class="rev-bar-pct">5%</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───── 4. Main Results ───── -->
+    <section class="section" id="results">
+      <div class="section-header">
+        <span class="section-num">Section 4</span>
+        <h2 class="section-title">Main Results &amp; Strategic Diagnostic</h2>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-tile">
+          <span class="stat-num">~400h</span>
+          <span class="stat-label">Per commuter / year</span>
+        </div>
+        <div class="stat-tile">
+          <span class="stat-num">1h24</span>
+          <span class="stat-label">Avg Paris round trip</span>
+        </div>
+        <div class="stat-tile">
+          <span class="stat-num">12+</span>
+          <span class="stat-label">Validated ideas (Step&nbsp;1)</span>
+        </div>
+        <div class="stat-tile">
+          <span class="stat-num">0</span>
+          <span class="stat-label">Direct competitors</span>
+        </div>
+      </div>
+
+      <p style="margin-top:14px;">
+        The market problem was validated quantitatively and qualitatively: hundreds of hours of "wasted transition time"
+        per commuter, default behaviour is passive scrolling, and no existing tool addresses the
+        <strong>noise / standing / variable-length / offline</strong> constraint set. Twelve raw ideas were generated
+        via brainstorming and stress-tested with the <strong>WWHWWW</strong> lens, converging on the
+        adaptive-engine + audio-first + employer-channel triad.
+      </p>
+      <p>
+        The SWOT activity matrix produced four strategic objective families:
+      </p>
+      <ul>
+        <li><strong>Offensive (S × O):</strong> own the "commute-native learning" category before incumbents notice.</li>
+        <li><strong>Reactive (W × O):</strong> license existing content; enter through B2B to bypass weak brand recognition.</li>
+        <li><strong>Defensive (S × T):</strong> wrap the adaptive engine in IP; build a privacy-first reputation.</li>
+        <li><strong>Maintenance (W × T):</strong> keep burn low, niche tight, freemium tier alive.</li>
+      </ul>
+    </section>
+
+    <!-- ───── 5. Development Prospects ───── -->
+    <section class="section" id="prospects">
+      <div class="section-header">
+        <span class="section-num">Section 5</span>
+        <h2 class="section-title">Development Prospects</h2>
+      </div>
+      <p>An 18-month, three-horizon roadmap, sequenced from the SWOT priority order (Defensive → Reactive → Offensive):</p>
+      <div class="two-col">
+        <div class="col-card">
+          <h4>0–6 Months · MVP &amp; Defensive</h4>
+          <p style="margin:0; font-size:14px;">
+            Ship adaptive engine v1 on Paris &amp; Lille metros. Lock in offline-first IP. Sign two pilot employers
+            (≈ 200 seats). Validate retention curve vs. category benchmark.
+          </p>
+        </div>
+        <div class="col-card">
+          <h4>6–12 Months · Reactive Growth</h4>
+          <p style="margin:0; font-size:14px;">
+            License third-party content (TED-Ed-class). Onboard 10 B2B clients (≈ 2,500 seats).
+            Negotiate first transport-operator pilot (RATP or SNCF).
+          </p>
+        </div>
+        <div class="col-card">
+          <h4>12–18 Months · Offensive Expansion</h4>
+          <p style="margin:0; font-size:14px;">
+            Expand to London &amp; Brussels. Launch the "Commute-to-Skill" B2B package.
+            Target 50 enterprise contracts and €1M+ ARR.
+          </p>
+        </div>
+        <div class="col-card">
+          <h4>Always-On · Maintenance</h4>
+          <p style="margin:0; font-size:14px;">
+            Hedge against remote-work erosion by extending to walking &amp; lunch-break contexts.
+            Maintain freemium funnel. Cap fixed costs &lt; 60% of OpEx.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───── 6. Financing & Profitability ───── -->
+    <section class="section" id="financing">
+      <div class="section-header">
+        <span class="section-num">Section 6</span>
+        <h2 class="section-title">Financing Needs &amp; Profitability Prospects</h2>
+      </div>
+      <p>
+        Forecast turnover is triangulated across three methods from the Workshop&nbsp;4 toolkit —
+        Competitive / Analog (vs. Duolingo &amp; Blinkist segments), Targets &amp; Market Share
+        (1% of 6M target European commuters by Y3) and Break-Even — converging on the figures below.
+      </p>
+
+      <table class="fin-table">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Year 1</th>
+            <th>Year 2</th>
+            <th>Year 3</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>B2B seats</strong></td><td>2,500</td><td>12,000</td><td>40,000</td></tr>
+          <tr><td><strong>B2C paying users</strong></td><td>3,000</td><td>15,000</td><td>55,000</td></tr>
+          <tr><td><strong>Revenue (€)</strong></td><td>≈ 0.4M</td><td>≈ 1.9M</td><td>≈ 6.8M</td></tr>
+          <tr><td><strong>Gross margin</strong></td><td>55%</td><td>65%</td><td>72%</td></tr>
+          <tr><td><strong>EBITDA</strong></td><td>(0.6M)</td><td>(0.2M)</td><td>+1.4M</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout" style="margin-top:16px;">
+        <strong>Funding ask: €800K pre-seed</strong> — 60% engineering (offline-first stack + adaptive ML),
+        25% content licensing, 15% B2B sales &amp; operations. Runway: 18 months to break-even at Y3.
+      </div>
+
+      <p>
+        <strong>Investor profitability.</strong> A B2B-led SaaS profile yields high gross margins (70%+ at scale) and low
+        churn (annual HR contracts). Modelled exit valuation at Year 4 — 6× ARR multiple on a ≈ €12M ARR base — implies
+        a target valuation of <strong>€70–80M</strong>, i.e. a <strong>~10× return on pre-seed</strong> at successful execution.
+        Three exit paths: acquisition by an HR / L&amp;D platform (Cornerstone, Workday), by an EdTech (Coursera, Duolingo),
+        or by a transport operator vertical-integrating digital services.
+      </p>
+    </section>
+
+    <!-- ───── 7. Empathy Map ───── -->
+    <section class="section" id="empathy">
+      <div class="section-header">
+        <span class="section-num">Section 7 · Appendix</span>
+        <h2 class="section-title">Empathy Map — Target Customer Deep Dive</h2>
+      </div>
+      <p>
+        Our user research extends beyond the commute context into the broader
+        lifestyle of the modern professional. The empathy map below — produced jointly by the four co-founders —
+        captures the values, frustrations and aspirations of the <strong>health-conscious, growth-oriented
+        professional</strong>: the same demographic that, in transit, becomes our active user.
+        It informs tone, content categories (wellness, sustainability, growth), and brand voice.
+      </p>
+
+      <div class="em-wrap">
+        <div class="em-cell">
+          <span class="em-label">What do they</span>
+          <div class="em-title">Do?</div>
+          <ul>
+            <li>Maintain a busy work &amp; personal life</li>
+            <li>Plan meals and snacks ahead</li>
+            <li>Exercise and prioritise wellbeing</li>
+            <li>Research and try new healthy options</li>
+            <li>Purchase online and in-store</li>
+            <li>Share recommendations with peers</li>
+          </ul>
+        </div>
+
+        <div class="em-cell em-who">
+          <span class="em-label">Who</span>
+          <div class="em-title">Are we empathising with?</div>
+          <p style="margin:0; font-size:13px; color:var(--text-primary); font-weight:500;">
+            Health-conscious professionals <strong>(25–45)</strong> seeking plant-based, productive and balanced lifestyles
+            — the same active, growth-oriented audience that powers our commute-learning use-case.
+          </p>
+        </div>
+
+        <div class="em-cell">
+          <span class="em-label">What do they</span>
+          <div class="em-title">Say?</div>
+          <ul>
+            <li>"I want food / content that fuels me, not slows me down."</li>
+            <li>"I care about what's in my food and where it comes from."</li>
+            <li>"It's hard to find options that taste / feel great."</li>
+            <li>"I value brands that are transparent and sustainable."</li>
+          </ul>
+        </div>
+
+        <div class="em-cell">
+          <span class="em-label">What do they</span>
+          <div class="em-title">Hear?</div>
+          <ul>
+            <li>Friends and family encouraging healthier choices</li>
+            <li>Expert advice on nutrition and environment</li>
+            <li>Conversations about sustainability and ethical brands</li>
+            <li>Influencers and communities promoting plant-based living</li>
+          </ul>
+        </div>
+
+        <div class="em-cell">
+          <span class="em-label">What do they</span>
+          <div class="em-title">Need?</div>
+          <ul>
+            <li>Convenient, nutritious and great-tasting solutions</li>
+            <li>Products with clean ingredients and proven benefits</li>
+            <li>Trustworthy brands aligned with their values</li>
+            <li>Solutions that fit their busy lifestyle and budget</li>
+            <li>Feel better, have more energy, see real results</li>
+          </ul>
+        </div>
+
+        <div class="em-cell">
+          <span class="em-label">What do they</span>
+          <div class="em-title">See?</div>
+          <ul>
+            <li>A growing variety of plant-based products and brands</li>
+            <li>Information about health, fitness and sustainability</li>
+            <li>Others choosing healthier lifestyles</li>
+            <li>Social media content and reviews about nutrition and wellness</li>
+          </ul>
+        </div>
+      </div>
+
+      <p style="margin-top:14px; font-size:13px; font-style:italic;">
+        The Pain &amp; Gain sections below pertain directly to our value proposition in the user's context.
+      </p>
+
+      <div class="em-pg-grid">
+        <div class="em-cell em-pain">
+          <span class="em-label">Pain</span>
+          <div class="em-title" style="color:var(--danger);">Fears, frustrations &amp; anxieties</div>
+          <ul>
+            <li>Lack of time to prepare healthy meals / pursue growth</li>
+            <li>Limited availability of tasty, convenient options</li>
+            <li>Uncertainty about quality of ingredients / information</li>
+            <li>Higher perceived cost of premium offerings</li>
+            <li>Guilt or frustration when lifestyle goals aren't met</li>
+          </ul>
+        </div>
+        <div class="em-cell em-gain">
+          <span class="em-label">Gain</span>
+          <div class="em-title" style="color:var(--ok);">Wants, needs, hopes &amp; dreams</div>
+          <ul>
+            <li>Feel healthier, stronger and more focused</li>
+            <li>Enjoy delicious solutions without compromise</li>
+            <li>Support sustainable and ethical companies</li>
+            <li>Save time with convenient, ready-to-go solutions</li>
+            <li>Inspire others, be part of a like-minded community</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout" style="margin-top:18px;">
+        <strong>Insight for ToleranceAI.</strong> The same audience that demands transparency, time-efficiency and
+        measurable progress in food and wellness demands the exact same qualities from a learning product.
+        Our positioning leans into <strong>convenience, transparency, measurable results, community</strong> —
+        the language already spoken by our target customer.
+      </div>
+    </section>
+
+    <!-- Footer nav -->
+    <div class="footer-nav">
+      <a href="problem.html" class="nav-link">← The Problem</a>
+      <a href="canvas.html" class="nav-link">Business Model Canvas →</a>
+    </div>
+
+  </div>
+
+  <script>
+    function setTheme(theme) {
+      document.body.setAttribute("data-theme", theme);
+      localStorage.setItem("tfa_theme", theme);
+      document.getElementById("themeIcon").textContent = theme === "light" ? "☀️" : "🌙";
+    }
+
+    function toggleTheme() {
+      const cur = document.body.getAttribute("data-theme") || "dark";
+      setTheme(cur === "dark" ? "light" : "dark");
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const saved = localStorage.getItem("tfa_theme");
+      setTheme(saved === "light" ? "light" : "dark");
+      document.getElementById("themeToggle").addEventListener("click", toggleTheme);
+    });
+  </script>
+</body>
+</html>
