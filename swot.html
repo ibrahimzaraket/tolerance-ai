@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SWOT Activity Matrix — ToleranceAI</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-primary: #0a0a0b;
+      --bg-secondary: #111114;
+      --bg-card: rgba(255,255,255,0.05);
+      --text-primary: #ffffff;
+      --text-secondary: #a0a0a5;
+      --accent: #6366f1;
+      --accent-hover: #818cf8;
+      --border: rgba(255,255,255,0.1);
+      --glass-bg: rgba(255,255,255,0.1);
+      --shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+      --danger: #ef4444;
+      --ok: #22c55e;
+      --offensive: #22c55e;
+      --reactive: #f59e0b;
+      --defensive: #3b82f6;
+      --maintenance: #ef4444;
+    }
+
+    [data-theme="light"] {
+      --bg-primary: #f8fafc;
+      --bg-secondary: #f1f5f9;
+      --bg-card: rgba(255,255,255,0.9);
+      --text-primary: #0f172a;
+      --text-secondary: #64748b;
+      --accent: #4f46e5;
+      --accent-hover: #3730a3;
+      --border: rgba(0,0,0,0.08);
+      --glass-bg: rgba(255,255,255,0.8);
+      --shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    header {
+      background: var(--bg-secondary);
+      backdrop-filter: blur(18px);
+      padding: 18px 0;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      user-select: none;
+      text-decoration: none;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      text-align: right;
+    }
+
+    .byline {
+      font-size: 13px;
+      opacity: 0.85;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .nav-link {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--accent);
+      text-decoration: none;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(99,102,241,0.25);
+      background: rgba(99,102,241,0.08);
+      transition: all 0.2s ease;
+    }
+
+    .nav-link:hover {
+      background: rgba(99,102,241,0.15);
+      border-color: rgba(99,102,241,0.5);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(99,102,241,0.15);
+    }
+
+    .theme-toggle {
+      background: var(--glass-bg);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 10px 14px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      color: var(--text-primary);
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .theme-toggle:hover {
+      transform: translateY(-1px);
+      border-color: rgba(99,102,241,0.45);
+      background: rgba(99,102,241,0.08);
+      box-shadow: 0 6px 16px rgba(99,102,241,0.15);
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 36px auto 60px;
+      padding: 0 20px;
+    }
+
+    .hero {
+      text-align: center;
+      margin: 8px 0 30px;
+    }
+
+    .hero h1 {
+      margin: 0 0 10px;
+      font-size: clamp(28px, 4vw, 44px);
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      margin: 0 auto;
+      max-width: 760px;
+      color: var(--text-secondary);
+      font-size: 16px;
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 999px;
+      background: rgba(99,102,241,0.14);
+      border: 1px solid rgba(99,102,241,0.25);
+      color: var(--text-primary);
+      font-weight: 800;
+      font-size: 12px;
+      vertical-align: baseline;
+    }
+
+    .project-link-banner {
+      text-align: center;
+      padding: 16px 20px;
+      background: linear-gradient(135deg, rgba(99,102,241,0.12), rgba(129,140,248,0.08));
+      border: 1px solid rgba(99,102,241,0.2);
+      border-radius: 14px;
+      margin-bottom: 24px;
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    .project-link-banner a {
+      color: var(--accent);
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .project-link-banner a:hover { text-decoration: underline; }
+
+    .project-link-banner .banner-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    /* Section cards */
+    .sections-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    .section-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 28px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(8px);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .section-card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 4px;
+      background: linear-gradient(180deg, var(--accent), transparent);
+    }
+
+    .section-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(99,102,241,0.3);
+      box-shadow: 0 16px 40px rgba(99,102,241,0.15);
+    }
+
+    .section-number {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-size: 22px;
+      font-weight: 700;
+      margin: 0 0 14px;
+      letter-spacing: -0.01em;
+    }
+
+    .section-body {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    .section-body strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    /* SWOT inputs grid (Strengths/Weaknesses/Opportunities/Threats) */
+    .swot-inputs {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    @media (max-width: 768px) {
+      .swot-inputs { grid-template-columns: 1fr; }
+      .header-right { gap: 10px; }
+      .theme-toggle { width: 100%; justify-content: center; }
+    }
+
+    .swot-box {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    [data-theme="light"] .swot-box {
+      background: rgba(0,0,0,0.02);
+    }
+
+    .swot-box::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+    }
+
+    .swot-box.s::before { background: linear-gradient(90deg, var(--ok), transparent); }
+    .swot-box.w::before { background: linear-gradient(90deg, var(--danger), transparent); }
+    .swot-box.o::before { background: linear-gradient(90deg, var(--accent), transparent); }
+    .swot-box.t::before { background: linear-gradient(90deg, var(--maintenance), transparent); }
+
+    .swot-box:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 24px rgba(99,102,241,0.12);
+    }
+
+    .swot-box .label {
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .swot-box.s .label { color: var(--ok); }
+    .swot-box.w .label { color: var(--danger); }
+    .swot-box.o .label { color: var(--accent); }
+    .swot-box.t .label { color: var(--maintenance); }
+
+    .swot-box .title {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 10px;
+    }
+
+    .swot-box ul {
+      margin: 6px 0 0;
+      padding-left: 18px;
+      color: var(--text-secondary);
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .swot-box ul li {
+      margin-bottom: 6px;
+    }
+
+    .swot-box ul li strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    /* The 2x2 activity matrix */
+    .matrix-wrapper {
+      margin-top: 22px;
+      display: grid;
+      grid-template-columns: 140px 1fr 1fr;
+      grid-template-rows: auto auto auto;
+      gap: 14px;
+    }
+
+    @media (max-width: 768px) {
+      .matrix-wrapper { grid-template-columns: 1fr; }
+      .matrix-corner, .matrix-col-header, .matrix-row-header { display: none !important; }
+      .matrix-cell .cell-tag { display: block !important; }
+    }
+
+    .matrix-corner {
+      background: transparent;
+    }
+
+    .matrix-col-header, .matrix-row-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 16px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 14px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+      color: #fff;
+      box-shadow: 0 8px 20px rgba(99,102,241,0.25);
+    }
+
+    .matrix-col-header.strength { background: linear-gradient(135deg, var(--ok), #16a34a); box-shadow: 0 8px 20px rgba(34,197,94,0.25); }
+    .matrix-col-header.weakness { background: linear-gradient(135deg, var(--danger), #b91c1c); box-shadow: 0 8px 20px rgba(239,68,68,0.25); }
+
+    .matrix-row-header {
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      padding: 18px 10px;
+    }
+
+    .matrix-row-header.opportunity { background: linear-gradient(135deg, var(--accent), #4338ca); }
+    .matrix-row-header.threat { background: linear-gradient(135deg, var(--maintenance), #9f1239); }
+
+    .matrix-cell {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+      min-height: 240px;
+    }
+
+    .matrix-cell::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top right, var(--cell-color, transparent), transparent 70%);
+      opacity: 0.08;
+      pointer-events: none;
+    }
+
+    .matrix-cell:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 18px 36px rgba(0,0,0,0.18);
+    }
+
+    .matrix-cell.offensive { --cell-color: var(--offensive); border-color: rgba(34,197,94,0.35); }
+    .matrix-cell.reactive { --cell-color: var(--reactive); border-color: rgba(245,158,11,0.35); }
+    .matrix-cell.defensive { --cell-color: var(--defensive); border-color: rgba(59,130,246,0.35); }
+    .matrix-cell.maintenance { --cell-color: var(--maintenance); border-color: rgba(239,68,68,0.35); }
+
+    .cell-tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 999px;
+      margin-bottom: 6px;
+    }
+
+    .matrix-cell.offensive .cell-tag { color: var(--offensive); background: rgba(34,197,94,0.12); border: 1px solid rgba(34,197,94,0.3); }
+    .matrix-cell.reactive .cell-tag { color: var(--reactive); background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.3); }
+    .matrix-cell.defensive .cell-tag { color: var(--defensive); background: rgba(59,130,246,0.12); border: 1px solid rgba(59,130,246,0.3); }
+    .matrix-cell.maintenance .cell-tag { color: var(--maintenance); background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.3); }
+
+    .cell-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin: 6px 0 4px;
+      letter-spacing: -0.01em;
+    }
+
+    .cell-subtitle {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+      font-style: italic;
+    }
+
+    .cell-body {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.65;
+    }
+
+    .cell-body strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    .cell-body ul {
+      margin: 8px 0 0;
+      padding-left: 18px;
+    }
+
+    .cell-body ul li {
+      margin-bottom: 6px;
+    }
+
+    /* Legend for the four quadrants */
+    .legend-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    @media (max-width: 900px) {
+      .legend-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 520px) {
+      .legend-grid { grid-template-columns: 1fr; }
+    }
+
+    .legend-item {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.55;
+    }
+
+    [data-theme="light"] .legend-item {
+      background: rgba(0,0,0,0.02);
+    }
+
+    .legend-item strong {
+      color: var(--text-primary);
+      display: block;
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    .legend-item.offensive strong { color: var(--offensive); }
+    .legend-item.reactive strong { color: var(--reactive); }
+    .legend-item.defensive strong { color: var(--defensive); }
+    .legend-item.maintenance strong { color: var(--maintenance); }
+
+    /* Synthesis / CTA card */
+    .synthesis-card {
+      background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+      border-radius: 18px;
+      padding: 32px;
+      color: #fff;
+      margin-top: 24px;
+      box-shadow: 0 16px 40px rgba(99,102,241,0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .synthesis-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.12), transparent);
+    }
+
+    .synthesis-card .section-number { color: rgba(255,255,255,0.7); }
+    .synthesis-card .section-title { color: #fff; font-size: 22px; }
+    .synthesis-card .section-body {
+      color: rgba(255,255,255,0.92);
+      font-size: 16px;
+      line-height: 1.7;
+      position: relative;
+    }
+
+    .synthesis-card ol {
+      padding-left: 22px;
+      margin-top: 12px;
+    }
+
+    .synthesis-card ol li {
+      margin-bottom: 10px;
+    }
+
+    .synthesis-card strong { color: #fff; font-weight: 700; }
+
+    @media print {
+      header, .theme-toggle, .nav-link { display: none !important; }
+      body { background: #fff !important; color: #000 !important; }
+    }
+  </style>
+</head>
+
+<body data-theme="dark">
+  <header>
+    <div class="header-content">
+      <a class="logo" href="index.html">ToleranceAI</a>
+      <div class="header-right">
+        <a class="nav-link" href="problem.html">Problem</a>
+        <a class="nav-link" href="problem2.html">Ideation</a>
+        <a class="nav-link" href="canvas.html">Canvas</a>
+        <span class="byline">Made By: Zhara, Cecilia, Ibrahim &amp; Hugo Andrade</span>
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">
+          <span id="themeIcon">🌙</span>
+          <span style="font-weight:800;">Theme</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="project-link-banner">
+      <span class="banner-label">View this project online</span>
+      <a href="https://tolerance-ai.vercel.app/swot.html">https://tolerance-ai.vercel.app/swot.html</a>
+    </div>
+
+    <div class="hero">
+      <h1>The Activity Matrix of the SWOT</h1>
+      <p>
+        Crossing internal factors (Strengths, Weaknesses) with external factors (Opportunities, Threats) to derive
+        four families of strategic objectives for our commuter productivity venture.
+        <span class="pill">SWOT × Strategy</span>
+      </p>
+    </div>
+
+    <div class="sections-grid">
+
+      <!-- ── Step 1: SWOT inputs ── -->
+      <div class="section-card">
+        <div class="section-number">Step 1 — Inputs</div>
+        <h2 class="section-title">Our SWOT for ToleranceAI</h2>
+        <div class="section-body">
+          Before crossing the axes, we summarized the four diagnostic lists from our market analysis,
+          ideation, and business model canvas.
+        </div>
+
+        <div class="swot-inputs">
+
+          <div class="swot-box s">
+            <div class="label">Internal · Positive</div>
+            <div class="title">Strengths</div>
+            <ul>
+              <li><strong>Adaptive duration engine</strong> — content auto-fits the commute length (GPS-based).</li>
+              <li><strong>Audio-first, one-hand interface</strong> built for noisy, standing-up conditions.</li>
+              <li><strong>Offline content packs</strong> that survive tunnel dead zones.</li>
+              <li><strong>Habit-loop design</strong> (streaks, XP, push at departure time).</li>
+              <li><strong>Niche focus</strong> on a clearly defined captive audience nobody else targets.</li>
+            </ul>
+          </div>
+
+          <div class="swot-box w">
+            <div class="label">Internal · Negative</div>
+            <div class="title">Weaknesses</div>
+            <ul>
+              <li><strong>Unknown brand</strong> — zero recognition vs. Duolingo, Blinkist, Spotify.</li>
+              <li><strong>Thin content library</strong> at launch; needs heavy curation.</li>
+              <li><strong>Dependence on partnerships</strong> (creators, employers, transit operators).</li>
+              <li><strong>Capital-intensive</strong> R&amp;D for the adaptive engine and audio pipeline.</li>
+              <li><strong>Small team</strong> with no in-house pedagogical experts yet.</li>
+            </ul>
+          </div>
+
+          <div class="swot-box o">
+            <div class="label">External · Positive</div>
+            <div class="title">Opportunities</div>
+            <ul>
+              <li><strong>~400 hrs / year</strong> per European commuter — a massive untapped time pool.</li>
+              <li>Booming demand for <strong>micro-learning and upskilling</strong>.</li>
+              <li><strong>Employer B2B budgets</strong> for staff training (subsidized subscriptions).</li>
+              <li>No competitor has built a <strong>commute-specific</strong> product yet.</li>
+              <li>Transit operators seeking to <strong>improve commuter experience</strong> (partnership potential).</li>
+            </ul>
+          </div>
+
+          <div class="swot-box t">
+            <div class="label">External · Negative</div>
+            <div class="title">Threats</div>
+            <ul>
+              <li><strong>Social media</strong> is the default reflex — hard to break the scrolling habit.</li>
+              <li>Generic giants (<strong>Spotify, YouTube, Duolingo</strong>) can copy features quickly.</li>
+              <li><strong>Remote/hybrid work</strong> shrinks the daily commuter base.</li>
+              <li><strong>GDPR &amp; data privacy</strong> concerns around GPS / behavioral tracking.</li>
+              <li>Economic downturn → <strong>discretionary subscription cuts</strong>.</li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── Step 2: The Activity Matrix ── -->
+      <div class="section-card">
+        <div class="section-number">Step 2 — Crossing the axes</div>
+        <h2 class="section-title">The 2 × 2 Activity Matrix</h2>
+        <div class="section-body">
+          Each cell answers a different strategic question — <em>how do we combine what we have inside
+          with what the world is offering or threatening outside?</em>
+        </div>
+
+        <div class="matrix-wrapper">
+
+          <div class="matrix-corner"></div>
+          <div class="matrix-col-header strength">Strength</div>
+          <div class="matrix-col-header weakness">Weakness</div>
+
+          <div class="matrix-row-header opportunity">Opportunity</div>
+
+          <!-- S × O → Offensive -->
+          <div class="matrix-cell offensive">
+            <span class="cell-tag">S × O</span>
+            <div class="cell-title">Offensive Objectives</div>
+            <div class="cell-subtitle">Use strengths to seize opportunities — go on the attack.</div>
+            <div class="cell-body">
+              <ul>
+                <li>Aggressively <strong>position the adaptive engine</strong> as the only learning tool truly built for the commute, capturing the 400 hrs/year pool.</li>
+                <li>Launch a <strong>B2B "Commute-to-Skill" package</strong> for employers — turning daily transit into measurable upskilling hours.</li>
+                <li>Sign exclusivity deals with <strong>top micro-learning creators</strong> before any competitor enters the niche.</li>
+                <li><strong>Partner with transit operators</strong> (Paris RATP, London TfL) to embed ToleranceAI as the official commute companion.</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- W × O → Reactive -->
+          <div class="matrix-cell reactive">
+            <span class="cell-tag">W × O</span>
+            <div class="cell-title">Reactive Objectives</div>
+            <div class="cell-subtitle">Fix weaknesses to capture the opportunity before it closes.</div>
+            <div class="cell-body">
+              <ul>
+                <li><strong>License existing content</strong> from established providers (TED-Ed, Blinkist) to instantly fill the library gap.</li>
+                <li><strong>Enter through the B2B side first</strong> — employer deals build credibility faster than consumer brand-building from zero.</li>
+                <li>Raise a targeted <strong>seed round</strong> to fund the adaptive engine and recruit pedagogical experts.</li>
+                <li>Use <strong>creator revenue-sharing</strong> to attract content partners without upfront cost.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="matrix-row-header threat">Threat</div>
+
+          <!-- S × T → Defensive -->
+          <div class="matrix-cell defensive">
+            <span class="cell-tag">S × T</span>
+            <div class="cell-title">Defensive Objectives</div>
+            <div class="cell-subtitle">Use strengths to neutralize threats — protect the position.</div>
+            <div class="cell-body">
+              <ul>
+                <li><strong>Patent or wrap the adaptive engine</strong> in proprietary tech so giants like Spotify can't copy it overnight.</li>
+                <li>Win the habit war: use <strong>streaks &amp; XP</strong> to make ToleranceAI the reflex when commuting starts — beating the scrolling default.</li>
+                <li>Build a <strong>privacy-first reputation</strong> (on-device processing, transparent GDPR posture) as a differentiator from data-hungry incumbents.</li>
+                <li>Lock in <strong>multi-year B2B contracts</strong> to insulate revenue from consumer churn during downturns.</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- W × T → Maintenance -->
+          <div class="matrix-cell maintenance">
+            <span class="cell-tag">W × T</span>
+            <div class="cell-title">Maintenance Objectives</div>
+            <div class="cell-subtitle">Minimize exposure where we are both weak and vulnerable — survive.</div>
+            <div class="cell-body">
+              <ul>
+                <li><strong>Avoid head-on competition</strong> with Duolingo / Spotify — stay narrowly focused on the commute use-case.</li>
+                <li><strong>Diversify beyond commutes</strong> (walking, lunch breaks, gym) to hedge against the remote-work erosion.</li>
+                <li>Keep <strong>burn rate low</strong> and revisit the cost structure quarterly — survive long enough to grow brand recognition organically.</li>
+                <li>Maintain a <strong>freemium tier</strong> so a downturn doesn't kill the funnel — paid conversion can resume when budgets recover.</li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Legend -->
+        <div class="legend-grid">
+          <div class="legend-item offensive">
+            <strong>Offensive (S × O)</strong>
+            Attack: use what you do best to grab what the market is offering.
+          </div>
+          <div class="legend-item reactive">
+            <strong>Reactive (W × O)</strong>
+            Repair: close the gaps that block you from seizing the opportunity.
+          </div>
+          <div class="legend-item defensive">
+            <strong>Defensive (S × T)</strong>
+            Shield: deploy strengths to absorb or deflect incoming threats.
+          </div>
+          <div class="legend-item maintenance">
+            <strong>Maintenance (W × T)</strong>
+            Survive: limit exposure where you're weakest and the threat is real.
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Step 3: Synthesis ── -->
+      <div class="synthesis-card">
+        <div class="section-number">Step 3 — Strategic Synthesis</div>
+        <h2 class="section-title">What the matrix tells us to do — in order</h2>
+        <div class="section-body">
+          The matrix is not just a 2×2 — it implies a sequence. We act on quadrants in priority order:
+          <ol>
+            <li><strong>Defensive first:</strong> lock in privacy posture and IP protection around the adaptive engine before anyone notices the niche.</li>
+            <li><strong>Reactive next:</strong> license third-party content and enter via B2B to compensate for our weak brand and thin catalog.</li>
+            <li><strong>Offensive then:</strong> once credible, push hard on transit-operator partnerships and the "Commute-to-Skill" B2B package.</li>
+            <li><strong>Maintenance always:</strong> keep burn low, the niche tight, and a freemium tier alive as our long-run insurance policy.</li>
+          </ol>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Navigation -->
+    <div style="text-align:center; margin-top:32px; display:flex; justify-content:center; gap:16px; flex-wrap:wrap;">
+      <a href="problem2.html" class="nav-link" style="font-size:16px; padding:14px 32px; display:inline-flex; align-items:center; gap:8px;">
+        <span style="font-size:18px;">←</span> Back: Ideation
+      </a>
+      <a href="canvas.html" class="nav-link" style="font-size:16px; padding:14px 32px; display:inline-flex; align-items:center; gap:8px;">
+        Next: Business Model Canvas <span style="font-size:18px;">→</span>
+      </a>
+    </div>
+
+  </main>
+
+  <script>
+    function setTheme(theme) {
+      document.body.setAttribute("data-theme", theme);
+      localStorage.setItem("tfa_theme", theme);
+      document.getElementById("themeIcon").textContent = theme === "light" ? "☀️" : "🌙";
+    }
+
+    function toggleTheme() {
+      const cur = document.body.getAttribute("data-theme") || "dark";
+      setTheme(cur === "dark" ? "light" : "dark");
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const saved = localStorage.getItem("tfa_theme");
+      setTheme(saved === "light" ? "light" : "dark");
+      document.getElementById("themeToggle").addEventListener("click", toggleTheme);
+    });
+  </script>
+</body>
+</html>
